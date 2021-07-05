@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-antwondjclient-dev-225959-authRole",
+      "UnauthRoleArn": "arn:aws:iam::605272316448:role/amplify-antwondjclient-dev-225959-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::605272316448:role/amplify-antwondjclient-dev-225959-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-antwondjclient-dev-225959-deployment",
+      "UnauthRoleName": "amplify-antwondjclient-dev-225959-unauthRole",
+      "StackName": "amplify-antwondjclient-dev-225959",
+      "StackId": "arn:aws:cloudformation:eu-west-2:605272316448:stack/amplify-antwondjclient-dev-225959/589fbfa0-dddc-11eb-abd9-0af3994a2dba",
+      "AmplifyAppId": "d1hltwv1nuyqpq"
+    },
+    "categories": {
+      "auth": {
+        "antwondjclient2b4bcb30": {}
+      }
+    }
+  }
+}
