@@ -1,3 +1,4 @@
+import Head from "next/head"
 import Amplify from "aws-amplify";
 import { AmplifyAuthenticator } from "@aws-amplify/ui-react";
 import { AppProps } from "next/app";
@@ -11,12 +12,20 @@ Amplify.configure({ ...awsExports, ssr: true });
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
-        <AmplifyAuthenticator>
-            <ThemeProvider>
-                <ResetGlobalStyle />
-                <BaseStyle />
-                <Component {...pageProps} />
-            </ThemeProvider>
-        </AmplifyAuthenticator>
+        <>
+            <Head>
+                <title>antwon.dj</title>
+                <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+                <link rel="icon" type="image/png" href="/favicon.png" />
+            </Head>
+            <AmplifyAuthenticator>
+                <ThemeProvider>
+                    <ResetGlobalStyle />
+                    <BaseStyle />
+                    <Component {...pageProps} />
+                </ThemeProvider>
+            </AmplifyAuthenticator>
+        </>
+
     );
 }
