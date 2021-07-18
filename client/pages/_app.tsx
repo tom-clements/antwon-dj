@@ -1,14 +1,16 @@
 import Head from "next/head"
 import { AmplifyAuthenticator } from "@aws-amplify/ui-react";
+import { Provider } from "react-redux";
 import { AppProps } from "next/app";
 import { BaseStyle } from "styles/BaseStyle";
 import { ResetGlobalStyle } from "styles/ResetGlobalStyle";
 import { ThemeProvider } from "styles/ThemeProvider";
-import { setupApp } from "AppSetup";
+import { setupApp, useAppStore } from "AppSetup";
 
 setupApp();
 
 export default function App({ Component, pageProps }: AppProps) {
+    const store = useAppStore(pageProps.initialReduxState);
     return (
         <>
             <Head>
@@ -17,11 +19,13 @@ export default function App({ Component, pageProps }: AppProps) {
                 <link rel="icon" type="image/png" href="/favicon.png" />
             </Head>
             <AmplifyAuthenticator>
+                <Provider store={store}>
                 <ThemeProvider>
                     <ResetGlobalStyle />
                     <BaseStyle />
                     <Component {...pageProps} />
                 </ThemeProvider>
+                </Provider>
             </AmplifyAuthenticator>
         </>
 
