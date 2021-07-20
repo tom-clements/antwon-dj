@@ -1,11 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { UserSlice } from "model/User";
+import { roomApi } from "model/service/RoomApi";
 
 export function createStore(preloadedState: any) {
     return configureStore({
         reducer: {
             user: UserSlice.reducer,
+            [roomApi.reducerPath]: roomApi.reducer,
         },
+        middleware: getDefaultMiddleware => getDefaultMiddleware().concat(...[
+            roomApi.middleware,
+        ]),
         preloadedState: preloadedState,
     });
 }
