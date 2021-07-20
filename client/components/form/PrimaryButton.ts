@@ -1,17 +1,17 @@
 import styled from "styled-components";
 
 export const PrimaryButton = styled.button`
-    font-size: 1.2em;
-    padding: 0.2em 1em;
+    font-size: 1em;
+    padding: 0.305em 1em;
 
     text-align: center;
     text-decoration: none;
     font-weight: bold;
     text-transform: uppercase;
 
-    border-width: 0.15em;
+    border-width: 0.05em;
     border-style: solid;
-    border-radius: 0.5em;
+    border-radius: 0.25em;
     outline: none;
     transition: 0.12s;
 

@@ -10,12 +10,11 @@ export const TextInput = styled.input.attrs<Props>({
 }) <Props>`
     ${props => !isNil(props.width) && `width: ${props.width};`}
 
-    font-size: 1.2em;
-    padding: 0.2em 0.8em;
+    font-size: 1em;
+    padding: 0.305em 1em;
 
-    border-width: 0.15em;
+    border-width: 0.05em;
     border-style: solid;
-    border-radius: 0.5em;
     outline: none;
     transition: 0.12s;
 
