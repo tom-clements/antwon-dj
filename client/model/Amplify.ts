@@ -19,7 +19,6 @@ export function connectAmplifyToStore(store: Store) {
     };
 
     const hubListener: HubCallback = hubCapsule => {
-        console.log(hubCapsule.payload.event);
         switch (hubCapsule.payload.event) {
             case "signIn":
                 checkUser();
