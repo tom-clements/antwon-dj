@@ -47,6 +47,7 @@ const TwonPalette: Palette = {
 };
 
 export const TwonDark: Theme = {
+    palette: TwonPalette,
     background: TwonPalette.tertiaryDark750,
     field: {
         base: {

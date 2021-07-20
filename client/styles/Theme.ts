@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { Palette } from "styles/Palette";
 
 interface ControlState {
     base: CSSProperties;
@@ -10,6 +11,7 @@ interface ControlState {
 }
 
 export interface Theme {
+    palette: Palette;
     background: CSSProperties["color"];
     field: ControlState;
     primaryButton: ControlState;
