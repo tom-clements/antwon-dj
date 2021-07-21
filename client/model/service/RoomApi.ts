@@ -10,5 +10,3 @@ export const roomApi = createApi({
         }),
     }),
 });
-
-export const { useGetRoomIdByCodeQuery } = roomApi;
