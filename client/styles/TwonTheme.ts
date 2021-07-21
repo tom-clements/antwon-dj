@@ -48,10 +48,11 @@ const TwonPalette: Palette = {
 
 export const TwonDark: Theme = {
     palette: TwonPalette,
+    color: TwonPalette.primaryLight250,
     background: TwonPalette.tertiaryDark750,
     field: {
         base: {
-            color: TwonPalette.white,
+            color: TwonPalette.primaryLight250,
             backgroundColor: TwonPalette.secondaryDark750,
             borderColor: TwonPalette.secondaryLight750,
         },

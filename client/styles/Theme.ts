@@ -12,6 +12,7 @@ interface ControlState {
 
 export interface Theme {
     palette: Palette;
+    color: CSSProperties["color"];
     background: CSSProperties["color"];
     field: ControlState;
     primaryButton: ControlState;
