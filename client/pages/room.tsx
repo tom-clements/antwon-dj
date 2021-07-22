@@ -1,10 +1,11 @@
 import { Absolute } from "components/layout/Absolute";
+import { Room } from "components/Room";
 import { RoomProvider } from "components/RoomProvider";
 
-export default function Room() {
+export default function RoomPage() {
     return (
         <Absolute>
-            <RoomProvider />
+            <RoomProvider render={roomId => <Room roomId={roomId} />} />
         </Absolute>
     )
 }

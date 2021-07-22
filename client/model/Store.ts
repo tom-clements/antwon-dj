@@ -2,6 +2,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { RoomPortalSlice } from "model/RoomPortalSlice";
 import { UserSlice } from "model/User";
+import { spotifySearchApi } from "model/service/SpotifySearchApi";
 import { roomApi } from "model/service/RoomApi";
 
 export function createStore(preloadedState: any) {
@@ -9,9 +10,11 @@ export function createStore(preloadedState: any) {
         reducer: {
             roomPortal: RoomPortalSlice.reducer,
             user: UserSlice.reducer,
+            [spotifySearchApi.reducerPath]: spotifySearchApi.reducer,
             [roomApi.reducerPath]: roomApi.reducer,
         },
         middleware: getDefaultMiddleware => getDefaultMiddleware().concat(...[
+            spotifySearchApi.middleware,
             roomApi.middleware,
         ]),
         preloadedState: preloadedState,

@@ -13,6 +13,7 @@ interface StyleProps {
     paddingBottom?: CSSProperties["paddingBottom"];
     paddingLeft?: CSSProperties["paddingLeft"];
     padding?: CSSProperties["padding"];
+    width?: CSSProperties["width"];
 }
 
 interface Props extends StyleProps {
@@ -29,6 +30,7 @@ const SpacingContainer = styled.div<StyleProps>`
     ${props => !isNil(props.paddingBottom) && `padding-bottom: ${props.paddingBottom};`}
     ${props => !isNil(props.paddingLeft) && `padding-left: ${props.paddingLeft};`}
     ${props => !isNil(props.padding) && `padding: ${props.padding};`}
+    ${props => !isNil(props.width) && `width: ${props.width};`}
 `;
 
 /**

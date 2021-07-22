@@ -30,7 +30,7 @@ export const RoomPortal: FC<Props> = props => {
     useEffect(() => {
         if (roomId) router.push({
             pathname: "room",
-            query: { roomCode: roomCode, },
+            query: { code: roomCode, },
         });
     }, [roomId]);
 
