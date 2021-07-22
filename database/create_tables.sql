@@ -29,7 +29,7 @@ CREATE TABLE Rooms (
     room_guid varchar(36) NOT NULL,
     room_code varchar(6),
     is_inactive boolean,
-    owner_user_id varchar(36)
+    owner_user_id int
 );
 
 CREATE TABLE Songs (
@@ -48,7 +48,6 @@ CREATE TABLE RoomSongs (
     room_id int,
     song_id int,
     is_inactive boolean,
-    owner_user_id int,
     insert_time datetime,
     is_played boolean,
     is_removed boolean,
@@ -61,6 +60,31 @@ VALUES
 ("2962e800-e543-4a31-9b9f-49ee9e82d52c");
 
 insert into Rooms
-("2962e800-e543-4a31-9b9f-49ee9e82d52c")
+(room_guid, room_code, is_inactive, owner_user_id)
 VALUES
 ("5fbc1ed4-8dd0-45a8-95a2-2f8d2ffb7faa", "SOIREE", false, 1);
+
+insert into RoomSongs
+(room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
+VALUES
+(1, 1, false, now(), false, false, false);
+
+insert into RoomSongs
+(room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
+VALUES
+(1, 2, false, now(), false, false, false);
+
+insert into Songs
+(song_guid, song_uri, song_name, song_artist, song_album_url, insert_time, last_accessed)
+VALUES
+('ddd1de01-6eee-4bdf-85c6-d06c83696972', 'spotify:track:1u8c2t2Cy7UBoG4ArRcF5g',
+'Blank Space', 'Taylor Swift', 'https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a',
+now(), now());
+
+
+insert into Songs
+(song_guid, song_uri, song_name, song_artist, song_album_url, insert_time, last_accessed)
+VALUES
+('6f422b09-60a1-4673-9e55-326e32117b6c', 'spotify:track:0cqRj7pUJDkTCEsJkx8snD',
+'Shake It Off', 'Taylor Swift', 'https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a',
+now(), now());
