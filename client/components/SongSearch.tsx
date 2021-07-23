@@ -5,6 +5,7 @@ import { Relative } from "components/layout/Relative";
 import { TextInput } from "components/form/TextInput";
 import { SongSearchList } from "components/SongSearchList";
 import { spotifySearchApi } from "model/service/SpotifySearchApi";
+import { roomApi } from "model/service/RoomApi";
 
 interface Props {
     roomId: string;
@@ -17,6 +18,7 @@ function sanitiseSearchTerm(searchTerm: string | null) {
 
 export const SongSearch: FC<Props> = props => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null); // todo: Put this in redux
+    const [addSongToQueue] = roomApi.endpoints.addSongToQueue.useMutation();
     const [triggerSearch, result] = spotifySearchApi.endpoints.getSongsForSearch.useLazyQuery();
     const debouncedSearch = useCallback(_.debounce(triggerSearch, 100), []);
 
@@ -38,7 +40,10 @@ export const SongSearch: FC<Props> = props => {
                 onChange={event => setSearchTerm(sanitiseSearchTerm(event.target.value))}
             />
             <Absolute>
-                {searchTerm && result.data && <SongSearchList songs={result.data} />}
+                {searchTerm && result.data && <SongSearchList songs={result.data} onSelectSong={s => {
+                    addSongToQueue({ ...s, room_guid: props.roomId });
+                    setSearchTerm(""); // todo: compose this
+                }} />}
             </Absolute>
         </Relative>
     );
