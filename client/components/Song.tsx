@@ -4,11 +4,16 @@ import { SongDto } from "model/service/SpotifySearchApi";
 import { Flex } from "components/layout/Flex";
 import { Spacing } from "components/layout/Spacing";
 
-interface Props extends SongDto {
+interface StyleProps {
     skipTopBorder?: boolean;
 }
 
-export const SongContainer = styled.div<Props>`
+interface Props extends StyleProps {
+    song: SongDto;
+    onClick?: (song: SongDto) => void;
+}
+
+export const SongContainer = styled.div<StyleProps>`
     display: flex;
     border-width: 0.05em;
     border-style: solid;
@@ -50,16 +55,16 @@ export const SongContainer = styled.div<Props>`
 
 export const Song: FC<Props> = props => {
     return (
-        <SongContainer {...props}>
+        <SongContainer skipTopBorder={props.skipTopBorder} onClick={() => props.onClick && props.onClick(props.song)}>
             <Flex flexGrow={0} flexShrink={0} flexBasis={"5em"}>
                 <Spacing margin={"0.8em"}>
-                    <img width={"100%"} src={props.song_album_url} />
+                    <img width={"100%"} src={props.song.song_album_url} />
                 </Spacing>
             </Flex>
             <Flex>
                 <Spacing margin={"0.8em 0.8em 0.8em 0"}>
-                    <h3>{props.song_name}</h3>
-                    <h4>{props.song_artist}</h4>
+                    <h3>{props.song.song_name}</h3>
+                    <h4>{props.song.song_artist}</h4>
                 </Spacing>
             </Flex>
         </SongContainer>

@@ -18,12 +18,13 @@ export const SongListContainer = styled.div`
 
 interface Props {
     songs: SongDto[];
+    onSelectSong: (song: SongDto) => void;
 }
 
 export const SongSearchList: FC<Props> = props => {
     return (
         <SongListContainer>
-            {props.songs.map(s => <Song key={s.id} {...s} skipTopBorder />)}
+            {props.songs.map(s => <Song key={s.id} song={s} skipTopBorder onClick={props.onSelectSong} />)}
         </SongListContainer>
     );
 };

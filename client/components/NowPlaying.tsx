@@ -38,7 +38,7 @@ export const NowPlaying: FC<Props> = props => {
                 <Spacing marginTop={"0.5em"} marginBottom={"0.5em"}>
                     Currently playing:
                 </Spacing>
-                <Song {...result.data} />
+                <Song song={result.data} />
             </Flex>
         </NowPlayingContainer>
     );
