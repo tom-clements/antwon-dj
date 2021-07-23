@@ -23,7 +23,7 @@ interface Props {
 export const SongSearchList: FC<Props> = props => {
     return (
         <SongListContainer>
-            {props.songs.map(s => <Song key={s.id} {...s} />)}
+            {props.songs.map(s => <Song key={s.id} {...s} skipTopBorder />)}
         </SongListContainer>
     );
 };

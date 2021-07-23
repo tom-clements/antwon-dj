@@ -5,13 +5,14 @@ import { Flex } from "components/layout/Flex";
 import { Spacing } from "components/layout/Spacing";
 
 interface Props extends SongDto {
+    skipTopBorder?: boolean;
 }
 
-export const SongContainer = styled.div`
+export const SongContainer = styled.div<Props>`
     display: flex;
     border-width: 0.05em;
     border-style: solid;
-    border-top: none;
+    ${props => props.skipTopBorder && "border-top: none"};
 
     background-color: ${props => props.theme.field.base.backgroundColor};
     border-color: ${props => props.theme.field.base.borderColor};
@@ -49,7 +50,7 @@ export const SongContainer = styled.div`
 
 export const Song: FC<Props> = props => {
     return (
-        <SongContainer>
+        <SongContainer {...props}>
             <Flex flexGrow={0} flexShrink={0} flexBasis={"5em"}>
                 <Spacing margin={"0.8em"}>
                     <img width={"100%"} src={props.song_album_url} />
