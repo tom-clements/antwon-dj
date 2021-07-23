@@ -18,10 +18,14 @@ export const Room: FC<Props> = props => {
                 </Spacing>
             </Flex>
             <Flex flexGrow={1}>
-                <SongQueue roomId={props.roomId} />
+                <Spacing width={"100%"} margin={"0.5em 1em"}>
+                    <SongQueue roomId={props.roomId} />
+                </Spacing>
             </Flex>
             <Flex>
-                <NowPlaying roomId={props.roomId} />
+                <Spacing width={"100%"} margin={"0.5em 1em"}>
+                    <NowPlaying roomId={props.roomId} />
+                </Spacing>
             </Flex>
         </Flex>
     );
