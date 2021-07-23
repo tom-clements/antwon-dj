@@ -7,9 +7,10 @@ import { Song } from "components/Song";
 import { Spinner } from "components/Spinner";
 import { spotifyCurrentlyPlayingApi } from "model/service/SpotifyCurrentlyPlaying";
 
-
 export const NowPlayingContainer = styled.div`
     border-top: 0.05em solid ${props => props.theme.field.base.borderColor};
+    border-bottom: 0.05em solid ${props => props.theme.field.base.borderColor};
+    padding-bottom: 1em;
 `;
 
 interface Props {
