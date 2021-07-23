@@ -1,5 +1,4 @@
 import Head from "next/head"
-import { AmplifyAuthenticator } from "@aws-amplify/ui-react";
 import { Provider } from "react-redux";
 import { AppProps } from "next/app";
 import { BaseStyle } from "styles/BaseStyle";
@@ -18,16 +17,13 @@ export default function App({ Component, pageProps }: AppProps) {
                 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
                 <link rel="icon" type="image/png" href="/favicon.png" />
             </Head>
-            <AmplifyAuthenticator>
-                <Provider store={store}>
+            <Provider store={store}>
                 <ThemeProvider>
                     <ResetGlobalStyle />
                     <BaseStyle />
                     <Component {...pageProps} />
                 </ThemeProvider>
-                </Provider>
-            </AmplifyAuthenticator>
+            </Provider>
         </>
-
     );
 }
