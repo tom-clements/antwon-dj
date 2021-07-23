@@ -1,15 +1,15 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-antwondjclient-dev-225959-authRole",
-      "UnauthRoleArn": "arn:aws:iam::605272316448:role/amplify-antwondjclient-dev-225959-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::605272316448:role/amplify-antwondjclient-dev-225959-authRole",
-      "Region": "eu-west-2",
-      "DeploymentBucketName": "amplify-antwondjclient-dev-225959-deployment",
-      "UnauthRoleName": "amplify-antwondjclient-dev-225959-unauthRole",
-      "StackName": "amplify-antwondjclient-dev-225959",
-      "StackId": "arn:aws:cloudformation:eu-west-2:605272316448:stack/amplify-antwondjclient-dev-225959/589fbfa0-dddc-11eb-abd9-0af3994a2dba",
-      "AmplifyAppId": "d1hltwv1nuyqpq"
+      "AuthRoleName": "amplify-antwondjclient-dev-124447-authRole",
+      "UnauthRoleArn": "arn:aws:iam::833824736947:role/amplify-antwondjclient-dev-124447-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::833824736947:role/amplify-antwondjclient-dev-124447-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-antwondjclient-dev-124447-deployment",
+      "UnauthRoleName": "amplify-antwondjclient-dev-124447-unauthRole",
+      "StackName": "amplify-antwondjclient-dev-124447",
+      "StackId": "arn:aws:cloudformation:us-west-2:833824736947:stack/amplify-antwondjclient-dev-124447/6564ec60-ebab-11eb-98a2-024686c260c3",
+      "AmplifyAppId": "d35bcrs9cs8mra"
     },
     "categories": {
       "auth": {
