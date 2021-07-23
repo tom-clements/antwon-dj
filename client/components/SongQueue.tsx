@@ -33,7 +33,7 @@ export const SongQueue: FC<Props> = props => {
             </Spacing>
             {
                 result.data
-                    .filter(s => !s.is_removed && !s.is_removed)
+                    .filter(s => !s.is_played && !s.is_removed)
                     .map((s, i) => <Song key={`${s.id}_${i}`} song={s} />)
             }
         </Flex>
