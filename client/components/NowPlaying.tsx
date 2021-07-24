@@ -22,25 +22,37 @@ export const NowPlaying: FC<Props> = props => {
 
     const isPending = result.isLoading || result.isFetching;
     if (isPending) return (
-        <FlexCentre>
-            <Spinner />
-        </FlexCentre>
+        <NowPlayingWrapper>
+            <FlexCentre>
+                <Spinner scale={2.2} />
+            </FlexCentre>
+        </NowPlayingWrapper>
     );
 
     if (result.isError || !result.data) return (
-        <FlexCentre>
-            Could not get currently playing
-        </FlexCentre>
+        <NowPlayingWrapper>
+            <FlexCentre>
+                Could not get currently playing
+            </FlexCentre>
+        </NowPlayingWrapper>
     );
 
+    return (
+        <NowPlayingWrapper>
+            <Song song={result.data} />
+        </NowPlayingWrapper>
+    );
+};
+
+const NowPlayingWrapper: FC = props => {
     return (
         <NowPlayingContainer>
             <Flex flexDirection="column">
                 <Spacing marginTop={"0.5em"} marginBottom={"0.5em"}>
-                    Currently playing:
+                    <h2>Currently playing:</h2>
                 </Spacing>
-                <Song song={result.data} />
+                {props.children}
             </Flex>
         </NowPlayingContainer>
     );
-};
+}
