@@ -15,27 +15,39 @@ export const SongQueue: FC<Props> = props => {
 
     const isPending = result.isLoading || result.isFetching;
     if (isPending) return (
-        <FlexCentre>
-            <Spinner scale={3} />
-        </FlexCentre>
+        <QueueWrapper>
+            <FlexCentre>
+                <Spinner scale={3} />
+            </FlexCentre>
+        </QueueWrapper>
     );
 
     if (result.isError || !result.data) return (
-        <FlexCentre>
-            Could not find room queue
-        </FlexCentre>
+        <QueueWrapper>
+            <FlexCentre>
+                Could not find room queue
+            </FlexCentre>
+        </QueueWrapper>
     );
 
     return (
-        <Flex flexDirection="column">
-            <Spacing marginBottom={"0.5em"}>
-                Queue:
-            </Spacing>
+        <QueueWrapper>
             {
                 result.data
                     .filter(s => !s.is_played && !s.is_removed)
                     .map((s, i) => <Song key={`${s.id}_${i}`} song={s} />)
             }
-        </Flex>
+        </QueueWrapper>
     );
 };
+
+const QueueWrapper: FC = props => {
+    return (
+        <Flex flexDirection="column">
+            <Spacing marginBottom={"0.5em"}>
+                Queue:
+            </Spacing>
+            {props.children}
+        </Flex>
+    );
+}

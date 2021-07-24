@@ -16,6 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <title>antwon.dj</title>
                 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
                 <link rel="icon" type="image/png" href="/favicon.png" />
+                <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
             </Head>
             <Provider store={store}>
                 <ThemeProvider>
