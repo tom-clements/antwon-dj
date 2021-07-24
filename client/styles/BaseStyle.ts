@@ -10,6 +10,7 @@ export const BaseStyle = createGlobalStyle`
 
     body {
         font-size: 14px;
+        font-family: Poppins, sans-serif;
         color: ${props => props.theme.color};
         background: ${props => props.theme.background};
     }
