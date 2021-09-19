@@ -1,5 +1,5 @@
 import Amplify from "aws-amplify";
-import awsExports from "aws-exports";
+// import awsExports from "aws-exports";
 import { createStore, RootState, Store } from "model/Store";
 import { useMemo } from "react";
 import { connectAmplifyToStore } from "model/Amplify";
@@ -7,7 +7,7 @@ import { connectAmplifyToStore } from "model/Amplify";
 let store: Store | undefined;
 
 function setupAmplify() {
-    Amplify.configure({ ...awsExports, ssr: true });
+    // Amplify.configure({ ...awsExports, ssr: true });
 }
 
 export function setupApp() {
