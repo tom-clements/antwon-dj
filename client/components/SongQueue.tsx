@@ -3,7 +3,7 @@ import { Flex } from "components/layout/Flex";
 import { FlexCentre } from "components/layout/FlexCentre";
 import { Spacing } from "components/layout/Spacing";
 import { Song } from "components/Song";
-import { Spinner } from "components/Spinner";
+import { Spinner } from "components/core/Spinner";
 import { roomApi } from "model/service/RoomApi";
 
 interface Props {

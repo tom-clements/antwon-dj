@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { RoomCodeInput } from "components/RoomCodeInput";
-import { Spinner } from "components/Spinner";
+import { Spinner } from "components/core/Spinner";
 import { useAppSelector, useAppDispatch } from "model/Store";
 import { selectRoomCode, setRoomCode } from "model/RoomPortalSlice";
 import { roomApi } from "model/service/RoomApi";
@@ -34,14 +34,14 @@ export const RoomPortal: FC<Props> = props => {
     }, [roomId]);
 
     return (
-        <Grid container direction="row" alignItems="center">
+        <Grid container alignItems="center">
             <Grid container item xs={12} justifyContent="center" spacing={1}>
                 <Grid item>
                     <RoomCodeInput roomCode={roomCode} onChange={roomCode => dispatch(setRoomCode(roomCode))} />
                 </Grid>
                 <Grid item alignItems="stretch" sx={{ display: "flex" }}>
                     <Button variant="contained" onClick={() => isValidRoomCode(roomCode) && trigger(roomCode)}>
-                        {isPending ? <Spinner scale={7 / 15} /> : "Go"}
+                        {isPending ? <Spinner scale={0.8} /> : "Go"}
                     </Button>
                 </Grid>
             </Grid>

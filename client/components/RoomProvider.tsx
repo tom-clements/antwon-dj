@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { skipToken } from "@reduxjs/toolkit/query/react";
 import { ParsedUrlQuery } from "querystring";
 import { FlexCentre } from "components/layout/FlexCentre";
-import { Spinner } from "components/Spinner";
+import { Spinner } from "components/core/Spinner";
 import { useAppSelector, useAppDispatch } from "model/Store";
 import { selectRoomCode, setRoomCode } from "model/RoomPortalSlice";
 import { roomApi } from "model/service/RoomApi";
