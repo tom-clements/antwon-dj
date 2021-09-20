@@ -11,6 +11,7 @@ CREATE TABLE SpotifyUsers (
     spotify_user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     spotify_user_guid varchar(36) NOT NULL,
     user_id int,
+    spotify_user_username varchar(50),
     spotify_user_name varchar(50),
     spotify_profile_image_url varchar(500),
     spotify_access_token varchar(500),

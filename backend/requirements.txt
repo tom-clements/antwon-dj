@@ -1,0 +1,4 @@
+boto3==1.18.44
+spotipy==2.19.0
+aws-lambda-powertools==1.20.2
+requests==2.26.0
