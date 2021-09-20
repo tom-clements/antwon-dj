@@ -9,7 +9,7 @@ interface Props {
 
 function sanitiseRoomCode(roomCode: string | null) {
     if (_.isEmpty(roomCode)) return null;
-    return roomCode;
+    return roomCode?.toUpperCase() ?? null;
 }
 
 /**
