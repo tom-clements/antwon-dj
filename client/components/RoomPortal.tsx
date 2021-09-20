@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, FormEvent, useEffect } from "react";
 import { useRouter } from "next/router";
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -10,7 +10,7 @@ import { roomApi } from "model/service/RoomApi";
 
 function isValidRoomCode(roomCode: string | null): roomCode is string {
     if (roomCode === null) return false;
-    return true;
+    return roomCode.length === 6;
 }
 
 interface Props {
@@ -26,6 +26,12 @@ export const RoomPortal: FC<Props> = props => {
     const hasRoomId = result.isSuccess && result.data;
     const roomId = hasRoomId ? result.data : null;
 
+    const canGoToRoom = isValidRoomCode(roomCode);
+    const onRoomSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (canGoToRoom) trigger(roomCode);
+    };
+
     useEffect(() => {
         if (roomId) router.push({
             pathname: "room",
@@ -34,17 +40,25 @@ export const RoomPortal: FC<Props> = props => {
     }, [roomId]);
 
     return (
-        <Grid container alignItems="center">
-            <Grid container item xs={12} justifyContent="center" spacing={1}>
-                <Grid item>
-                    <RoomCodeInput roomCode={roomCode} onChange={roomCode => dispatch(setRoomCode(roomCode))} />
+        <Grid container alignItems="center" justifyContent="center">
+            <form onSubmit={onRoomSubmit}>
+                <Grid container item xs={12} spacing={1}>
+                    <Grid item>
+                        <RoomCodeInput
+                            roomCode={roomCode}
+                            onChange={roomCode => dispatch(setRoomCode(roomCode))}
+                        /></Grid>
+                    <Grid item alignItems="stretch" sx={{ display: "flex" }}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            disabled={!canGoToRoom}
+                        >
+                            {isPending ? <Spinner scale={0.8} /> : "Go"}
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid item alignItems="stretch" sx={{ display: "flex" }}>
-                    <Button variant="contained" onClick={() => isValidRoomCode(roomCode) && trigger(roomCode)}>
-                        {isPending ? <Spinner scale={0.8} /> : "Go"}
-                    </Button>
-                </Grid>
-            </Grid>
+            </form>
         </Grid>
     );
 };
