@@ -1,8 +1,7 @@
 import { FC, useEffect } from "react";
 import { useRouter } from "next/router";
-import { FlexCentre } from "components/layout/FlexCentre";
-import { Spacing } from "components/layout/Spacing";
-import { PrimaryButton } from "components/form/PrimaryButton";
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 import { RoomCodeInput } from "components/RoomCodeInput";
 import { Spinner } from "components/Spinner";
 import { useAppSelector, useAppDispatch } from "model/Store";
@@ -35,14 +34,17 @@ export const RoomPortal: FC<Props> = props => {
     }, [roomId]);
 
     return (
-        <FlexCentre>
-            <RoomCodeInput roomCode={roomCode} onChange={roomCode => dispatch(setRoomCode(roomCode))} />
-            <Spacing marginRight={"0.6em"} />
-            <PrimaryButton onClick={() => isValidRoomCode(roomCode) && trigger(roomCode)}>
-                <span style={{ width: "2em", display: "inline-block" }}>
-                    {isPending ? <Spinner scale={7 / 15} /> : "Go"}
-                </span>
-            </PrimaryButton>
-        </FlexCentre>
+        <Grid container direction="row" alignItems="center">
+            <Grid container item xs={12} justifyContent="center" spacing={1}>
+                <Grid item>
+                    <RoomCodeInput roomCode={roomCode} onChange={roomCode => dispatch(setRoomCode(roomCode))} />
+                </Grid>
+                <Grid item alignItems="stretch" sx={{ display: "flex" }}>
+                    <Button variant="contained" onClick={() => isValidRoomCode(roomCode) && trigger(roomCode)}>
+                        {isPending ? <Spinner scale={7 / 15} /> : "Go"}
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
     );
 };

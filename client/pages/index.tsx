@@ -1,10 +1,10 @@
 import { RoomPortal } from "components/RoomPortal";
-import { Absolute } from "components/layout/Absolute";
+import Container from "@mui/material/Container";
 
 export default function Home() {
     return (
-        <Absolute>
+        <Container sx={{ height: "100vh", display: "flex" }} maxWidth="md" disableGutters>
             <RoomPortal />
-        </Absolute>
+        </Container>
     )
 }

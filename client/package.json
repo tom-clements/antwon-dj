@@ -13,9 +13,12 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.4",
+    "@emotion/cache": "^11.4.0",
+    "@emotion/react": "^11.4.1",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.0",
     "@mui/material": "^5.0.0",
-    "@mui/styled-engine-sc": "^5.0.0",
     "@reduxjs/toolkit": "^1.6.0",
     "aws-amplify": "^4.1.2",
     "lodash": "^4.17.21",
