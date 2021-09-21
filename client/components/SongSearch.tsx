@@ -28,7 +28,7 @@ export const SongSearch: FC<Props> = props => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null); // todo: Put this in redux
     const [addSongToQueue] = roomApi.endpoints.addSongToQueue.useMutation();
     const [triggerSearch, result] = spotifySearchApi.endpoints.getSongsForSearch.useLazyQuery();
-    const debouncedSearch = useCallback(_.debounce(triggerSearch, 100), []);
+    const debouncedSearch = useCallback(_.debounce(triggerSearch, 200, { leading: true }), [triggerSearch]);
 
     useEffect(() => {
         if (searchTerm) {
