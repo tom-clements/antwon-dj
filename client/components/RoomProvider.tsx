@@ -1,5 +1,6 @@
 import { FC, useEffect } from "react";
 import { useRouter } from "next/router";
+import { skipToken } from "@reduxjs/toolkit/query/react";
 import { ParsedUrlQuery } from "querystring";
 import { FlexCentre } from "components/layout/FlexCentre";
 import { Spinner } from "components/Spinner";
@@ -21,7 +22,7 @@ export const RoomProvider: FC<Props> = props => {
     const dispatch = useAppDispatch();
     const roomCodeFromUrlQuery = getRoomCodeFromUrlQuery(router.query);
     const roomCodeFromState = useAppSelector(selectRoomCode);
-    const result = roomApi.endpoints.getRoomIdByCode.useQuery(roomCodeFromState ?? "");
+    const result = roomApi.endpoints.getRoomIdByCode.useQuery(roomCodeFromState ?? skipToken);
 
     useEffect(() => {
         if (roomCodeFromState !== roomCodeFromUrlQuery) dispatch(setRoomCode(roomCodeFromUrlQuery));
