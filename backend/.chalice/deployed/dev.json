@@ -1,11 +1,6 @@
 {
   "resources": [
     {
-      "name": "watcher",
-      "resource_type": "lambda_function",
-      "lambda_arn": "arn:aws:lambda:eu-west-2:303078101535:function:backend-dev-watcher"
-    },
-    {
       "name": "api_handler",
       "resource_type": "lambda_function",
       "lambda_arn": "arn:aws:lambda:eu-west-2:303078101535:function:backend-dev"

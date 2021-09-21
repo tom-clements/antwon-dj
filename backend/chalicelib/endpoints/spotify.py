@@ -8,7 +8,7 @@ from ..utils import spotify, secrets
 spotify_routes = Blueprint(__name__)
 
 
-@spotify_routes.route("/spotifyConnect", methods=["GET"])
+@spotify_routes.route("/spotifyConnect", methods=["GET"], cors=True)
 def spotify_connect_get():
     user_guid = spotify_routes.current_request.query_params["user_guid"]
     url = spotify.app_Authorization() + "&state=" + str(user_guid)
@@ -17,7 +17,7 @@ def spotify_connect_get():
     return response
 
 
-@spotify_routes.route("/spotifySearch", methods=["GET"])
+@spotify_routes.route("/spotifySearch", methods=["GET"], cors=True)
 def spotify_search_get():
     params = spotify_routes.current_request.query_params
     res = search_songs(song_query=params["query"], room_guid=params["room_guid"])
@@ -39,7 +39,7 @@ def search_songs(spotify_session, song_query, room_guid):
     return {"songs": songs}
 
 
-@spotify_routes.route("/spotifyCallback", methods=["GET"])
+@spotify_routes.route("/spotifyCallback", methods=["GET"], cors=True)
 def spotify_callback_get():
     params = spotify_routes.current_request.query_params
     user_id = db_queries.get_user_int_id(params["state"])
@@ -105,7 +105,7 @@ def store_song_in_queue(song: Dict[str, str]):
     db_queries.execute_sql(sql, params)
 
 
-@spotify_routes.route("/spotifyCurrentlyPlaying", methods=["GET"])
+@spotify_routes.route("/spotifyCurrentlyPlaying", methods=["GET"], cors=True)
 def spotify_currently_playing_get():
     room_guid = spotify_routes.current_request.query_params["room_guid"]
     res = get_currently_playing(room_guid=room_guid)
@@ -142,7 +142,7 @@ def get_currently_playing(spotify_session, room_guid):
         return {"statusCode": 200, "song": empty_song}
 
 
-@spotify_routes.route("/spotifyAddToPlaylist", methods=["POST"])
+@spotify_routes.route("/spotifyAddToPlaylist", methods=["POST"], cors=True)
 def spotify_add_to_playlist(event):
     body = spotify_routes.current_request.raw_body.decode()
     return add_to_playlist(room_guid=ody["room_guid"], song_uri=body["song_uri"])
