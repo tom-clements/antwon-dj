@@ -200,7 +200,8 @@ def get_active_rooms():
     return rooms
 
 
-def get_next_song(room_id):
+def get_next_song(room_guid):
+    room_id = get_room_id_from_guid(room_guid)
     sql = f"""
         SELECT 
             room_songs_id
