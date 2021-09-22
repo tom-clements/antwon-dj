@@ -22,7 +22,11 @@ def execute_sql(sql: str, params: List = ()) -> List:
 
 def get_user_int_id(user_guid: str) -> int:
     uuid.UUID(user_guid)  # check uuid is valuid
-    sql = f"""SELECT user_id from auroradb.Users where user_guid = \"{user_guid}\""""
+    sql = f"""SELECT user_id from auroradb.Users where user_guid = :user_guid\;"""
+    params = [
+        {"name": "user_guid", "value": {"stringValue": user_guid}},
+    ]
+    execute_sql(sql, params)
     user_id = execute_sql(sql)["records"][0][0]["longValue"]
     return user_id
 
@@ -95,10 +99,10 @@ def update_access_token(spotify_user_id: int, token: str):
         {"name": "token", "value": {"stringValue": token}},
         {"name": "spotify_user_id", "value": {"longValue": spotify_user_id}},
     ]
-    execute_sql(sql)
+    execute_sql(sql, params)
 
 
-def get_room_queue(room_guid: str) -> List:
+def get_room_queue(room_guid: str) -> List[Dict[str, str]]:
     uuid.UUID(room_guid)  # check uuid is valuid
     room_id = get_room_id_from_guid(room_guid)
     sql = f"""
@@ -139,7 +143,6 @@ def get_room_queue(room_guid: str) -> List:
 def store_song_in_queue(song: Dict[str, str]):
     room_id = get_room_id_from_guid(song["room_guid"])
     song_guid = str(uuid.uuid4())
-    # TODO deal with SQL injection here
     sql = f"""
     insert into Songs
     (song_guid, song_uri, song_name, song_artist, song_album_url, insert_time, last_accessed)
@@ -189,7 +192,7 @@ def get_room_info_for_playlist_addition(room_guid: str) -> List:
     return room_info
 
 
-def get_active_rooms():
+def get_active_rooms() -> List[str]:
     sql = """
         SELECT room_id, room_guid FROM auroradb.Rooms
         where is_inactive = false
@@ -200,13 +203,14 @@ def get_active_rooms():
     return rooms
 
 
-def get_next_song(room_guid):
+def get_next_song(room_guid: str) -> Dict[str, str]:
     room_id = get_room_id_from_guid(room_guid)
     sql = f"""
         SELECT 
             room_songs_id
             ,song_uri
             ,is_added_to_playlist
+            ,song_name
         FROM RoomSongs rs
         JOIN Songs s
             on rs.song_id = s.song_id
@@ -218,12 +222,12 @@ def get_next_song(room_guid):
         {"name": "room_id", "value": {"longValue": room_id}},
     ]
     res = execute_sql(sql, params)["records"]
-    select_columns = ["room_songs_id", "song_uri", "is_added_to_playlist"]
+    select_columns = ["room_songs_id", "song_uri", "is_added_to_playlist", "song_name"]
     next_song = [{name: list(value.values())[0] for name, value in zip(select_columns, row)} for row in res][0]
     return next_song
 
 
-def update_db_add_song_played(room_songs_id):
+def update_db_add_song_played(room_songs_id: int):
     sql = "update RoomSongs set is_played = true where room_songs_id=:room_songs_id"
     params = [
         {"name": "room_songs_id", "value": {"longValue": room_songs_id}},
@@ -231,7 +235,7 @@ def update_db_add_song_played(room_songs_id):
     execute_sql(sql, params)
 
 
-def update_db_song_added_to_playlist(room_songs_id):
+def update_db_song_added_to_playlist(room_songs_id: int):
     sql = "update RoomSongs set is_added_to_playlist = true where room_songs_id=:room_songs_id"
     params = [
         {"name": "room_songs_id", "value": {"longValue": room_songs_id}},

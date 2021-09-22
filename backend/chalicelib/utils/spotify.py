@@ -7,12 +7,11 @@ from functools import wraps
 import spotipy
 from spotipy import oauth2
 from spotipy.oauth2 import SpotifyClientCredentials
-from ..antwondb import db_queries
-from ..utils.secrets import get_secret
+from chalicelib.antwondb import db_queries
+from chalicelib.utils.secrets import get_secret
+from chalicelib.utils.chalice import get_base_url
 
 
-API_URL = "https://m5ua2jc51a.execute-api.eu-west-2.amazonaws.com/dev"
-REDIRECT_URI = f"{API_URL}/spotifyCallback"
 SCOPES = "playlist-read-collaborative user-modify-playback-state user-read-playback-state user-read-private playlist-modify-private playlist-modify-public"
 
 
@@ -27,7 +26,7 @@ def app_Authorization():
         "response_type": "code",
         "client_id": secrets["SPOTIFY_CLIENT_ID"],
         "scope": SCOPES,
-        "redirect_uri": REDIRECT_URI,
+        "redirect_uri": f"{get_base_url()}/spotifyCallback",
     }
     url = "https://accounts.spotify.com/authorize?{}".format(urllib.parse.urlencode(f))
     return url
@@ -44,7 +43,7 @@ def get_spotify(auth):
 
 def get_token(code):
     secrets = get_spotify_secrets()
-    data = {"code": code, "redirect_uri": REDIRECT_URI, "grant_type": "authorization_code"}
+    data = {"code": code, "redirect_uri": f"{get_base_url()}/spotifyCallback", "grant_type": "authorization_code"}
     url = "https://accounts.spotify.com/api/token"
     base64encoded = base64.b64encode(
         bytes("{}:{}".format(secrets["SPOTIFY_CLIENT_ID"], secrets["SPOTIFY_CLIENT_SECRET"]), "utf-8")
@@ -59,7 +58,7 @@ def refresh_spotify_token(refresh_token):
     sp_oauth = oauth2.SpotifyOAuth(
         client_id=secrets["SPOTIFY_CLIENT_ID"],
         client_secret=secrets["SPOTIFY_CLIENT_SECRET"],
-        redirect_uri=REDIRECT_URI,
+        redirect_uri=f"{get_base_url()}/spotifyCallback",
         scope=SCOPES,
     )
     # if sp_oauth.is_token_expired({'access_token': access_token, 'refresh_token': refresh_token}):

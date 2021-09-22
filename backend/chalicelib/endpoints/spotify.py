@@ -1,8 +1,9 @@
 import uuid
-from typing import Dict
+from typing import Dict, List
+import spotipy
 from chalice import Blueprint
-from ..antwondb import db_queries
-from ..utils import spotify, secrets
+from chalicelib.antwondb import db_queries
+from chalicelib.utils import spotify, secrets
 
 
 spotify_routes = Blueprint(__name__)
@@ -25,7 +26,7 @@ def spotify_search_get():
 
 
 @spotify.get_spotify_session
-def search_songs(spotify_session, song_query, room_guid):
+def search_songs(spotify_session: spotipy.Spotify, song_query: str, room_guid: str) -> Dict[str, List[Dict[str, str]]]:
     result = spotify_session.search(q=song_query, type="track")
     songs = [
         {
@@ -68,11 +69,11 @@ def spotify_callback_get():
     ]
     db_queries.execute_sql(sql, params)
 
-    response = {"statusCode": 302, "headers": {"Location": "https://google.co.uk"}}
+    response = {"statusCode": 302, "headers": {"Location": "https://www.djantwon.com/spoitfy_auth"}}
     return response
 
 
-def store_song_in_queue(song: Dict[str, str]):
+def store_song_in_queue(song: Dict[str, str]) -> None:
     room_id = db_queries.get_room_id_from_guid(song["room_guid"])
     song_guid = str(uuid.uuid4())
     # TODO deal with SQL injection here
@@ -113,7 +114,7 @@ def spotify_currently_playing_get():
 
 
 @spotify.get_spotify_session
-def get_currently_playing(spotify_session, room_guid):
+def get_currently_playing(spotify_session: spotipy.Spotify, room_guid: str):
     r = spotify_session.currently_playing()
     empty_song = {
         "id": "1",
@@ -143,13 +144,13 @@ def get_currently_playing(spotify_session, room_guid):
 
 
 @spotify_routes.route("/spotifyAddToPlaylist", methods=["POST"], cors=True)
-def spotify_add_to_playlist(event):
-    body = spotify_routes.current_request.raw_body.decode()
-    return add_to_playlist(room_guid=ody["room_guid"], song_uri=body["song_uri"])
+def spotify_add_to_playlist():
+    body = spotify_routes.current_request.json_body
+    return add_to_playlist(room_guid=body["room_guid"], song_uri=body["song_uri"])
 
 
 @spotify.get_spotify_session
-def add_to_playlist(spotify_session, room_guid, song_uri):
+def add_to_playlist(spotify_session: spotipy.Spotify, room_guid: str, song_uri: str):
     room_info = db_queries.get_room_info_for_playlist_addition(room_guid)[0]
     playlists = spotify_session.current_user_playlists()
     room_code = room_info["room_code"]

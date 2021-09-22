@@ -1,5 +1,5 @@
-from ..antwondb import db_queries
 from chalice import Blueprint
+from chalicelib.antwondb import db_queries
 
 
 room_routes = Blueprint(__name__)
@@ -16,11 +16,11 @@ def room_get():
 def room_queue_get():
     params = room_routes.current_request.query_params
     room_queue = db_queries.get_room_queue(params["room_guid"])
-    return {"status": 200, "body": room_queue}
+    return {"status": 200, "body": {"room_queue": room_queue}}
 
 
 @room_routes.route("/roomQueue", methods=["POST"], cors=True)
 def room_queue_post():
-    song = room_routes.current_request.raw_body.decode()
+    song = room_routes.current_request.json_body
     room_queue = db_queries.store_song_in_queue(song)
     return {"status": 200, "body": "success"}

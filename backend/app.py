@@ -1,7 +1,6 @@
-import requests
 from chalice import Chalice
 from chalice.app import ConvertToMiddleware
-from chalicelib import room_routes, spotify_routes, watcher_routes
+from chalicelib.endpoints import room_routes, spotify_routes, watcher_routes
 from aws_lambda_powertools import Logger
 from aws_lambda_powertools import Tracer
 
