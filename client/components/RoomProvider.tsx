@@ -5,7 +5,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { FlexCentre } from 'components/layout/FlexCentre';
 import { Spinner } from 'components/core/Spinner';
 import { useAppSelector, useAppDispatch } from 'model/Store';
-import { selectRoomCode, setRoomCode } from 'model/RoomPortalSlice';
+import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
 import { roomApi } from 'model/service/RoomApi';
 
 interface Props {
@@ -21,11 +21,11 @@ export const RoomProvider: FC<Props> = props => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const roomCodeFromUrlQuery = getRoomCodeFromUrlQuery(router.query);
-    const roomCodeFromState = useAppSelector(selectRoomCode);
+    const roomCodeFromState = useAppSelector(selectRoomPortalCode);
     const result = roomApi.endpoints.getRoomIdByCode.useQuery(roomCodeFromState ?? skipToken);
 
     useEffect(() => {
-        if (roomCodeFromState !== roomCodeFromUrlQuery) dispatch(setRoomCode(roomCodeFromUrlQuery));
+        if (roomCodeFromState !== roomCodeFromUrlQuery) dispatch(setRoomPortalCode(roomCodeFromUrlQuery));
     }, [dispatch, roomCodeFromState, roomCodeFromUrlQuery]);
 
     const isPending = result.isLoading || result.isFetching;

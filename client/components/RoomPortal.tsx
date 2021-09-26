@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { RoomCodeInput } from 'components/RoomCodeInput';
 import { Spinner } from 'components/core/Spinner';
 import { useAppSelector, useAppDispatch } from 'model/Store';
-import { selectRoomCode, setRoomCode } from 'model/RoomPortalSlice';
+import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
 import { roomApi } from 'model/service/RoomApi';
 
 function isValidRoomCode(roomCode: string | null): roomCode is string {
@@ -16,7 +16,7 @@ function isValidRoomCode(roomCode: string | null): roomCode is string {
 export const RoomPortal: FC = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const roomCode = useAppSelector(selectRoomCode);
+    const roomCode = useAppSelector(selectRoomPortalCode);
     const [trigger, result] = roomApi.endpoints.getRoomIdByCode.useLazyQuery();
 
     const isPending = result.isLoading || result.isFetching;
@@ -43,7 +43,7 @@ export const RoomPortal: FC = () => {
                     <Grid item>
                         <RoomCodeInput
                             roomCode={roomCode}
-                            onChange={roomCode => dispatch(setRoomCode(roomCode))}
+                            onChange={roomCode => dispatch(setRoomPortalCode(roomCode))}
                         /></Grid>
                     <Grid item alignItems="stretch" sx={{ display: 'flex' }}>
                         <Button
