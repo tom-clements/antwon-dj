@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider, defaultTheme } from 'styles/ThemeProvider';
 import { setupApp, useAppStore, createEmotionCache } from 'AppSetup';
+import { ErrorToast } from 'components/core/ErrorToast';
 
 setupApp();
 const clientSideEmotionCache = createEmotionCache();
@@ -30,6 +31,7 @@ export default function App(props: MyAppProps) {
                 <ThemeProvider>
                     <CssBaseline />
                     <Component {...pageProps} />
+                    <ErrorToast />
                 </ThemeProvider>
             </CacheProvider>
         </Provider>

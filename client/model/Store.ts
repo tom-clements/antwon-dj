@@ -1,5 +1,6 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { errorSlice } from 'model/slices/ErrorSlice';
 import { RoomPortalSlice } from 'model/RoomPortalSlice';
 import { UserSlice } from 'model/User';
 import { spotifyCurrentlyPlayingApi } from 'model/service/SpotifyCurrentlyPlaying';
@@ -9,6 +10,7 @@ import { roomApi } from 'model/service/RoomApi';
 export function createStore(preloadedState: any) {
     return configureStore({
         reducer: {
+            error: errorSlice.reducer,
             roomPortal: RoomPortalSlice.reducer,
             user: UserSlice.reducer,
             [spotifyCurrentlyPlayingApi.reducerPath]: spotifyCurrentlyPlayingApi.reducer,
