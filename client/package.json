@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint **/*.ts **/*.tsx",
+    "lint:fix": "eslint --fix **/*.ts **/*.tsx"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.4",
@@ -39,6 +41,9 @@
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",
     "babel-plugin-styled-components": "^1.13.2",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.26.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "typescript": "^4.3.5"
   }
 }
