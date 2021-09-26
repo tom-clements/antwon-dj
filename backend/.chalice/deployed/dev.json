@@ -1,0 +1,27 @@
+{
+  "resources": [
+    {
+      "name": "poll_app",
+      "resource_type": "lambda_function",
+      "lambda_arn": "arn:aws:lambda:eu-west-2:303078101535:function:backend-dev-poll_app"
+    },
+    {
+      "name": "poll_app-event",
+      "resource_type": "cloudwatch_event",
+      "rule_name": "backend-dev-poll_app-event"
+    },
+    {
+      "name": "api_handler",
+      "resource_type": "lambda_function",
+      "lambda_arn": "arn:aws:lambda:eu-west-2:303078101535:function:backend-dev"
+    },
+    {
+      "name": "rest_api",
+      "resource_type": "rest_api",
+      "rest_api_id": "3mnr9rzo8e",
+      "rest_api_url": "https://3mnr9rzo8e.execute-api.eu-west-2.amazonaws.com/dev/"
+    }
+  ],
+  "schema_version": "2.0",
+  "backend": "api"
+}

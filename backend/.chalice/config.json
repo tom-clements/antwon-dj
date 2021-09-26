@@ -1,0 +1,29 @@
+{
+  "version": "2.0",
+  "app_name": "backend",
+  "xray": true,
+  "environment_variables": {
+    "POWERTOOLS_SERVICE_NAME": "backend-powertools"
+  },
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "dev",
+      "manage_iam_role": false,
+      "iam_role_arn": "arn:aws:iam::303078101535:role/AuroraLambdaRole",
+      "lambda_functions": {
+        "poll_app": {
+          "lambda_timeout": 120
+        }
+      }
+    },
+    "prod": {
+      "manage_iam_role": false,
+      "iam_role_arn": "arn:aws:iam::303078101535:role/AuroraLambdaRole",
+      "lambda_functions": {
+        "poll_app": {
+          "lambda_timeout": 120
+        }
+      }
+    }
+  }
+}
