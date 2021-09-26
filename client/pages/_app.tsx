@@ -1,10 +1,10 @@
-import Head from "next/head"
-import { Provider } from "react-redux";
-import { AppProps } from "next/app";
-import CssBaseline from "@mui/material/CssBaseline";
+import Head from 'next/head';
+import { Provider } from 'react-redux';
+import { AppProps } from 'next/app';
+import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { ThemeProvider, defaultTheme } from "styles/ThemeProvider";
-import { setupApp, useAppStore, createEmotionCache } from "AppSetup";
+import { ThemeProvider, defaultTheme } from 'styles/ThemeProvider';
+import { setupApp, useAppStore, createEmotionCache } from 'AppSetup';
 
 setupApp();
 const clientSideEmotionCache = createEmotionCache();

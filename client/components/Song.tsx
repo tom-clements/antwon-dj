@@ -1,8 +1,8 @@
-import { FC } from "react";
-import styled from "styled-components";
-import { SongDto } from "model/service/SpotifySearchApi";
-import { Flex } from "components/layout/Flex";
-import { Spacing } from "components/layout/Spacing";
+import { FC } from 'react';
+import styled from 'styled-components';
+import { SongDto } from 'model/service/SpotifySearchApi';
+import { Flex } from 'components/layout/Flex';
+import { Spacing } from 'components/layout/Spacing';
 
 interface StyleProps {
     skipTopBorder?: boolean;
@@ -17,7 +17,7 @@ export const SongContainer = styled.div<StyleProps>`
     display: flex;
     border-width: 0.05em;
     border-style: solid;
-    ${props => props.skipTopBorder && "border-top: none"};
+    ${props => props.skipTopBorder && 'border-top: none'};
 
     background-color: ${props => props.theme.field.base.backgroundColor};
     border-color: ${props => props.theme.field.base.borderColor};
@@ -56,13 +56,13 @@ export const SongContainer = styled.div<StyleProps>`
 export const Song: FC<Props> = props => {
     return (
         <SongContainer skipTopBorder={props.skipTopBorder} onClick={() => props.onClick && props.onClick(props.song)}>
-            <Flex flexGrow={0} flexShrink={0} flexBasis={"5em"}>
-                <Spacing margin={"0.8em"}>
-                    <img width={"100%"} src={props.song.song_album_url} />
+            <Flex flexGrow={0} flexShrink={0} flexBasis={'5em'}>
+                <Spacing margin={'0.8em'}>
+                    <img width={'100%'} src={props.song.song_album_url} />
                 </Spacing>
             </Flex>
             <Flex>
-                <Spacing margin={"0.8em 0.8em 0.8em 0"}>
+                <Spacing margin={'0.8em 0.8em 0.8em 0'}>
                     <h3>{props.song.song_name}</h3>
                     <h4>{props.song.song_artist}</h4>
                 </Spacing>

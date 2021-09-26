@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "model/Store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from 'model/Store';
 
 interface RoomPortalState {
     roomCode: string | null;
@@ -14,14 +14,14 @@ function getInitialRoomPortalState(): RoomPortalState {
 }
 
 export const RoomPortalSlice = createSlice({
-    name: "roomPortal",
+    name: 'roomPortal',
     initialState: getInitialRoomPortalState(),
     reducers: {
         setRoomCode: (state, action: PayloadAction<string | null>) => ({ ...state, roomCode: action.payload }),
         queryRoomId: state => ({ ...state, shouldQueryRoomId: true }),
         stopRoomIdQuery: state => ({ ...state, shouldQueryRoomId: false }),
     },
-})
+});
 
 export const { setRoomCode, queryRoomId, stopRoomIdQuery } = RoomPortalSlice.actions;
 

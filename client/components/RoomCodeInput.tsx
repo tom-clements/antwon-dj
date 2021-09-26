@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { FC } from "react";
+import _ from 'lodash';
+import { FC } from 'react';
 import TextField from '@mui/material/TextField';
 
 interface Props {
@@ -18,15 +18,15 @@ function sanitiseRoomCode(roomCode: string | null) {
 export const RoomCodeInput: FC<Props> = props => {
     return (
         <TextField
-            label={"room code"}
+            label={'room code'}
             inputProps={{
                 minLength: 6,
                 maxLength: 6,
             }}
             sx={{
-                width: "7.5em",
+                width: '7.5em',
             }}
-            value={props.roomCode ?? ""}
+            value={props.roomCode ?? ''}
             onChange={event => props.onChange(sanitiseRoomCode(event.target.value))}
         />
     );

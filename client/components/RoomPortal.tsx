@@ -1,22 +1,19 @@
-import { FC, FormEvent, useEffect } from "react";
-import { useRouter } from "next/router";
+import { FC, FormEvent, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { RoomCodeInput } from "components/RoomCodeInput";
-import { Spinner } from "components/core/Spinner";
-import { useAppSelector, useAppDispatch } from "model/Store";
-import { selectRoomCode, setRoomCode } from "model/RoomPortalSlice";
-import { roomApi } from "model/service/RoomApi";
+import { RoomCodeInput } from 'components/RoomCodeInput';
+import { Spinner } from 'components/core/Spinner';
+import { useAppSelector, useAppDispatch } from 'model/Store';
+import { selectRoomCode, setRoomCode } from 'model/RoomPortalSlice';
+import { roomApi } from 'model/service/RoomApi';
 
 function isValidRoomCode(roomCode: string | null): roomCode is string {
     if (roomCode === null) return false;
     return roomCode.length === 6;
 }
 
-interface Props {
-}
-
-export const RoomPortal: FC<Props> = props => {
+export const RoomPortal: FC = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const roomCode = useAppSelector(selectRoomCode);
@@ -34,10 +31,10 @@ export const RoomPortal: FC<Props> = props => {
 
     useEffect(() => {
         if (roomId) router.push({
-            pathname: "room",
+            pathname: 'room',
             query: { code: roomCode, },
         });
-    }, [roomId]);
+    }, [router, roomId, roomCode]);
 
     return (
         <Grid container alignItems="center" justifyContent="center">
@@ -48,13 +45,13 @@ export const RoomPortal: FC<Props> = props => {
                             roomCode={roomCode}
                             onChange={roomCode => dispatch(setRoomCode(roomCode))}
                         /></Grid>
-                    <Grid item alignItems="stretch" sx={{ display: "flex" }}>
+                    <Grid item alignItems="stretch" sx={{ display: 'flex' }}>
                         <Button
                             type="submit"
                             variant="contained"
                             disabled={!canGoToRoom}
                         >
-                            {isPending ? <Spinner scale={0.8} /> : "Go"}
+                            {isPending ? <Spinner scale={0.8} /> : 'Go'}
                         </Button>
                     </Grid>
                 </Grid>

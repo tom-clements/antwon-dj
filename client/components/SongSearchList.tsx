@@ -1,7 +1,7 @@
-import { FC } from "react";
-import styled from "styled-components";
-import { SongDto } from "model/service/SpotifySearchApi";
-import { Song } from "components/Song";
+import { FC } from 'react';
+import styled from 'styled-components';
+import { SongDto } from 'model/service/SpotifySearchApi';
+import { Song } from 'components/Song';
 
 export const SongListContainer = styled.div`
     max-height: 80vh;

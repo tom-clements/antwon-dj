@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "model/Store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from 'model/Store';
 
 enum UserStatus {
-    Empty = "empty",
-    Signed = "signed",
+    Empty = 'empty',
+    Signed = 'signed',
 }
 
 interface UserEmptyState {
@@ -31,14 +31,14 @@ function getInitialUserState(): UserState {
 }
 
 export const UserSlice = createSlice({
-    name: "user",
+    name: 'user',
     initialState: getInitialUserState(),
     reducers: {
         signIn: (_state, action: PayloadAction<UserDetails>) => ({ kind: UserStatus.Signed, ...action.payload }),
         signOut: () => ({ kind: UserStatus.Empty }),
     },
-})
+});
 
 export const { signIn, signOut } = UserSlice.actions;
 
-export const isSignedIn = (state: RootState) => isOfUserStatus(state.user, UserStatus.Signed);
+export const isSignedIn = (state: RootState): boolean => isOfUserStatus(state.user, UserStatus.Signed);

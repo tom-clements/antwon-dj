@@ -1,10 +1,10 @@
-import { FC } from "react";
-import { Flex } from "components/layout/Flex";
-import { FlexCentre } from "components/layout/FlexCentre";
-import { Spacing } from "components/layout/Spacing";
-import { Song } from "components/Song";
-import { Spinner } from "components/core/Spinner";
-import { roomApi } from "model/service/RoomApi";
+import { FC } from 'react';
+import { Flex } from 'components/layout/Flex';
+import { FlexCentre } from 'components/layout/FlexCentre';
+import { Spacing } from 'components/layout/Spacing';
+import { Song } from 'components/Song';
+import { Spinner } from 'components/core/Spinner';
+import { roomApi } from 'model/service/RoomApi';
 
 interface Props {
     roomId: string;
@@ -44,10 +44,10 @@ export const SongQueue: FC<Props> = props => {
 const QueueWrapper: FC = props => {
     return (
         <Flex flexDirection="column">
-            <Spacing marginBottom={"0.5em"}>
+            <Spacing marginBottom={'0.5em'}>
                 Queue:
             </Spacing>
             {props.children}
         </Flex>
     );
-}
+};

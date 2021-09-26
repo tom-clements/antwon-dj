@@ -1,11 +1,11 @@
-import { FC } from "react";
-import styled from "styled-components";
-import { Flex } from "components/layout/Flex";
-import { FlexCentre } from "components/layout/FlexCentre";
-import { Spacing } from "components/layout/Spacing";
-import { Song } from "components/Song";
-import { Spinner } from "components/core/Spinner";
-import { spotifyCurrentlyPlayingApi } from "model/service/SpotifyCurrentlyPlaying";
+import { FC } from 'react';
+import styled from 'styled-components';
+import { Flex } from 'components/layout/Flex';
+import { FlexCentre } from 'components/layout/FlexCentre';
+import { Spacing } from 'components/layout/Spacing';
+import { Song } from 'components/Song';
+import { Spinner } from 'components/core/Spinner';
+import { spotifyCurrentlyPlayingApi } from 'model/service/SpotifyCurrentlyPlaying';
 
 export const NowPlayingContainer = styled.div`
     border-top: 0.05em solid ${props => props.theme.field.base.borderColor};
@@ -48,11 +48,11 @@ const NowPlayingWrapper: FC = props => {
     return (
         <NowPlayingContainer>
             <Flex flexDirection="column">
-                <Spacing marginTop={"0.5em"} marginBottom={"0.5em"}>
+                <Spacing marginTop={'0.5em'} marginBottom={'0.5em'}>
                     <h2>Currently playing:</h2>
                 </Spacing>
                 {props.children}
             </Flex>
         </NowPlayingContainer>
     );
-}
+};
