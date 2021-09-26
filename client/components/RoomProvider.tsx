@@ -2,14 +2,16 @@ import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 import { ParsedUrlQuery } from 'querystring';
-import { FlexCentre } from 'components/layout/FlexCentre';
-import { Spinner } from 'components/core/Spinner';
 import { useAppSelector, useAppDispatch } from 'model/Store';
+import { ErrorCode } from 'model/enums/ErrorCode';
+import { setError } from 'model/slices/ErrorSlice';
 import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
 import { roomApi } from 'model/service/RoomApi';
+import { QueryResultStatus, QueryResult, isNotFound } from 'components/core/QueryResult';
 
 interface Props {
-    render: (roomId: string) => JSX.Element; // todo: Maybe use context? Or just get from state.
+    render: (roomId: string) => JSX.Element;
+    renderLoading: () => JSX.Element;
 }
 
 function getRoomCodeFromUrlQuery(query: ParsedUrlQuery): string | null {
@@ -28,18 +30,18 @@ export const RoomProvider: FC<Props> = props => {
         if (roomCodeFromState !== roomCodeFromUrlQuery) dispatch(setRoomPortalCode(roomCodeFromUrlQuery));
     }, [dispatch, roomCodeFromState, roomCodeFromUrlQuery]);
 
-    const isPending = result.isLoading || result.isFetching;
-    if (isPending) return (
-        <FlexCentre>
-            <Spinner scale={5} />
-        </FlexCentre>
-    );
+    useEffect(() => {
+        if (isNotFound(result)) {
+            router.push({ pathname: '/' });
+            dispatch(setError(ErrorCode.RoomNotFound));
+        }
+    }, [router, dispatch, result]);
 
-    if (result.isError || !result.data) return (
-        <FlexCentre>
-            This room does not exist. Have you specified a room code?
-        </FlexCentre>
-    );
-
-    return props.render(result.data);
+    return <QueryResult<string>
+        result={result}
+        render={{
+            [QueryResultStatus.OK]: data => props.render(data),
+            [QueryResultStatus.Pending]: () => props.renderLoading(),
+        }}
+    />;
 };
