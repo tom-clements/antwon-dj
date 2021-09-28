@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { styled } from '@mui/material/styles';
 import { BottomSheet } from 'components/core/BottomSheet';
+import { NowPlaying } from 'components/room/NowPlaying';
 import { SongQueue } from 'components/room/SongQueue';
 import { NextSong } from 'components/room/NextSong';
 
@@ -14,6 +15,7 @@ const RoomRoot = styled('div')`
 export const Room: FC<Props> = props => {
     return (
         <RoomRoot>
+            <NowPlaying roomId={props.roomId} />
             <BottomSheet
                 pullBoxContent={<NextSong roomId={props.roomId} />}
             >
