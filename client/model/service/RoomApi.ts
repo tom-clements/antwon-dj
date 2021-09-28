@@ -16,7 +16,7 @@ interface RoomQueueResponseDto {
     body: RoomQueueResponseBodyDto;
 }
 
-interface RoomSongDto extends SongDto {
+export interface RoomSongDto extends SongDto {
     "in_active": boolean;
     "is_played": boolean;
     "is_removed": boolean;

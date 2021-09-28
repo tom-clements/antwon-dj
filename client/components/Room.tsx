@@ -1,32 +1,24 @@
 import { FC } from 'react';
-import { Flex } from 'components/layout/Flex';
-import { Spacing } from 'components/layout/Spacing';
-import { SongSearch } from 'components/SongSearch';
-import { SongQueue } from 'components/SongQueue';
-import { NowPlaying } from 'components/NowPlaying';
+import { styled } from '@mui/material/styles';
+import { BottomSheet } from 'components/core/BottomSheet';
+import { SongQueue } from 'components/room/SongQueue';
+import { NextSong } from 'components/room/NextSong';
 
 interface Props {
     roomId: string;
 }
 
+const RoomRoot = styled('div')`
+`;
+
 export const Room: FC<Props> = props => {
     return (
-        <Flex height={'100%'} flexDirection={'column'}>
-            <Flex>
-                <Spacing width={'100%'} margin={'0.5em 1em'}>
-                    <SongSearch roomId={props.roomId} />
-                </Spacing>
-            </Flex>
-            <Flex>
-                <Spacing width={'100%'} margin={'0.5em 1em'}>
-                    <NowPlaying roomId={props.roomId} />
-                </Spacing>
-            </Flex>
-            <Flex flexGrow={1}>
-                <Spacing width={'100%'} margin={'0.5em 1em'}>
-                    <SongQueue roomId={props.roomId} />
-                </Spacing>
-            </Flex>
-        </Flex>
+        <RoomRoot>
+            <BottomSheet
+                pullBoxContent={<NextSong roomId={props.roomId} />}
+            >
+                <SongQueue roomId={props.roomId} />
+            </BottomSheet>
+        </RoomRoot>
     );
 };
