@@ -62,7 +62,7 @@ type QueryResultMap<ResultType, ErrorType> = {
 
 interface Props<D extends QueryDefinition<any, any, any, any>, DataType = DataFromQuery<D>, ErrorType = ErrorFromQuery<D>> {
     result: Result<D>;
-    render: QueryResultMap<DataType, ErrorType>;
+    children: QueryResultMap<DataType, ErrorType>;
 }
 
 /**
@@ -76,13 +76,13 @@ export function QueryResult<
     ErrorType = SerializedError | BaseQueryError<any>,
     D extends QueryDefinition<any, any, any, any> = QueryDefinition<any, any, any, any>
 >(
-    { result, render }: Props<D, DataType, ErrorType>
+    { result, children }: Props<D, DataType, ErrorType>
 ) {
-    if (!result || result.isUninitialized) return render[QueryResultStatus.Uninitialised]?.() ?? null;
-    if (result.isFetching || result.isLoading) return render[QueryResultStatus.Pending]?.() ?? null;
-    if (!result.data) return render[QueryResultStatus.NotFound]?.() ?? null;
-    if (result.error) return render[QueryResultStatus.Error]?.(result.error as ErrorType) ?? null;
-    return render[QueryResultStatus.OK](result.data as DataType);
+    if (!result || result.isUninitialized) return children[QueryResultStatus.Uninitialised]?.() ?? null;
+    if (result.isFetching || result.isLoading) return children[QueryResultStatus.Pending]?.() ?? null;
+    if (!result.data) return children[QueryResultStatus.NotFound]?.() ?? null;
+    if (result.error) return children[QueryResultStatus.Error]?.(result.error as ErrorType) ?? null;
+    return children[QueryResultStatus.OK](result.data as DataType);
 }
 
 export function isNotFound<D extends QueryDefinition<any, any, any, any>>(result: Result<D>) {

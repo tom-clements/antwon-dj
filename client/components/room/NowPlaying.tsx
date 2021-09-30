@@ -51,13 +51,14 @@ const NowPlayingSideArt = styled('img')`
 
 export const NowPlaying: FC<Props> = props => {
     const result = spotifyCurrentlyPlayingApi.endpoints.get.useQuery(props.roomId);
-    return <QueryResult<SongDto>
-        result={result}
-        render={{
-            [QueryResultStatus.OK]: data => <NowPlayingInternalLoaded song={data} />,
-            [QueryResultStatus.Pending]: () => <NowPlayingInternalPending />,
-        }}
-    />;
+    return (
+        <QueryResult<SongDto> result={result}>
+            {{
+                [QueryResultStatus.OK]: data => <NowPlayingInternalLoaded song={data} />,
+                [QueryResultStatus.Pending]: () => <NowPlayingInternalPending />,
+            }}
+        </QueryResult>
+    );
 };
 
 const NowPlayingInternalLoaded: FC<{ song: SongDto }> = props => {

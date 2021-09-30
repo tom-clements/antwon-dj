@@ -9,13 +9,14 @@ interface Props {
 
 export const NextSong: FC<Props> = props => {
     const result = roomApi.endpoints.getRoomQueue.useQuery(props.roomId);
-    return <QueryResult<RoomSongDto[]>
-        result={result}
-        render={{
-            [QueryResultStatus.OK]: data => <NextSongInternal songs={data} />,
-            [QueryResultStatus.Pending]: () => <SongItemSkeleton />,
-        }}
-    />;
+    return (
+        <QueryResult<RoomSongDto[]> result={result}>
+            {{
+                [QueryResultStatus.OK]: data => <NextSongInternal songs={data} />,
+                [QueryResultStatus.Pending]: () => <SongItemSkeleton />,
+            }}
+        </QueryResult >
+    );
 };
 
 const NextSongInternal: FC<{ songs: RoomSongDto[] }> = props => {

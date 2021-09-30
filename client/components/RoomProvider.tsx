@@ -37,11 +37,12 @@ export const RoomProvider: FC<Props> = props => {
         }
     }, [router, dispatch, result]);
 
-    return <QueryResult<string>
-        result={result}
-        render={{
-            [QueryResultStatus.OK]: data => props.render(data),
-            [QueryResultStatus.Pending]: () => props.renderLoading(),
-        }}
-    />;
+    return (
+        <QueryResult<string> result={result}>
+            {{
+                [QueryResultStatus.OK]: data => props.render(data),
+                [QueryResultStatus.Pending]: () => props.renderLoading(),
+            }}
+        </QueryResult>
+    );
 };
