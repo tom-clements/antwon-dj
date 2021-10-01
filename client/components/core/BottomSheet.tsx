@@ -76,7 +76,7 @@ export const BottomSheet: FC<Props> = props => {
 
     return (
         <Root {...handlers}>
-            <SimpleAnimateHeight in={!open} startHeight={"54%"} endHeight={"100%"} style={expandableStyle}>
+            <SimpleAnimateHeight in={!open} startHeight={"50%"} endHeight={"100%"} style={expandableStyle}>
                 <SheetBox>
                     <PullBox
                         onClick={() => setOpen(!open)}

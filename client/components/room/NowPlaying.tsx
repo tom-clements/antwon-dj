@@ -6,18 +6,21 @@ import Box from '@mui/material/Box';
 import { SongDto } from 'model/service/SpotifySearchApi';
 import { Spinner } from 'components/core/Spinner';
 import { QueryResult, QueryResultStatus } from 'components/core/QueryResult';
+import { Typography } from '@mui/material';
+import { useAppSelector } from 'model/Store';
+import { selectRoomPortalCode } from 'model/slices/RoomPortalSlice';
 
 interface Props {
     roomId: string;
 }
 
 const Root = styled(Box)`
-    width: 100vw;
-    height: 50vh;
+    width: 100%;
+    height: 50%;
     position: relative;
 `;
 
-const Overlay = styled(Box)`
+const Mask = styled(Box)`
     opacity: 0.75;
     background: ${props => props.theme.palette.mode === 'light' ? grey[100] : grey[900]};
     width: 100%;
@@ -29,9 +32,25 @@ const Overlay = styled(Box)`
     left: 0;
 `;
 
+const Overlay = styled(Box)`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: ${props => props.theme.spacing(2)};
+    align-items: end;
+    text-align: right;
+`;
+
 const NowPlayingArtContainer = styled(Box)`
     width: 100%;
-    height: 50vh;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,7 +88,11 @@ const NowPlayingInternalLoaded: FC<{ song: SongDto }> = props => {
                 <NowPlayingArt src={props.song.song_album_url} />
                 <NowPlayingSideArt src={props.song.song_album_url} />
             </NowPlayingArtContainer>
-            <Overlay />
+            <Mask />
+            <Overlay>
+                <RoomDetails />
+                <NowPlayingDetails song={props.song} />
+            </Overlay>
         </Root>
     );
 };
@@ -80,7 +103,37 @@ const NowPlayingInternalPending: FC = () => {
             <NowPlayingArtContainer>
                 <Spinner scale={7} />
             </NowPlayingArtContainer>
-            <Overlay />
-        </Root>
+            <Mask />
+            <Overlay>
+                <RoomDetails />
+            </Overlay>
+        </Root >
+    );
+};
+
+const RoomDetails: FC = () => {
+    const roomCode = useAppSelector(selectRoomPortalCode);
+    return (
+        <Box>
+            <Typography variant="caption" sx={{ opacity: 0.75 }}>
+                Room
+            </Typography>
+            <Typography variant="h6">
+                {roomCode}
+            </Typography>
+        </Box>
+    );
+};
+
+const NowPlayingDetails: FC<{ song: SongDto }> = props => {
+    return (
+        <Box>
+            <Typography variant="caption" sx={{ opacity: 0.75 }}>
+                {props.song.song_artist}
+            </Typography>
+            <Typography variant="h5">
+                {props.song.song_name}
+            </Typography>
+        </Box>
     );
 };

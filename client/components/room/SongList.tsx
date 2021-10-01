@@ -6,7 +6,7 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 
 interface Props {
     songs: SongDto[];
-    onSelectSong: (song: SongDto) => void;
+    onSelectSong?: (song: SongDto) => void;
 }
 
 export const SongList: FC<Props> = props => {
