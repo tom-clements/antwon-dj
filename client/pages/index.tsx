@@ -1,4 +1,4 @@
-import { RoomPortal } from 'components/RoomPortal';
+import { RoomPortal } from 'components/roomPortal/RoomPortal';
 import Container from '@mui/material/Container';
 
 export default function Home() {

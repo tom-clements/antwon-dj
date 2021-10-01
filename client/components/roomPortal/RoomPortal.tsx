@@ -2,7 +2,7 @@ import { FC, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { RoomCodeInput } from 'components/RoomCodeInput';
+import { RoomCodeInput } from 'components/roomPortal/RoomCodeInput';
 import { useAppSelector, useAppDispatch } from 'model/Store';
 import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
 

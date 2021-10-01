@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
-import { Room } from 'components/Room';
-import { RoomProvider } from 'components/RoomProvider';
+import { Room } from 'components/room/Room';
+import { RoomProvider } from 'components/room/RoomProvider';
 import { SpinnerPageSize } from 'components/core/SpinnerPageSize';
 
 export default function RoomPage() {
