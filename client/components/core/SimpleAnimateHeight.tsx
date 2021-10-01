@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const SimpleAnimateHeight: FC<Props> = props => {
-    const duration = props.duration ?? 300;
+    const duration = props.duration ?? 200;
     const transitionStyles: { [status in TransitionStatus]: CSSProperties } = {
         entering: { height: props.startHeight },
         entered: { height: props.startHeight },
