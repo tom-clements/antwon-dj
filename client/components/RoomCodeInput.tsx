@@ -1,6 +1,6 @@
-import _ from "lodash";
-import { FC } from "react";
-import { TextInput } from "components/form/TextInput";
+import _ from 'lodash';
+import { FC } from 'react';
+import TextField from '@mui/material/TextField';
 
 interface Props {
     roomCode: string | null;
@@ -9,7 +9,7 @@ interface Props {
 
 function sanitiseRoomCode(roomCode: string | null) {
     if (_.isEmpty(roomCode)) return null;
-    return roomCode;
+    return roomCode?.toUpperCase() ?? null;
 }
 
 /**
@@ -17,12 +17,16 @@ function sanitiseRoomCode(roomCode: string | null) {
  */
 export const RoomCodeInput: FC<Props> = props => {
     return (
-        <TextInput
-            placeholder={"enter code"}
-            minLength={6}
-            maxLength={6}
-            width={"7em"}
-            value={props.roomCode ?? ""}
+        <TextField
+            label={'room code'}
+            inputProps={{
+                minLength: 6,
+                maxLength: 6,
+            }}
+            sx={{
+                width: '7.5em',
+            }}
+            value={props.roomCode ?? ''}
             onChange={event => props.onChange(sanitiseRoomCode(event.target.value))}
         />
     );

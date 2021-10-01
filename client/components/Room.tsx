@@ -1,32 +1,59 @@
-import { FC } from "react";
-import { Flex } from "components/layout/Flex";
-import { Spacing } from "components/layout/Spacing";
-import { SongSearch } from "components/SongSearch";
-import { SongQueue } from "components/SongQueue";
-import { NowPlaying } from "components/NowPlaying";
+import { FC } from 'react';
+import { styled, Box } from '@mui/material';
+import { BottomSheet } from 'components/core/BottomSheet';
+import { NowPlaying } from 'components/room/NowPlaying';
+import { SongQueue } from 'components/room/SongQueue';
+import { NextSong } from 'components/room/NextSong';
+import { SongSearch } from 'components/room/SongSearch';
+import { Search, ArrowDropUp } from '@mui/icons-material';
 
 interface Props {
     roomId: string;
 }
 
+const SearchContainer = styled(Box)`
+    width: 100%;
+    padding: ${props => props.theme.spacing(1, 2, 2)};
+`;
+
+const SearchHint = styled(Box)`
+    width: 100%;
+    position: absolute;
+    top: ${props => props.theme.spacing(1.5)};
+    right: ${props => props.theme.spacing(2.5)};
+    display: flex;
+    justify-content: end;
+`;
+
 export const Room: FC<Props> = props => {
     return (
-        <Flex height={"100%"} flexDirection={"column"}>
-            <Flex>
-                <Spacing width={"100%"} margin={"0.5em 1em"}>
-                    <SongSearch roomId={props.roomId} />
-                </Spacing>
-            </Flex>
-            <Flex>
-                <Spacing width={"100%"} margin={"0.5em 1em"}>
-                    <NowPlaying roomId={props.roomId} />
-                </Spacing>
-            </Flex>
-            <Flex flexGrow={1}>
-                <Spacing width={"100%"} margin={"0.5em 1em"}>
-                    <SongQueue roomId={props.roomId} />
-                </Spacing>
-            </Flex>
-        </Flex>
+        <>
+            <NowPlaying roomId={props.roomId} />
+            <BottomSheet pullBoxContent={isOpen => <PullBox isOpen={isOpen} roomId={props.roomId} />}>
+                <SongQueue roomId={props.roomId} />
+            </BottomSheet>
+        </>
+    );
+};
+
+const PullBox: FC<{ isOpen: boolean; roomId: string; }> = props => {
+    if (!props.isOpen) {
+        return (
+            <>
+                <NextSong roomId={props.roomId} />
+                <SearchHint>
+                    <ArrowDropUp />
+                    <Search />
+                </SearchHint>
+            </>
+        );
+    }
+    return (
+        <>
+            <SearchContainer onClick={event => event.stopPropagation()}>
+                <SongSearch roomId={props.roomId} />
+            </SearchContainer>
+            <NextSong roomId={props.roomId} />
+        </>
     );
 };

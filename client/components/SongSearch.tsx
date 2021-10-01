@@ -1,12 +1,12 @@
-import _ from "lodash";
-import styled from "styled-components";
-import { FC, useCallback, useEffect, useState } from "react";
-import { Absolute } from "components/layout/Absolute";
-import { Relative } from "components/layout/Relative";
-import { TextInput } from "components/form/TextInput";
-import { SongSearchList } from "components/SongSearchList";
-import { spotifySearchApi } from "model/service/SpotifySearchApi";
-import { roomApi } from "model/service/RoomApi";
+import _ from 'lodash';
+import styled from 'styled-components';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { Absolute } from 'components/layout/Absolute';
+import { Relative } from 'components/layout/Relative';
+import { TextInput } from 'components/form/TextInput';
+import { SongSearchList } from 'components/SongSearchList';
+import { spotifySearchApi } from 'model/service/SpotifySearchApi';
+import { roomApi } from 'model/service/RoomApi';
 
 const BackgroundMask = styled.div`
     width: 100%;
@@ -28,7 +28,9 @@ export const SongSearch: FC<Props> = props => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null); // todo: Put this in redux
     const [addSongToQueue] = roomApi.endpoints.addSongToQueue.useMutation();
     const [triggerSearch, result] = spotifySearchApi.endpoints.getSongsForSearch.useLazyQuery();
-    const debouncedSearch = useCallback(_.debounce(triggerSearch, 200, { leading: true }), [triggerSearch]);
+    const debouncedSearch = useCallback((arg: { query: string; roomId: string; }) => {
+        return _.debounce(() => triggerSearch(arg), 200, { leading: true });
+    }, [triggerSearch]);
 
     useEffect(() => {
         if (searchTerm) {
@@ -37,7 +39,7 @@ export const SongSearch: FC<Props> = props => {
                 roomId: props.roomId,
             });
         }
-    }, [searchTerm]);
+    }, [debouncedSearch, searchTerm, props.roomId]);
 
     return (
         <>
@@ -46,17 +48,17 @@ export const SongSearch: FC<Props> = props => {
                     <BackgroundMask />
                 </Absolute>
             }
-            <Relative width={"100%"}>
+            <Relative width={'100%'}>
                 <TextInput
-                    placeholder={"search for songs"}
-                    width={"100%"}
-                    value={searchTerm ?? ""}
+                    placeholder={'search for songs'}
+                    width={'100%'}
+                    value={searchTerm ?? ''}
                     onChange={event => setSearchTerm(sanitiseSearchTerm(event.target.value))}
                 />
                 <Absolute>
                     {searchTerm && result.data && <SongSearchList songs={result.data} onSelectSong={s => {
                         addSongToQueue({ ...s, room_guid: props.roomId });
-                        setSearchTerm(""); // todo: compose this
+                        setSearchTerm(''); // todo: compose this
                     }} />}
                 </Absolute>
             </Relative>
