@@ -1,28 +1,40 @@
 import React, { FC } from 'react';
 import { SongDto } from 'model/service/SpotifySearchApi';
-import { List, styled } from '@mui/material';
 import { SongItem } from 'components/room/SongItem';
-
-const ScrollList = styled(List)`
-    max-height: 100%;
-    overflow: auto;
-`;
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
 
 interface Props {
     songs: SongDto[];
 }
 
 export const SongList: FC<Props> = props => {
-    // This should be virtualized. For now, suffer performance.
     return (
-        <ScrollList>
-            {props.songs.map((s, i) =>
-                <SongItem key={`${s.id}_${i}`}
-                    title={s.song_name}
-                    artist={s.song_artist}
-                    albumUrl={s.song_album_url}
-                />
+        <AutoSizer>
+            {({ height, width }) => (
+                <FixedSizeList
+                    height={height}
+                    width={width}
+                    itemData={props.songs}
+                    itemCount={props.songs.length}
+                    itemSize={56}
+                    overscanCount={5}
+                >
+                    {SongRow}
+                </FixedSizeList>
             )}
-        </ScrollList>
+        </AutoSizer>
     )
-}
+};
+
+const SongRow: FC<ListChildComponentProps<SongDto[]>> = ({ index, style, data }) => {
+    return (
+        <SongItem
+            style={style}
+            key={`${data[index].id}_${index}`}
+            title={data[index].song_name}
+            artist={data[index].song_artist}
+            albumUrl={data[index].song_album_url}
+        />
+    );
+};

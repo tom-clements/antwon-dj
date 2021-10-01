@@ -1,40 +1,24 @@
-import { FC, useState } from 'react';
+import React, { CSSProperties, FC, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Collapse from '@mui/material/Collapse';
+import { SimpleAnimateHeight } from 'components/core/SimpleAnimateHeight';
 
 interface Props {
     /**
-     * Remaining height of the background shown when expanded in pixels
-     */
-    bleedingHeight?: number;
-
-    /**
-     * Height of pullable top section in pixels
-     */
-    pullBoxHeight?: number;
-
-    /**
      * Content to display inside the pull box
      */
-    pullBoxContent?: JSX.Element;
-
-    /**
-     * Override the default pull icon.
-     * This is absolutely positioned in the pull box.
-     */
-    pullIcon?: JSX.Element;
+    pullBoxContent?: (isOpen: boolean) => JSX.Element;
 }
 
 const Root = styled(Box)`
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
     right: 0;
@@ -42,25 +26,29 @@ const Root = styled(Box)`
     left: 0;
 `;
 
-const ExpandableArea = styled(Collapse)`
-    width: 100vw;
-`;
-
-const SheetArea = styled(Paper)`
+const SheetBox = styled(Box)`
+    height: 100%;
     display: flex;
+    justify-content: flex-end;
     flex-direction: column;
+    overflow: hidden;
+    border-radius: 18px 18px 0 0;
 `;
 
 const PullBox = styled(Paper)`
-    border-radius: 18px 18px 0 0;
+    min-height: 16px;
+    padding-top: 24px;
     cursor: pointer;
-    position: relative;
-    width: 100vw;
-    overflow: hidden;
-    padding-top: 8px;
+    flex-shrink: 0;
+    flex-grow: 0;
 `;
 
-const DefaultPuller = styled(Box)`
+const ContentBox = styled(Paper)`
+    flex-shrink: 0;
+    flex-grow: 1;
+`;
+
+const Puller = styled(Box)`
     width: 32px;
     height: 3px;
     background: ${props => props.theme.palette.mode === 'light' ? grey[600] : grey[700]};
@@ -70,13 +58,14 @@ const DefaultPuller = styled(Box)`
     top: 8px;
 `;
 
-const ContentBox = styled(Box)`
-    flex-grow: 1;
-    flex-shrink: 0;
-    overflow: hidden;
-    position: relative;
-    overflow: hidden;
-`;
+/**
+ * todo: pass this in a more emotion way
+ */
+const expandableStyle: CSSProperties = {
+    width: "100%",
+    borderRadius: "18px 18px 0 0",
+    position: "relative",
+};
 
 export const BottomSheet: FC<Props> = props => {
     const [open, setOpen] = useState(false);
@@ -85,30 +74,23 @@ export const BottomSheet: FC<Props> = props => {
         onSwipedDown: () => setOpen(false),
     });
 
-    const heightOffset = props.bleedingHeight ?? 16;
-    const pullBoxHeight = props.pullBoxHeight ?? 78;
-    const sheetMinHeight = `calc(100vh - ${heightOffset + pullBoxHeight}px)`;
-    const contentHeight = open ? sheetMinHeight : `calc(54vh - ${pullBoxHeight})`;
-
     return (
-        <Root>
-            <ExpandableArea in={open} collapsedSize={"54vh"}>
-                <PullBox
-                    {...handlers}
-                    onClick={() => setOpen(!open)}
-                    sx={{ height: pullBoxHeight }}
-                    elevation={3}
-                    square
-                >
-                    {props.pullIcon ?? <DefaultPuller />}
-                    {props.pullBoxContent}
-                </PullBox>
-                <SheetArea sx={{ minHeight: sheetMinHeight }} elevation={11} square>
-                    <ContentBox sx={{ height: open ? contentHeight : "auto" }}>
+        <Root {...handlers}>
+            <SimpleAnimateHeight in={!open} startHeight={"54%"} endHeight={"100%"} style={expandableStyle}>
+                <SheetBox>
+                    <PullBox
+                        onClick={() => setOpen(!open)}
+                        elevation={3}
+                        square
+                    >
+                        <Puller />
+                        {props.pullBoxContent && props.pullBoxContent(open)}
+                    </PullBox>
+                    <ContentBox elevation={11} square>
                         {props.children}
                     </ContentBox>
-                </SheetArea>
-            </ExpandableArea>
+                </SheetBox>
+            </SimpleAnimateHeight>
         </Root>
     );
-}
+};

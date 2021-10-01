@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { CSSProperties, FC } from 'react';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Skeleton, styled } from '@mui/material';
 
 interface Props {
     title: string;
     artist: string;
     albumUrl: string;
+    style: CSSProperties;
 }
 
 const SongItemText = styled(ListItemText)`
@@ -17,7 +18,7 @@ const SongItemText = styled(ListItemText)`
 
 export const SongItem: FC<Props> = props => {
     return (
-        <ListItem>
+        <ListItem style={props.style}>
             <ListItemAvatar>
                 <Avatar variant="square" src={props.albumUrl} />
             </ListItemAvatar>
