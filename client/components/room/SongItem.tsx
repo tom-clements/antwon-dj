@@ -5,7 +5,8 @@ interface Props {
     title: string;
     artist: string;
     albumUrl: string;
-    style: CSSProperties;
+    style?: CSSProperties;
+    onClick?: () => void;
 }
 
 const SongItemText = styled(ListItemText)`
@@ -18,7 +19,7 @@ const SongItemText = styled(ListItemText)`
 
 export const SongItem: FC<Props> = props => {
     return (
-        <ListItem style={props.style}>
+        <ListItem style={props.style} onClick={props.onClick}>
             <ListItemAvatar>
                 <Avatar variant="square" src={props.albumUrl} />
             </ListItemAvatar>

@@ -6,6 +6,7 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 
 interface Props {
     songs: SongDto[];
+    onSelectSong: (song: SongDto) => void;
 }
 
 export const SongList: FC<Props> = props => {
@@ -20,21 +21,28 @@ export const SongList: FC<Props> = props => {
                     itemSize={56}
                     overscanCount={5}
                 >
-                    {SongRow}
+                    {({ index, style, data }) => (
+                        <SongRow index={index} style={style} data={data} onSelectSong={props.onSelectSong} />
+                    )}
                 </FixedSizeList>
             )}
         </AutoSizer>
     )
 };
 
-const SongRow: FC<ListChildComponentProps<SongDto[]>> = ({ index, style, data }) => {
+interface SongRowProps extends ListChildComponentProps<SongDto[]> {
+    onSelectSong: (song: SongDto) => void;
+}
+
+const SongRow: FC<SongRowProps> = props => {
     return (
         <SongItem
-            style={style}
-            key={`${data[index].id}_${index}`}
-            title={data[index].song_name}
-            artist={data[index].song_artist}
-            albumUrl={data[index].song_album_url}
+            style={props.style}
+            key={`${props.data[props.index].id}_${props.index}`}
+            title={props.data[props.index].song_name}
+            artist={props.data[props.index].song_artist}
+            albumUrl={props.data[props.index].song_album_url}
+            onClick={() => props.onSelectSong(props.data[props.index])}
         />
     );
 };
