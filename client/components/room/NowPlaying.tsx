@@ -44,7 +44,7 @@ const Overlay = styled(Box)`
     flex-direction: column;
     justify-content: space-between;
     padding: ${props => props.theme.spacing(1, 2, 3)};
-    align-items: end;
+    align-items: flex-end;
     text-align: right;
 `;
 

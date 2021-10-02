@@ -1,15 +1,15 @@
-import Container from '@mui/material/Container';
+import { RootContainer } from 'components/core/RootContainer';
 import { Room } from 'components/room/Room';
 import { RoomProvider } from 'components/room/RoomProvider';
 import { SpinnerPageSize } from 'components/core/SpinnerPageSize';
 
 export default function RoomPage() {
     return (
-        <Container sx={{ height: '100%', display: 'flex', position: 'fixed' }} maxWidth={false} disableGutters>
+        <RootContainer>
             <RoomProvider
                 render={roomId => <Room roomId={roomId} />}
                 renderLoading={() => <SpinnerPageSize />}
             />
-        </Container>
+        </RootContainer>
     );
 }
