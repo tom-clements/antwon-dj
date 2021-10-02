@@ -4,7 +4,8 @@ import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { SimpleAnimateHeight } from 'components/core/SimpleAnimateHeight';
+import { ArrowDropUp, ArrowDropDown } from '@mui/icons-material';
+import { FauxAnimateHeight } from 'components/core/FauxAnimateHeight';
 
 interface Props {
     /**
@@ -48,23 +49,20 @@ const ContentBox = styled(Paper)`
     flex-grow: 1;
 `;
 
-const Puller = styled(Box)`
+const ArrowBox = styled(Box)`
     width: 32px;
-    height: 3px;
-    background: ${props => props.theme.palette.mode === 'light' ? grey[600] : grey[700]};
-    border-radius: 16px;
     position: absolute;
     left: calc(50% - 16px);
-    top: 8px;
+    top: 0;
 `;
 
 /**
  * todo: pass this in a more emotion way
  */
 const expandableStyle: CSSProperties = {
-    width: "100%",
-    borderRadius: "18px 18px 0 0",
-    position: "relative",
+    width: '100%',
+    borderRadius: '18px 18px 0 0',
+    position: 'relative',
 };
 
 export const BottomSheet: FC<Props> = props => {
@@ -75,22 +73,29 @@ export const BottomSheet: FC<Props> = props => {
     });
 
     return (
-        <Root {...handlers}>
-            <SimpleAnimateHeight in={!open} startHeight={"50%"} endHeight={"100%"} style={expandableStyle}>
+        <Root>
+            <FauxAnimateHeight in={open} startHeight={'50%'} endHeight={'100%'} style={expandableStyle}>
                 <SheetBox>
                     <PullBox
+                        {...handlers}
                         onClick={() => setOpen(!open)}
                         elevation={3}
                         square
                     >
-                        <Puller />
+                        <ArrowBox>
+                            {
+                                open
+                                    ? <ArrowDropDown htmlColor={grey[500]} fontSize={'large'} />
+                                    : <ArrowDropUp htmlColor={grey[500]} fontSize={'large'} />
+                            }
+                        </ArrowBox>
                         {props.pullBoxContent && props.pullBoxContent(open)}
                     </PullBox>
                     <ContentBox elevation={11} square>
                         {props.children}
                     </ContentBox>
                 </SheetBox>
-            </SimpleAnimateHeight>
+            </FauxAnimateHeight>
         </Root>
     );
 };

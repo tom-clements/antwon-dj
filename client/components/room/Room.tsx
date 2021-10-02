@@ -5,7 +5,8 @@ import { NowPlaying } from 'components/room/NowPlaying';
 import { SongQueue } from 'components/room/SongQueue';
 import { NextSong } from 'components/room/NextSong';
 import { SongSearch } from 'components/room/SongSearch';
-import { Search, ArrowDropUp } from '@mui/icons-material';
+import { Search } from '@mui/icons-material';
+import { grey } from '@mui/material/colors';
 
 interface Props {
     roomId: string;
@@ -42,8 +43,7 @@ const PullBox: FC<{ isOpen: boolean; roomId: string; }> = props => {
             <>
                 <NextSong roomId={props.roomId} />
                 <SearchHint>
-                    <ArrowDropUp />
-                    <Search />
+                    <Search htmlColor={grey[500]} />
                 </SearchHint>
             </>
         );

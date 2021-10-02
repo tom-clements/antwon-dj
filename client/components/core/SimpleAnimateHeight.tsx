@@ -1,14 +1,14 @@
-import React, { FC, CSSProperties } from "react";
+import React, { FC, CSSProperties } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 
 interface Props {
     in: boolean;
-    startHeight: CSSProperties["height"];
-    endHeight: CSSProperties["height"];
+    startHeight: CSSProperties['height'];
+    endHeight: CSSProperties['height'];
 
     /**
      * Animation duration in milliseconds.
-     * Default: 300 ms
+     * Default: 500 ms
      */
     duration?: number;
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const SimpleAnimateHeight: FC<Props> = props => {
-    const duration = props.duration ?? 300;
+    const duration = props.duration ?? 500;
     const transitionStyles: { [status in TransitionStatus]: CSSProperties } = {
         entering: { height: props.startHeight },
         entered: { height: props.startHeight },

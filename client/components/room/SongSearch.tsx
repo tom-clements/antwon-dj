@@ -32,7 +32,7 @@ const SearchDrawer = styled(Box)`
     top: 56px;
     left: 0;
     width: 100%;
-    height: 50vh;
+    height: 75vh;
     padding: ${props => props.theme.spacing(2, 0)};
 `;
 
@@ -45,7 +45,9 @@ export const SongSearch: FC<Props> = props => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null); // todo: Put this in redux
     const [addSongToQueue] = roomApi.endpoints.addSongToQueue.useMutation();
     const [triggerSearch, result] = spotifySearchApi.endpoints.getSongsForSearch.useLazyQuery();
-    const debouncedSearch = useCallback(_.debounce(triggerSearch, 200, { leading: true }), [triggerSearch]);
+    const debouncedSearch = useCallback((arg: { query: string; roomId: string; }) => {
+        return _.debounce(() => triggerSearch(arg), 200, { leading: true })();
+    }, [triggerSearch]);
     const showDrawer = searchTerm && result.data;
 
     useEffect(() => {
@@ -60,7 +62,7 @@ export const SongSearch: FC<Props> = props => {
     return (
         <>
             {showDrawer && <BackgroundMask />}
-            <Relative>
+            <Relative onTouchEndCapture={event => event.stopPropagation()}>
                 <FormControl variant="outlined" fullWidth>
                     <InputLabel htmlFor="outlined-adornment-song-search">search...</InputLabel>
                     <OutlinedInput
@@ -78,7 +80,7 @@ export const SongSearch: FC<Props> = props => {
                             </InputAdornment>
                         }
                         label="song-search"
-                        autoComplete={"off"}
+                        autoComplete={'off'}
                         fullWidth
                     />
                 </FormControl>

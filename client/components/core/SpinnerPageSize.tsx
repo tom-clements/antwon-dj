@@ -1,6 +1,6 @@
-import { FC } from "react";
-import Grid from "@mui/material/Grid";
-import { Spinner } from "components/core/Spinner";
+import { FC } from 'react';
+import Grid from '@mui/material/Grid';
+import { Spinner } from 'components/core/Spinner';
 
 export const SpinnerPageSize: FC = () => {
     return (

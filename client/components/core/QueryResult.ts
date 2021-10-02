@@ -1,8 +1,8 @@
-import { SerializedError } from "@reduxjs/toolkit";
-import { QueryDefinition } from "@reduxjs/toolkit/dist/query";
-import { BaseQueryError } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
-import { QueryStatus, QuerySubState } from "@reduxjs/toolkit/dist/query/core/apiState";
-import { Id, Override } from "@reduxjs/toolkit/dist/query/tsHelpers";
+import { SerializedError } from '@reduxjs/toolkit';
+import { QueryDefinition } from '@reduxjs/toolkit/dist/query';
+import { BaseQueryError } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { QueryStatus, QuerySubState } from '@reduxjs/toolkit/dist/query/core/apiState';
+import { Id, Override } from '@reduxjs/toolkit/dist/query/tsHelpers';
 
 export enum QueryResultStatus {
     Uninitialised = 0,

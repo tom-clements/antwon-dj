@@ -27,11 +27,11 @@ export const SongList: FC<Props> = props => {
                 </FixedSizeList>
             )}
         </AutoSizer>
-    )
+    );
 };
 
 interface SongRowProps extends ListChildComponentProps<SongDto[]> {
-    onSelectSong: (song: SongDto) => void;
+    onSelectSong?: (song: SongDto) => void;
 }
 
 const SongRow: FC<SongRowProps> = props => {
@@ -42,7 +42,7 @@ const SongRow: FC<SongRowProps> = props => {
             title={props.data[props.index].song_name}
             artist={props.data[props.index].song_artist}
             albumUrl={props.data[props.index].song_album_url}
-            onClick={() => props.onSelectSong(props.data[props.index])}
+            onClick={() => props.onSelectSong && props.onSelectSong(props.data[props.index])}
         />
     );
 };
