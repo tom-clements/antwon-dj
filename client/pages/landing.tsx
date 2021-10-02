@@ -19,10 +19,15 @@ const TextBox = styled(Box)`
     margin-bottom: ${props => props.theme.spacing(4)};
 `;
 
+const QRCode = styled('img')`
+    width: 20%;
+`;
+
 export default function SpinnerPage() {
     return (
         <RootContainer>
             <RootBox>
+                <SpinnerPageSize />
                 <TextBox>
                     <Typography variant="h1">
                         djantwon.com
@@ -31,7 +36,7 @@ export default function SpinnerPage() {
                         Room code: <em><strong>SOIREE</strong></em>
                     </Typography>
                 </TextBox>
-                <SpinnerPageSize />
+                <QRCode src={'/soiree-qr.svg'}/>
             </RootBox>
         </RootContainer>
     );
