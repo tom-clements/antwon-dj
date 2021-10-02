@@ -75,10 +75,11 @@ export const BottomSheet: FC<Props> = props => {
     });
 
     return (
-        <Root {...handlers}>
+        <Root>
             <SimpleAnimateHeight in={!open} startHeight={'50%'} endHeight={'100%'} style={expandableStyle}>
                 <SheetBox>
                     <PullBox
+                        {...handlers}
                         onClick={() => setOpen(!open)}
                         elevation={3}
                         square
