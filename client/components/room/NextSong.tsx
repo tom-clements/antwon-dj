@@ -8,7 +8,9 @@ interface Props {
 }
 
 export const NextSong: FC<Props> = props => {
-    const result = roomApi.endpoints.getRoomQueue.useQuery(props.roomId);
+    const result = roomApi.endpoints.getRoomQueue.useQuery(props.roomId, {
+        pollingInterval: 5000,
+    });
     return (
         <QueryResult<RoomSongDto[]> result={result}>
             {{
