@@ -16,7 +16,7 @@ interface Props {
 
 const Root = styled(Box)`
     width: 100%;
-    height: 50%;
+    height: calc(50% + 16px); // todo make border radius offset constant
     position: relative;
 `;
 
@@ -43,7 +43,7 @@ const Overlay = styled(Box)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: ${props => props.theme.spacing(2)};
+    padding: ${props => props.theme.spacing(1, 2, 3)};
     align-items: end;
     text-align: right;
 `;
@@ -58,12 +58,12 @@ const NowPlayingArtContainer = styled(Box)`
 `;
 
 const NowPlayingArt = styled('img')`
-    height: 50vh;
+    height: 100%;
 `;
 
 const NowPlayingSideArt = styled('img')`
     width: 100%;
-    height: 50vh;
+    height: 100%;
     filter: blur(14px) opacity(0.75);
     transform: scale(1.05);
 `;

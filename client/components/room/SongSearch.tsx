@@ -32,7 +32,7 @@ const SearchDrawer = styled(Box)`
     top: 56px;
     left: 0;
     width: 100%;
-    height: 50vh;
+    height: 75vh;
     padding: ${props => props.theme.spacing(2, 0)};
 `;
 
