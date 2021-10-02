@@ -1,11 +1,15 @@
-import { Absolute } from "components/layout/Absolute";
-import { Room } from "components/Room";
-import { RoomProvider } from "components/RoomProvider";
+import { RootContainer } from 'components/core/RootContainer';
+import { Room } from 'components/room/Room';
+import { RoomProvider } from 'components/room/RoomProvider';
+import { SpinnerPageSize } from 'components/core/SpinnerPageSize';
 
 export default function RoomPage() {
     return (
-        <Absolute>
-            <RoomProvider render={roomId => <Room roomId={roomId} />} />
-        </Absolute>
-    )
+        <RootContainer>
+            <RoomProvider
+                render={roomId => <Room roomId={roomId} />}
+                renderLoading={() => <SpinnerPageSize />}
+            />
+        </RootContainer>
+    );
 }

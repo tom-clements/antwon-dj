@@ -1,13 +1,14 @@
 import Amplify from "aws-amplify";
-import awsExports from "aws-exports";
+// import awsExports from "aws-exports";
 import { createStore, RootState, Store } from "model/Store";
 import { useMemo } from "react";
 import { connectAmplifyToStore } from "model/Amplify";
+import createCache from "@emotion/cache";
 
 let store: Store | undefined;
 
 function setupAmplify() {
-    Amplify.configure({ ...awsExports, ssr: true });
+    // Amplify.configure({ ...awsExports, ssr: true });
 }
 
 export function setupApp() {
@@ -42,4 +43,8 @@ export const initializeStore = (preloadedState: RootState) => {
 export function useAppStore(initialState: RootState) {
     const store = useMemo(() => initializeStore(initialState), [initialState]);
     return store;
+}
+
+export function createEmotionCache() {
+    return createCache({ key: 'css' });
 }
