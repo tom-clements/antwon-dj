@@ -69,9 +69,7 @@ const NowPlayingSideArt = styled('img')`
 `;
 
 export const NowPlaying: FC<Props> = props => {
-    const result = spotifyCurrentlyPlayingApi.endpoints.get.useQuery(props.roomId, {
-        pollingInterval: 5000,
-    });
+    const result = spotifyCurrentlyPlayingApi.endpoints.get.useQuery(props.roomId);
     return (
         <QueryResult<SongDto> result={result}>
             {{
