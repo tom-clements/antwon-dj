@@ -62,7 +62,7 @@ export const SongSearch: FC<Props> = props => {
     return (
         <>
             {showDrawer && <BackgroundMask />}
-            <Relative>
+            <Relative onTouchEndCapture={event => event.stopPropagation()}>
                 <FormControl variant="outlined" fullWidth>
                     <InputLabel htmlFor="outlined-adornment-song-search">search...</InputLabel>
                     <OutlinedInput
