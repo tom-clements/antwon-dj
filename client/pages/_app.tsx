@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider, EmotionCache } from '@emotion/react';
+import { CacheProvider, EmotionCache, Global } from '@emotion/react';
 import { ThemeProvider, defaultTheme } from 'styles/ThemeProvider';
 import { setupApp, useAppStore, createEmotionCache } from 'AppSetup';
 import { ErrorToast } from 'components/core/ErrorToast';
@@ -29,6 +29,7 @@ export default function App(props: MyAppProps) {
                 </Head>
                 <ThemeProvider>
                     <CssBaseline />
+                    <Global styles={{ 'body': { overscrollBehavior: 'contain' } }} />
                     <Component {...pageProps} />
                     <ErrorToast />
                 </ThemeProvider>
