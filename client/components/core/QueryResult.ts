@@ -79,7 +79,7 @@ export function QueryResult<
     { result, children }: Props<D, DataType, ErrorType>
 ) {
     if (!result || result.isUninitialized) return children[QueryResultStatus.Uninitialised]?.() ?? null;
-    if (result.isFetching || result.isLoading) return children[QueryResultStatus.Pending]?.() ?? null;
+    if (!result.data && (result.isFetching || result.isLoading)) return children[QueryResultStatus.Pending]?.() ?? null;
     if (!result.data) return children[QueryResultStatus.NotFound]?.() ?? null;
     if (result.error) return children[QueryResultStatus.Error]?.(result.error as ErrorType) ?? null;
     return children[QueryResultStatus.OK](result.data as DataType);
