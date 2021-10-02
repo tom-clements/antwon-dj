@@ -29,7 +29,7 @@ export const SongItem: FC<Props> = props => {
             />
         </ListItem>
     );
-}
+};
 
 export const SongItemSkeleton: FC = () => {
     return (

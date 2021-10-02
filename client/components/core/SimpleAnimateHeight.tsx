@@ -1,10 +1,10 @@
-import React, { FC, CSSProperties } from "react";
+import React, { FC, CSSProperties } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 
 interface Props {
     in: boolean;
-    startHeight: CSSProperties["height"];
-    endHeight: CSSProperties["height"];
+    startHeight: CSSProperties['height'];
+    endHeight: CSSProperties['height'];
 
     /**
      * Animation duration in milliseconds.

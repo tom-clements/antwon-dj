@@ -31,4 +31,4 @@ const NextSongInternal: FC<{ songs: RoomSongDto[] }> = props => {
             albumUrl={nextSong.song_album_url}
         />
     );
-}
+};

@@ -62,9 +62,9 @@ const Puller = styled(Box)`
  * todo: pass this in a more emotion way
  */
 const expandableStyle: CSSProperties = {
-    width: "100%",
-    borderRadius: "18px 18px 0 0",
-    position: "relative",
+    width: '100%',
+    borderRadius: '18px 18px 0 0',
+    position: 'relative',
 };
 
 export const BottomSheet: FC<Props> = props => {
@@ -76,7 +76,7 @@ export const BottomSheet: FC<Props> = props => {
 
     return (
         <Root {...handlers}>
-            <SimpleAnimateHeight in={!open} startHeight={"50%"} endHeight={"100%"} style={expandableStyle}>
+            <SimpleAnimateHeight in={!open} startHeight={'50%'} endHeight={'100%'} style={expandableStyle}>
                 <SheetBox>
                     <PullBox
                         onClick={() => setOpen(!open)}

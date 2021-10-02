@@ -1,5 +1,5 @@
-import { isNil } from "lodash";
-import { FC, PropsWithChildren } from "react";
+import { isNil } from 'lodash';
+import { FC, PropsWithChildren } from 'react';
 import { styled } from '@mui/material/styles';
 import { keyframes } from '@mui/system';
 
@@ -30,8 +30,8 @@ const fadeIn = keyframes`
 
 const SpinnerContainer = styled((props: PropsWithChildren<Props>) => (
     <svg {...props}
-        width={!isNil(props.scale) ? `${props.scale * 30}px` : "30px"}
-        height={!isNil(props.scale) ? `${props.scale * 30}px` : "30px"}
+        width={!isNil(props.scale) ? `${props.scale * 30}px` : '30px'}
+        height={!isNil(props.scale) ? `${props.scale * 30}px` : '30px'}
     >
         {props.children}
     </svg>

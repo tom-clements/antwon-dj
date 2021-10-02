@@ -45,7 +45,9 @@ export const SongSearch: FC<Props> = props => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null); // todo: Put this in redux
     const [addSongToQueue] = roomApi.endpoints.addSongToQueue.useMutation();
     const [triggerSearch, result] = spotifySearchApi.endpoints.getSongsForSearch.useLazyQuery();
-    const debouncedSearch = useCallback(_.debounce(triggerSearch, 200, { leading: true }), [triggerSearch]);
+    const debouncedSearch = useCallback((arg: { query: string; roomId: string; }) => {
+        return _.debounce(() => triggerSearch(arg), 200, { leading: true })();
+    }, [triggerSearch]);
     const showDrawer = searchTerm && result.data;
 
     useEffect(() => {
@@ -78,7 +80,7 @@ export const SongSearch: FC<Props> = props => {
                             </InputAdornment>
                         }
                         label="song-search"
-                        autoComplete={"off"}
+                        autoComplete={'off'}
                         fullWidth
                     />
                 </FormControl>

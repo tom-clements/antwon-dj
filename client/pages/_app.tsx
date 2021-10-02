@@ -24,7 +24,6 @@ export default function App(props: MyAppProps) {
                     <title>antwon.dj</title>
                     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
                     <link rel="icon" type="image/png" href="/favicon.png" />
-                    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
                     <meta content="minimum-scale=1, initial-scale=1, width=device-width" name="viewport" />
                     <meta content={defaultTheme.palette.primary.main} name="theme-color" />
                 </Head>
