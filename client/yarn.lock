@@ -196,7 +196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-amplify/ui-react@npm:^1.2.4":
+"@aws-amplify/ui-react@npm:^1.2.20":
   version: 1.2.20
   resolution: "@aws-amplify/ui-react@npm:1.2.20"
   dependencies:
@@ -2573,7 +2573,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^5.0.0":
+"@mui/icons-material@npm:^5.0.3":
   version: 5.0.3
   resolution: "@mui/icons-material@npm:5.0.3"
   dependencies:
@@ -2589,7 +2589,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.0.0":
+"@mui/material@npm:^5.0.3":
   version: 5.0.3
   resolution: "@mui/material@npm:5.0.3"
   dependencies:
@@ -2871,7 +2871,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reduxjs/toolkit@npm:^1.6.0":
+"@reduxjs/toolkit@npm:^1.6.2":
   version: 1.6.2
   resolution: "@reduxjs/toolkit@npm:1.6.2"
   dependencies:
@@ -2973,14 +2973,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.171":
+"@types/lodash@npm:^4.14.175":
   version: 4.14.175
   resolution: "@types/lodash@npm:4.14.175"
   checksum: 50721f33faa542f1b9f62f2ba769ed353c6036711e92bd89ce569f2ed247e38fb2a2899f6fd46466b1690fea7ae0239471e6a6093c54e8f2b0613e43e8eac19c
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^16.9.4":
+"@types/node@npm:*, @types/node@npm:^16.10.9":
   version: 16.10.9
   resolution: "@types/node@npm:16.10.9"
   checksum: b47c3e3896ce243d3bc9e356578d4d607357d9ea0c1445a15cb564341580ac4db4f95677bf15fd354e46343edbd171ac19701740a53637234411da5b66c883a4
@@ -3019,7 +3019,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-redux@npm:^7.1.16, @types/react-redux@npm:^7.1.18":
+"@types/react-redux@npm:^7.1.16, @types/react-redux@npm:^7.1.19":
   version: 7.1.19
   resolution: "@types/react-redux@npm:7.1.19"
   dependencies:
@@ -3058,7 +3058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^17.0.13":
+"@types/react@npm:*, @types/react@npm:^17.0.29":
   version: 17.0.29
   resolution: "@types/react@npm:17.0.29"
   dependencies:
@@ -3076,7 +3076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^4.28.3":
+"@typescript-eslint/eslint-plugin@npm:^4.33.0":
   version: 4.33.0
   resolution: "@typescript-eslint/eslint-plugin@npm:4.33.0"
   dependencies:
@@ -3114,7 +3114,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^4.20.0, @typescript-eslint/parser@npm:^4.28.3":
+"@typescript-eslint/parser@npm:^4.20.0, @typescript-eslint/parser@npm:^4.33.0":
   version: 4.33.0
   resolution: "@typescript-eslint/parser@npm:4.33.0"
   dependencies:
@@ -3332,38 +3332,38 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "antwon-dj-client@workspace:."
   dependencies:
-    "@aws-amplify/ui-react": ^1.2.4
+    "@aws-amplify/ui-react": ^1.2.20
     "@emotion/cache": ^11.4.0
     "@emotion/react": ^11.4.1
     "@emotion/server": ^11.4.0
     "@emotion/styled": ^11.3.0
-    "@mui/icons-material": ^5.0.0
-    "@mui/material": ^5.0.0
-    "@reduxjs/toolkit": ^1.6.0
-    "@types/lodash": ^4.14.171
-    "@types/node": ^16.9.4
-    "@types/react": ^17.0.13
+    "@mui/icons-material": ^5.0.3
+    "@mui/material": ^5.0.3
+    "@reduxjs/toolkit": ^1.6.2
+    "@types/lodash": ^4.14.175
+    "@types/node": ^16.10.9
+    "@types/react": ^17.0.29
     "@types/react-dom": ^17.0.9
-    "@types/react-redux": ^7.1.18
+    "@types/react-redux": ^7.1.19
     "@types/react-virtualized-auto-sizer": ^1.0.1
     "@types/react-window": ^1.8.5
-    "@typescript-eslint/eslint-plugin": ^4.28.3
-    "@typescript-eslint/parser": ^4.28.3
-    aws-amplify: ^4.1.2
+    "@typescript-eslint/eslint-plugin": ^4.33.0
+    "@typescript-eslint/parser": ^4.33.0
+    aws-amplify: ^4.3.2
     eslint: ^7.32.0
     eslint-config-next: ^11.1.2
-    eslint-plugin-react: ^7.26.0
+    eslint-plugin-react: ^7.26.1
     eslint-plugin-react-hooks: ^4.2.0
     lodash: ^4.17.21
     next: ^11.1.2
     react: 17.0.2
     react-dom: 17.0.2
-    react-redux: ^7.2.4
+    react-redux: ^7.2.5
     react-swipeable: ^6.2.0
     react-virtualized-auto-sizer: ^1.0.6
     react-window: ^1.8.6
-    redux: ^4.1.0
-    typescript: ^4.3.5
+    redux: ^4.1.1
+    typescript: ^4.4.4
   languageName: unknown
   linkType: soft
 
@@ -3524,7 +3524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-amplify@npm:^4.1.2":
+"aws-amplify@npm:^4.3.2":
   version: 4.3.2
   resolution: "aws-amplify@npm:4.3.2"
   dependencies:
@@ -4700,7 +4700,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.23.1, eslint-plugin-react@npm:^7.26.0":
+"eslint-plugin-react@npm:^7.23.1, eslint-plugin-react@npm:^7.26.1":
   version: 7.26.1
   resolution: "eslint-plugin-react@npm:7.26.1"
   dependencies:
@@ -7154,7 +7154,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"react-redux@npm:^7.2.4":
+"react-redux@npm:^7.2.5":
   version: 7.2.5
   resolution: "react-redux@npm:7.2.5"
   dependencies:
@@ -7293,7 +7293,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"redux@npm:^4.0.0, redux@npm:^4.1.0":
+"redux@npm:^4.0.0, redux@npm:^4.1.0, redux@npm:^4.1.1":
   version: 4.1.1
   resolution: "redux@npm:4.1.1"
   dependencies:
@@ -8193,7 +8193,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-typescript@^4.3.5:
+typescript@^4.4.4:
   version: 4.4.4
   resolution: "typescript@npm:4.4.4"
   bin:
@@ -8203,7 +8203,7 @@ typescript@^4.3.5:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>":
   version: 4.4.4
   resolution: "typescript@patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=32657b"
   bin:
