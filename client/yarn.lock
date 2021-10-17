@@ -4263,7 +4263,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^5.0.3":
+"@mui/icons-material@npm:^5.0.4":
   version: 5.0.4
   resolution: "@mui/icons-material@npm:5.0.4"
   dependencies:
@@ -4279,7 +4279,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.0.3":
+"@mui/material@npm:^5.0.4":
   version: 5.0.4
   resolution: "@mui/material@npm:5.0.4"
   dependencies:
@@ -5701,7 +5701,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:^7":
+"@types/babel__core@npm:^7.1.16":
   version: 7.1.16
   resolution: "@types/babel__core@npm:7.1.16"
   dependencies:
@@ -5895,7 +5895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdx-js__react@npm:^1":
+"@types/mdx-js__react@npm:^1.5.4":
   version: 1.5.4
   resolution: "@types/mdx-js__react@npm:1.5.4"
   dependencies:
@@ -5930,7 +5930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^16.10.9":
+"@types/node@npm:*, @types/node@npm:^16.11.0":
   version: 16.11.0
   resolution: "@types/node@npm:16.11.0"
   checksum: 194ae80ec72f664e15e03c33f116be96aa1e85b167a19e31003c53ddfc36dabd65744e9a76c1d46b7ce2e5981d2ccb8e84a85c3ec9ac89f1471daaa885bdcfd0
@@ -6075,7 +6075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^17.0.29":
+"@types/react@npm:*, @types/react@npm:^17.0.30":
   version: 17.0.30
   resolution: "@types/react@npm:17.0.30"
   dependencies:
@@ -6743,19 +6743,19 @@ __metadata:
     "@emotion/server": ^11.4.0
     "@emotion/styled": ^11.3.0
     "@mdx-js/react": ^1.6.22
-    "@mui/icons-material": ^5.0.3
-    "@mui/material": ^5.0.3
+    "@mui/icons-material": ^5.0.4
+    "@mui/material": ^5.0.4
     "@reduxjs/toolkit": ^1.6.2
     "@storybook/addon-actions": ^6.3.12
     "@storybook/addon-docs": ^6.3.12
     "@storybook/addon-essentials": ^6.3.12
     "@storybook/addon-links": ^6.3.12
     "@storybook/react": ^6.3.12
-    "@types/babel__core": ^7
+    "@types/babel__core": ^7.1.16
     "@types/lodash": ^4.14.175
-    "@types/mdx-js__react": ^1
-    "@types/node": ^16.10.9
-    "@types/react": ^17.0.29
+    "@types/mdx-js__react": ^1.5.4
+    "@types/node": ^16.11.0
+    "@types/react": ^17.0.30
     "@types/react-dom": ^17.0.9
     "@types/react-redux": ^7.1.19
     "@types/react-virtualized-auto-sizer": ^1.0.1
