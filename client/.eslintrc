@@ -29,6 +29,7 @@
         "linebreak-style": ["warn", "unix"],
         "quotes": ["warn", "single"],
         "semi": ["warn", "always"],
+        "import/no-anonymous-default-export": "off", // Stories like default exports
         "react/react-in-jsx-scope": "off", // Next.js doesn't require React to be in scope for every Component
         "no-restricted-imports": ["error", { "patterns": ["*./*", "*../*"] }], // No relative imports
         "@typescript-eslint/explicit-function-return-type": "off", // Stict type inferrence is perfectly fine :)
