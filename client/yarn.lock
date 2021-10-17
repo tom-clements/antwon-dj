@@ -6770,6 +6770,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.2.0
     lodash: ^4.17.21
     next: ^11.1.2
+    qrcode-generator: ^1.4.4
     react: 17.0.2
     react-dom: 17.0.2
     react-redux: ^7.2.5
@@ -14641,6 +14642,13 @@ fsevents@^1.2.7:
   version: 2.1.1
   resolution: "punycode@npm:2.1.1"
   checksum: 823bf443c6dd14f669984dea25757b37993f67e8d94698996064035edd43bed8a5a17a9f12e439c2b35df1078c6bec05a6c86e336209eb1061e8025c481168e8
+  languageName: node
+  linkType: hard
+
+"qrcode-generator@npm:^1.4.4":
+  version: 1.4.4
+  resolution: "qrcode-generator@npm:1.4.4"
+  checksum: 860cfdd2a7a608d34e92cab99774cc08182e1911432f30ed36d16f8a5cdabd7fdf40239caed91fa2691cfe66c8d95c1340a2fc9cc439eed07a9f2eb328c6f527
   languageName: node
   linkType: hard
 
