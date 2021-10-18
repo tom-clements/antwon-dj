@@ -1,5 +1,5 @@
 import React, { CSSProperties, FC } from 'react';
-import { QRCodeModule } from 'components/atoms/QRCodeModule';
+import { QRCodeModule, QRCodeModuleVariant } from 'components/atoms/QRCodeModule';
 import { useQRCode, UseQRCodeProps } from 'model/QRCode';
 
 interface Props extends UseQRCodeProps {
@@ -13,10 +13,21 @@ interface Props extends UseQRCodeProps {
      * Active colour. Default: #fff
      */
     activeColour?: CSSProperties['color'];
+
+    /**
+     * Module variant style, see `QRCodeModuleVariant` for options.
+     * Default: QRCodeModuleVariant.Square
+     */
+    variant?: QRCodeModuleVariant;
 }
 
 export const QRCode: FC<Props> = props => {
-    const { size = 256, activeColour = '#fff' } = props;
+    const {
+        size = 256,
+        activeColour = '#fff',
+        variant = QRCodeModuleVariant.Square,
+    } = props;
+
     const qrCode = useQRCode(props);
     const moduleCount = qrCode.getModuleCount();
 
@@ -47,6 +58,7 @@ export const QRCode: FC<Props> = props => {
                             moduleCount={moduleCount}
                             size={size}
                             isActive={qrCode.isDark(i, j)}
+                            variant={variant}
                             activeColour={activeColour}
                         />
                     ))

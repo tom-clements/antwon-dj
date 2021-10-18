@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory } from '@storybook/react';
 import { QRCode as QRCode } from 'components/atoms/QRCode';
-import { QRCodeModule } from 'components/atoms/QRCodeModule';
+import { QRCodeModule, QRCodeModuleVariant } from 'components/atoms/QRCodeModule';
 
 export default {
     title: 'atoms/QRCode',
@@ -15,10 +15,16 @@ export default {
             type: { name: 'string' },
             control: { type: 'color' },
         },
+        variant: {
+            options: Object.keys(QRCodeModuleVariant).filter(x => isNaN(parseInt(x))),
+            mapping: QRCodeModuleVariant,
+            control: { type: 'inline-radio' },
+        }
     },
     args: {
         size: 256,
         activeColour: '#fff',
+        variant: QRCodeModuleVariant[QRCodeModuleVariant.Square],
     }
 };
 
