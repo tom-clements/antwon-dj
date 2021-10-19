@@ -49,15 +49,15 @@ export const QRCode: FC<Props> = props => {
     return (
         <svg xmlns={'http://www.w3.org/2000/svg'} width={size} height={size}>
             {
-                moduleIndex.map(columnIndex =>
-                    moduleIndex.map(rowIndex =>
+                moduleIndex.map(rowIndex =>
+                    moduleIndex.map(columnIndex =>
                         <QRCodeModule
                             key={`qrm_${columnIndex}_${rowIndex}`}
                             i={columnIndex}
                             j={rowIndex}
                             moduleCount={moduleCount}
                             size={size}
-                            isActive={qrCode.isDark(columnIndex, rowIndex)}
+                            isActive={qrCode.isDark(rowIndex, columnIndex)}
                             variant={variant}
                             activeColour={activeColour}
                         />

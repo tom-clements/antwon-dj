@@ -78,6 +78,10 @@ interface Props {
 
 /**
  * Renders an active module within a container space of a given size.
+ *
+ * (i, j) co-ordinates represent(column, row) indices. The top-left (`TL`)
+ * module of the QR code container is the origin. Positive x increases
+ * from left-to-right and positive y increases from top-down.
  */
 export const QRCodeModule: FC<Props> = props => {
     if (!props.isActive) return null;
@@ -88,6 +92,8 @@ export const QRCodeModule: FC<Props> = props => {
 
     return (
         <path
+            data-i={i}
+            data-j={j}
             d={modulePath.d}
             fill={activeColour}
             transform={modulePath.transform}
