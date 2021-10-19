@@ -45,12 +45,12 @@ function getModulePath(i: number, j: number, moduleSize: number, variant: QRCode
 
 interface Props {
     /**
-     * Row index of the module in its container
+     * Column index of the module in its container
      */
     i: number;
 
     /**
-     * Column index of the module in its container
+     * Row index of the module in its container
      */
     j: number;
 
