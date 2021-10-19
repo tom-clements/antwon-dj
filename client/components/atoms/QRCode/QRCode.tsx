@@ -1,5 +1,5 @@
 import React, { CSSProperties, FC } from 'react';
-import { QRCodeModule, QRCodeModuleVariant } from 'components/atoms/QRCodeModule';
+import { QRCodeModule, QRCodeModuleVariant } from 'components/atoms/QRCode/QRCodeModule';
 import { useQRCode, UseQRCodeProps } from 'model/QRCode';
 
 interface Props extends UseQRCodeProps {

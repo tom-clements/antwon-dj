@@ -1,8 +1,8 @@
 import { SVGAttributes } from 'react';
 
 export interface QRCodeModulePath {
-    d: SVGAttributes<SVGPathElement>["d"];
-    transform: SVGAttributes<SVGPathElement>["transform"];
+    d: SVGAttributes<SVGPathElement>['d'];
+    transform: SVGAttributes<SVGPathElement>['transform'];
 }
 
 export function getSquareModulePath(i: number, j: number, moduleSize: number): QRCodeModulePath {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory } from '@storybook/react';
-import { QRCode as QRCode } from 'components/atoms/QRCode';
-import { QRCodeModule, QRCodeModuleVariant } from 'components/atoms/QRCodeModule';
+import { QRCode } from 'components/atoms/QRCode/QRCode';
+import { QRCodeModule, QRCodeModuleVariant } from 'components/atoms/QRCode/QRCodeModule';
 
 export default {
     title: 'atoms/QRCode',
