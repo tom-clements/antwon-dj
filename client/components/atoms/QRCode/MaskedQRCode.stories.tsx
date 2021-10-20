@@ -18,7 +18,6 @@ export default {
             control: { type: 'inline-radio' },
         },
         background: { table: { disable: true } },
-        skipMaskColour: { table: { disable: true } },
     },
     args: {
         size: 256,

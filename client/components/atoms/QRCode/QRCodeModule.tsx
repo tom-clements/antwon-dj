@@ -94,6 +94,7 @@ export const QRCodeModule: FC<Props> = props => {
         <path
             data-i={i}
             data-j={j}
+            data-finder={isFinderPatternModule(i, j, moduleCount) ? 'true' : undefined}
             d={modulePath.d}
             fill={activeColour}
             transform={modulePath.transform}

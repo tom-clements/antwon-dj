@@ -24,10 +24,10 @@ interface Props extends UseQRCodeProps {
     variant?: QRCodeModuleVariant;
 
     /**
-     * Skip colouring the QR code mask, which by default is #fff.
-     * Darker colours are more opaque.
+     * Classname to apply to container SVG
+     * Also allows for `styled`-esque libraries to inject styling
      */
-    skipMaskColour?: boolean;
+    className?: string;
 }
 
 export const MaskedQRCode: FC<Props> = props => {
@@ -36,13 +36,13 @@ export const MaskedQRCode: FC<Props> = props => {
         mode,
         typeNumber,
         errorCorrectionLevel,
-        skipMaskColour,
         size = 256,
         variant = QRCodeModuleVariant.Square,
+        className
     } = props;
 
     return (
-        <svg xmlns={'http://www.w3.org/2000/svg'} width={size} height={size}>
+        <svg xmlns={'http://www.w3.org/2000/svg'} width={size} height={size} className={className}>
             <defs>
                 {props.background}
                 <mask id={'codeMask'}>
@@ -52,7 +52,7 @@ export const MaskedQRCode: FC<Props> = props => {
                         typeNumber={typeNumber}
                         errorCorrectionLevel={errorCorrectionLevel}
                         size={size}
-                        activeColour={!skipMaskColour ? '#fff' : undefined}
+                        activeColour={'#fff'}
                         variant={variant}
                     />
                 </mask>
