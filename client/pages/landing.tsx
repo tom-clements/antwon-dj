@@ -1,7 +1,8 @@
 import { RootContainer } from 'components/core/RootContainer';
-import { SpinnerPageSize } from 'components/core/SpinnerPageSize';
+import { SpinnerQRCode } from 'components/atoms/QRCode';
 import { Box, styled, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import React from 'react';
 
 const RootBox = styled(Box)`
     width: 100%;
@@ -16,18 +17,17 @@ const TextBox = styled(Box)`
     color: ${grey[500]};
     text-align: center;
     justify-content: center;
-    margin-bottom: ${props => props.theme.spacing(4)};
+    margin: ${props => props.theme.spacing(5, 0)};
 `;
 
-const QRCode = styled('img')`
-    width: 20%;
-`;
+// todo, move baseUrl determination to environment config!
+const getQRData = (roomCode: string) => `https://www.djantwon.com/room?code=${roomCode}`;
 
 export default function SpinnerPage() {
     return (
         <RootContainer>
             <RootBox>
-                <SpinnerPageSize />
+                <SpinnerQRCode data={getQRData('soiree')} size={256} />
                 <TextBox>
                     <Typography variant="h1">
                         djantwon.com
@@ -36,7 +36,6 @@ export default function SpinnerPage() {
                         Room code: <em><strong>SOIREE</strong></em>
                     </Typography>
                 </TextBox>
-                <QRCode src={'/soiree-qr.svg'}/>
             </RootBox>
         </RootContainer>
     );
