@@ -1,6 +1,7 @@
 import React, { CSSProperties, FC } from 'react';
-import { QRCodeModule, QRCodeModuleVariant } from 'components/atoms/QRCode/QRCodeModule';
-import { useQRCode, UseQRCodeProps } from 'model/QRCode';
+import { QRCodeModuleVariant } from 'components/atoms/QRCode/QRCodeModule';
+import { UseQRCodeProps } from 'model/QRCode';
+import { QRCodeBase } from 'components/atoms/QRCode/QRCodeBase';
 
 interface Props extends UseQRCodeProps {
     /**
@@ -23,46 +24,26 @@ interface Props extends UseQRCodeProps {
 
 export const QRCode: FC<Props> = props => {
     const {
+        data,
+        mode,
+        typeNumber,
+        errorCorrectionLevel,
         size = 256,
         activeColour = '#fff',
         variant = QRCodeModuleVariant.Square,
     } = props;
 
-    const qrCode = useQRCode(props);
-    const moduleCount = qrCode.getModuleCount();
-
-    if (!moduleCount) {
-        return (
-            <svg xmlns={'http://www.w3.org/2000/svg'} width={size} height={size}>
-                <text style={{ fill: props.activeColour, transform: 'translateY(1em)' }}>
-                    Error
-                </text>
-                <text style={{ fill: props.activeColour, transform: 'translateY(2em)' }}>
-                    No modules to render
-                </text>
-            </svg>
-        );
-    }
-
-    const moduleIndex = Array.from(Array(moduleCount).keys());
-
     return (
         <svg xmlns={'http://www.w3.org/2000/svg'} width={size} height={size}>
-            {
-                moduleIndex.map(rowIndex =>
-                    moduleIndex.map(columnIndex =>
-                        <QRCodeModule
-                            key={`qrm_${columnIndex}_${rowIndex}`}
-                            i={columnIndex}
-                            j={rowIndex}
-                            moduleCount={moduleCount}
-                            size={size}
-                            isActive={qrCode.isDark(rowIndex, columnIndex)}
-                            variant={variant}
-                            activeColour={activeColour}
-                        />
-                    ))
-            }
+            <QRCodeBase
+                data={data}
+                mode={mode}
+                typeNumber={typeNumber}
+                errorCorrectionLevel={errorCorrectionLevel}
+                size={size}
+                activeColour={activeColour}
+                variant={variant}
+            />
         </svg>
     );
 };
