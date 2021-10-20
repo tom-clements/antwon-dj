@@ -1,7 +1,7 @@
 import { isNil } from 'lodash';
 import { FC, PropsWithChildren } from 'react';
 import { styled } from '@mui/material/styles';
-import { keyframes } from '@mui/system';
+import { fadeIn, fillTransition } from 'styles/keyframes';
 
 interface Props {
     /**
@@ -9,24 +9,6 @@ interface Props {
      */
     scale?: number;
 }
-
-const fillTransition = (from: string, to: string) => keyframes`
-    from {
-        fill: ${from};
-    }
-    to {
-        fill: ${to};
-    }
-`;
-
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-`;
 
 const SpinnerContainer = styled((props: PropsWithChildren<Props>) => (
     <svg {...props}
