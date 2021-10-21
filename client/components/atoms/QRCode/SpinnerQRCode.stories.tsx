@@ -8,17 +8,19 @@ export default {
     component: SpinnerQRCode,
     subcomponents: { QRCodeModule },
     argTypes: {
-        size: {
+        defaultSize: {
             control: { type: 'range', min: 64, max: 640, step: 64 },
         },
     },
     args: {
-        size: 256,
+        defaultSize: 256,
     }
 };
 
 export const Spinner: ComponentStory<typeof SpinnerQRCode> = args => (
-    <SpinnerQRCode {...args} />
+    <div style={{ width: args.defaultSize, height: args.defaultSize }}>
+        <SpinnerQRCode {...args} />
+    </div>
 );
 Spinner.argTypes = {
     data: { control: { type: 'text' } },

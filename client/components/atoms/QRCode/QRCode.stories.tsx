@@ -8,7 +8,7 @@ export default {
     component: QRCode,
     subcomponents: { QRCodeModule },
     argTypes: {
-        size: {
+        defaultSize: {
             control: { type: 'range', min: 64, max: 640, step: 64 },
         },
         activeColour: {
@@ -22,14 +22,16 @@ export default {
         }
     },
     args: {
-        size: 256,
+        defaultSize: 256,
         activeColour: '#fff',
         variant: QRCodeModuleVariant[QRCodeModuleVariant.Square],
     }
 };
 
 export const Default: ComponentStory<typeof QRCode> = args => (
-    <QRCode {...args} />
+    <div style={{ width: args.defaultSize, height: args.defaultSize }}>
+        <QRCode {...args} />
+    </div>
 );
 Default.argTypes = {
     data: { control: { type: 'text' } },

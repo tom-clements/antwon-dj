@@ -13,6 +13,13 @@ const RootBox = styled(Box)`
     flex-direction: column;
 `;
 
+const QRBox = styled(Box)`
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const TextBox = styled(Box)`
     color: ${grey[500]};
     text-align: center;
@@ -27,7 +34,9 @@ export default function SpinnerPage() {
     return (
         <RootContainer>
             <RootBox>
-                <SpinnerQRCode data={getQRData('soiree')} size={256} />
+                <QRBox>
+                    <SpinnerQRCode data={getQRData('soiree')} size={256} />
+                </QRBox>
                 <TextBox>
                     <Typography variant="h2">
                         djantwon.com

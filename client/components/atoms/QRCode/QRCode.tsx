@@ -5,10 +5,10 @@ import { QRCodeBase } from 'components/atoms/QRCode/QRCodeBase';
 
 interface Props extends UseQRCodeProps {
     /**
-     * QR code container size in pixels
+     * QR code viewbox size in pixels
      * Default: 256
      */
-    size?: number;
+    defaultSize?: number;
 
     /**
      * Active colour. Default: #fff
@@ -28,19 +28,23 @@ export const QRCode: FC<Props> = props => {
         mode,
         typeNumber,
         errorCorrectionLevel,
-        size = 256,
+        defaultSize = 256,
         activeColour = '#fff',
         variant = QRCodeModuleVariant.Square,
     } = props;
 
     return (
-        <svg xmlns={'http://www.w3.org/2000/svg'} width={size} height={size}>
+        <svg
+            xmlns={'http://www.w3.org/2000/svg'}
+            style={{ width: '100%', height: '100%' }}
+            viewBox={`0 0 ${defaultSize} ${defaultSize}`}
+        >
             <QRCodeBase
                 data={data}
                 mode={mode}
                 typeNumber={typeNumber}
                 errorCorrectionLevel={errorCorrectionLevel}
-                size={size}
+                defaultSize={defaultSize}
                 activeColour={activeColour}
                 variant={variant}
             />

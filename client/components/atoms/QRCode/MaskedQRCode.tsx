@@ -15,7 +15,7 @@ interface Props extends UseQRCodeProps {
      * QR code container size in pixels
      * Default: 256
      */
-    size?: number;
+    defaultSize?: number;
 
     /**
      * Module variant style, see `QRCodeModuleVariant` for options.
@@ -36,13 +36,18 @@ export const MaskedQRCode: FC<Props> = props => {
         mode,
         typeNumber,
         errorCorrectionLevel,
-        size = 256,
+        defaultSize = 256,
         variant = QRCodeModuleVariant.Square,
         className
     } = props;
 
     return (
-        <svg xmlns={'http://www.w3.org/2000/svg'} width={size} height={size} className={className}>
+        <svg
+            xmlns={'http://www.w3.org/2000/svg'}
+            style={{ width: '100%', height: '100%' }}
+            viewBox={`0 0 ${defaultSize} ${defaultSize}`}
+            className={className}
+        >
             <defs>
                 {props.background}
                 <mask id={'codeMask'}>
@@ -51,7 +56,7 @@ export const MaskedQRCode: FC<Props> = props => {
                         mode={mode}
                         typeNumber={typeNumber}
                         errorCorrectionLevel={errorCorrectionLevel}
-                        size={size}
+                        defaultSize={defaultSize}
                         activeColour={'#fff'}
                         variant={variant}
                     />
@@ -60,8 +65,8 @@ export const MaskedQRCode: FC<Props> = props => {
             <rect
                 x={0}
                 y={0}
-                width={size}
-                height={size}
+                width={defaultSize}
+                height={defaultSize}
                 fill={'url(#codeBackground)'}
                 mask={'url(#codeMask)'}
             />

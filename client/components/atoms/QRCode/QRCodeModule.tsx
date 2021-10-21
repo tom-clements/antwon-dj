@@ -56,9 +56,9 @@ interface Props {
     moduleCount: number;
 
     /**
-     * QR code container size in pixels
+     * QR code viewbox size in pixels
      */
-    size: number;
+    defaultSize: number;
 
     /**
      * Whether the given module is active or 'dark'
@@ -86,8 +86,8 @@ interface Props {
 export const QRCodeModule: FC<Props> = props => {
     if (!props.isActive) return null;
 
-    const { i, j, moduleCount, size, activeColour, variant } = props;
-    const moduleSize = size / moduleCount;
+    const { i, j, moduleCount, defaultSize, activeColour, variant } = props;
+    const moduleSize = defaultSize / moduleCount;
     const modulePath = getModulePath(i, j, moduleCount, moduleSize, variant);
 
     return (

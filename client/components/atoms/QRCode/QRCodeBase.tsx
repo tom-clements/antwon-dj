@@ -4,9 +4,9 @@ import { useQRCode, UseQRCodeProps } from 'model/QRCode';
 
 interface Props extends UseQRCodeProps {
     /**
-     * QR code container size in pixels
+     * QR code viewbox size in pixels
      */
-    size: number;
+    defaultSize: number;
 
     /**
      * Active colour
@@ -49,7 +49,7 @@ export const QRCodeBase: FC<Props> = props => {
                             i={columnIndex}
                             j={rowIndex}
                             moduleCount={moduleCount}
-                            size={props.size}
+                            defaultSize={props.defaultSize}
                             isActive={qrCode.isDark(rowIndex, columnIndex)}
                             variant={props.variant}
                             activeColour={props.activeColour}

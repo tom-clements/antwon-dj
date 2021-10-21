@@ -21,16 +21,16 @@ const QRCode = styled(MaskedQRCode)`
 
 interface Props extends Pick<UseQRCodeProps, 'data'> {
     /**
-     * QR code container size in pixels
+     * QR code viewbox size in pixels
      * Default: 256
      */
-    size?: number;
+     defaultSize?: number;
 }
 
 export const SpinnerQRCode: FC<Props> = props => {
     const {
         data,
-        size = 256,
+        defaultSize = 256,
     } = props;
 
     return (
@@ -39,7 +39,7 @@ export const SpinnerQRCode: FC<Props> = props => {
             mode={'Byte'}
             typeNumber={0}
             errorCorrectionLevel={'H'}
-            size={size}
+            defaultSize={defaultSize}
             background={
                 <RadialQRBackground>
                     <stop offset="5%" stopColor="#aa00ff" />

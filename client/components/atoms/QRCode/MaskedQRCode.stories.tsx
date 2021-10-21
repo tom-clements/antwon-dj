@@ -9,7 +9,7 @@ export default {
     component: MaskedQRCode,
     subcomponents: { QRCodeModule },
     argTypes: {
-        size: {
+        defaultSize: {
             control: { type: 'range', min: 64, max: 640, step: 64 },
         },
         variant: {
@@ -20,21 +20,23 @@ export default {
         background: { table: { disable: true } },
     },
     args: {
-        size: 256,
+        defaultSize: 256,
         variant: QRCodeModuleVariant[QRCodeModuleVariant.Square],
     }
 };
 
 export const Masked: ComponentStory<typeof MaskedQRCode> = args => (
-    <MaskedQRCode
-        {...args}
-        background={
-            <RadialQRBackground>
-                <stop offset="5%" stopColor="#aa00ff" />
-                <stop offset="95%" stopColor="#d32f2f" />
-            </RadialQRBackground>
-        }
-    />
+    <div style={{ width: args.defaultSize, height: args.defaultSize }}>
+        <MaskedQRCode
+            {...args}
+            background={
+                <RadialQRBackground>
+                    <stop offset="5%" stopColor="#aa00ff" />
+                    <stop offset="95%" stopColor="#d32f2f" />
+                </RadialQRBackground>
+            }
+        />
+    </div>
 );
 Masked.argTypes = {
     data: { control: { type: 'text' } },
