@@ -29,10 +29,10 @@ export default function SpinnerPage() {
             <RootBox>
                 <SpinnerQRCode data={getQRData('soiree')} size={256} />
                 <TextBox>
-                    <Typography variant="h1">
+                    <Typography variant="h2">
                         djantwon.com
                     </Typography>
-                    <Typography variant="h3">
+                    <Typography variant="h5">
                         Room code: <em><strong>SOIREE</strong></em>
                     </Typography>
                 </TextBox>

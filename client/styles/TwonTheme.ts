@@ -1,7 +1,7 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { grey, purple } from '@mui/material/colors';
 
-export const twonDark = createTheme({
+export const twonDark = responsiveFontSizes(createTheme({
     palette: {
         mode: 'dark',
         primary: {
@@ -14,4 +14,4 @@ export const twonDark = createTheme({
     typography: {
         fontFamily: 'Poppins, sans-serif'
     }
-});
+}));
