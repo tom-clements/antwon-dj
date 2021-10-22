@@ -5,10 +5,18 @@
 1. Confirm environment dependencies
 
     Please confirm the following minimum versions in your development environment:
-    - `node`: "15.6.0"
-    - `npm`: "7.4.0"
+    - `node`: 15.6.0
+    - `yarn`: 1.x.x and upwards
 
     Earlier minor verions _may_ work but are untested.
+
+    Yarn v3 is now configured as the default package manager on a project basis.
+    However it is currently still recommended to have a global install so that we
+    can correctly defer to the more deterministic manager across environments.
+
+    ```shell
+    npm install -g yarn
+    ```
 
 2. Clone this repository
 
@@ -32,7 +40,7 @@
     ensure the same version is installed. At the time of writing this was 5.1.0.
 
     ```sh
-    npm install -g @aws-amplify/cli@5.1.0
+    yarn global add @aws-amplify/cli@5.1.0
     ```
 
 5. Configure AWS Amplify locally (if not done already; otherwise confirm details)
@@ -44,13 +52,13 @@
 6. Install npm dependencies
 
    ```sh
-   npm i
+   yarn install
    ```
 
 7. Start a local development server
 
     ```sh
-    npm run dev
+    yarn dev
     ```
 
 8. Code or have fun?
