@@ -1,5 +1,5 @@
 import { RootContainer } from 'components/core/RootContainer';
-import { SpinnerQRCode } from 'components/atoms/QRCode';
+import { QRCodeModuleVariant, SpinnerQRCode } from 'components/atoms/QRCode';
 import { Box, styled, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import React from 'react';
@@ -14,7 +14,7 @@ const RootBox = styled(Box)`
 `;
 
 const QRBox = styled(Box)`
-    width: 25%;
+    width: 16em;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,7 +35,7 @@ export default function SpinnerPage() {
         <RootContainer>
             <RootBox>
                 <QRBox>
-                    <SpinnerQRCode data={getQRData('soiree')} size={256} />
+                    <SpinnerQRCode data={getQRData('soiree')} variant={QRCodeModuleVariant.DiamondWithSquareFinder} />
                 </QRBox>
                 <TextBox>
                     <Typography variant="h2">

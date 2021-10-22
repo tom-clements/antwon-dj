@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { styled } from '@mui/material';
 import { UseQRCodeProps } from 'model/QRCode';
 import { RadialQRBackground } from 'components/atoms/QRCode/QRMaskBackgrounds';
-import { MaskedQRCode } from 'components/atoms/QRCode/MaskedQRCode';
+import { MaskedQRCode, QRCodeModuleVariant } from 'components/atoms/QRCode';
 import { fillTransition } from 'styles/keyframes';
 
 const QRCode = styled(MaskedQRCode)`
@@ -19,27 +19,39 @@ const QRCode = styled(MaskedQRCode)`
     }
 `;
 
-interface Props extends Pick<UseQRCodeProps, 'data'> {
+type BaseProps = Pick<UseQRCodeProps, 'data'> & Partial<UseQRCodeProps>;
+interface Props extends BaseProps {
     /**
      * QR code viewbox size in pixels
      * Default: 256
      */
      defaultSize?: number;
+
+    /**
+     * Module variant style, see `QRCodeModuleVariant` for options.
+     * Default: QRCodeModuleVariant.Square
+     */
+    variant?: QRCodeModuleVariant;
 }
 
 export const SpinnerQRCode: FC<Props> = props => {
     const {
         data,
+        mode = 'Byte',
+        typeNumber = 0,
+        errorCorrectionLevel = 'H',
         defaultSize = 256,
+        variant = QRCodeModuleVariant.Square,
     } = props;
 
     return (
         <QRCode
             data={data}
-            mode={'Byte'}
-            typeNumber={0}
-            errorCorrectionLevel={'H'}
+            mode={mode}
+            typeNumber={typeNumber}
+            errorCorrectionLevel={errorCorrectionLevel}
             defaultSize={defaultSize}
+            variant={variant}
             background={
                 <RadialQRBackground>
                     <stop offset="5%" stopColor="#aa00ff" />

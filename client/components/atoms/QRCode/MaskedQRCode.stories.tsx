@@ -18,6 +18,7 @@ export default {
             control: { type: 'inline-radio' },
         },
         background: { table: { disable: true } },
+        className: { table: { disable: true } },
     },
     args: {
         defaultSize: 256,
