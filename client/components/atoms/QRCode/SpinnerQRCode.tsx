@@ -8,13 +8,13 @@ import { fillTransition } from 'styles/keyframes';
 const QRCode = styled(MaskedQRCode)`
     & [data-i]:nth-child(odd):not([data-finder]) {
         animation:
-            ${props => fillTransition(props.theme.palette.grey[100], props.theme.palette.grey[900])} 1s ease-in-out infinite alternate-reverse
+            ${props => fillTransition(props.theme.palette.grey[100], props.theme.palette.grey[900])} 1.33s ease-in-out infinite alternate-reverse
             ;
     }
 
     & [data-j]:nth-child(even):not([data-finder]) {
         animation:
-            ${props => fillTransition(props.theme.palette.grey[900], props.theme.palette.grey[100])} 1.33s ease-in-out infinite alternate-reverse
+            ${props => fillTransition(props.theme.palette.grey[900], props.theme.palette.grey[100])} 2s ease-in-out infinite alternate-reverse
             ;
     }
 `;
