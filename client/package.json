@@ -13,7 +13,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "storybook": "start-storybook -p 6006",
-    "build:storybook": "build-storybook"
+    "storybook:build": "build-storybook"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.20",

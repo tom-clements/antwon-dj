@@ -1,6 +1,36 @@
 # antwon.dj/client
 
-## Development setup
+The client is built with the Next.js React web framework. This provides us with neat
+cutting edge features out-of-the box such as hybrid static & server rendering, TypeScript
+support, smart bundling, route pre-fetching, and more.
+
+For UI and styling, we use the @mui and @emotion libraries, primarily leveraging the styled
+component API.
+In development, this components within this framework can be previewed and iterated upon
+with Storybook.
+
+State management and data access is built with Redux Toolkit and RTK Query.
+
+## Development
+
+### Quick reference
+
+- Development server
+    - `yarn dev`
+        - http://localhost:3000/
+- Storybook
+    - `yarn storybook`
+        - http://localhost:6006/
+    - `yarn storybook:build`
+- Linting
+  - `yarn lint`
+  - `yarn lint:fix`
+- Testing
+  - TBC
+- Upgrading
+  - `yarn upgrade-interactive`
+
+### Initial setup
 
 1. Confirm environment dependencies
 
@@ -11,8 +41,8 @@
     Earlier minor verions _may_ work but are untested.
 
     Yarn v3 is now configured as the default package manager on a project basis.
-    However it is currently still recommended to have a global install so that we
-    can correctly defer to the more deterministic manager across environments.
+    However it is currently still recommended to have a v1 global install so that
+    we can correctly defer to the more deterministic manager across environments.
 
     ```shell
     npm install -g yarn
@@ -45,15 +75,16 @@
 
 5. Configure AWS Amplify locally (if not done already; otherwise confirm details)
 
-    Roughly follow this offical guide https://docs.amplify.aws/cli/start/install#option-2-follow-the-instructions.
+    Roughly follow this official guide https://docs.amplify.aws/cli/start/install#option-2-follow-the-instructions.
 
-    Opt for the default username. Ensure the accessKeyId and secretAccessKey are setup for your local profile.
+    Opt for the default username. Ensure the accessKeyId and secretAccessKey are setup for
+    your local profile.
 
 6. Install npm dependencies
 
-   ```sh
-   yarn install
-   ```
+    ```sh
+    yarn install
+    ```
 
 7. Start a local development server
 
@@ -61,6 +92,24 @@
     yarn dev
     ```
 
+    The server should be accessible from http://localhost:3000/ by default.
+
 8. Code or have fun?
 
     The possibilities are _almost_ endless.
+
+### Upgrading dependencies
+
+There's no hard and fast rules when it comes to updating packages. While minor versions bumps can
+sometimes be blanket performed without issue, this is not always the case. Where multiple packages
+have major changes, a good rule of thumb is to consider upgrades piece-wise by package and by
+comparing upgrade and compatibility notes.
+Sometimes an upgrade is simply not possible and the reasons why should be documented as such,
+including any potential future resolution.
+
+`yarn berry`, our package manager for the client, has a useful plugin pre-installed in the repo
+for performing this task from the command-line:
+
+```
+yarn upgrade-interactive
+```
