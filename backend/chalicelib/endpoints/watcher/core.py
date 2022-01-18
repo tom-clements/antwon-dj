@@ -1,15 +1,14 @@
 import json
 import asyncio
 import time
+from collections import namedtuple
+
 import aiohttp
 import requests
 from typing import List, Dict
-from chalicelib.antwondb import db_queries
+from chalicelib.antwondb.db import get_db_session
+from chalicelib.antwondb.schema import RoomSong, Song, Room
 from chalicelib.utils.chalice import get_base_url
-from chalice import Blueprint, Rate
-
-
-watcher_routes = Blueprint(__name__)
 
 
 def add_song_to_spotify_playlist(song_uri: str, room_guid: str) -> None:
@@ -30,33 +29,50 @@ def get_current_song_playing(room_guid: str) -> Dict[str, str]:
     return current_playing
 
 
-def check_next_song(next_song: str, room_guid: str) -> None:
+def check_next_song(next_song: namedtuple, room_guid: str) -> None:
     # add next song to playlist if it hasn't been added already
-    if not next_song["is_added_to_playlist"]:
+    if not next_song.is_added_to_playlist:
         print(f"adding song to playlist: {next_song}")
         # TODO: Error handle adding to playlist
-        add_song_to_spotify_playlist(next_song["song_uri"], room_guid)
-        db_queries.update_db_song_added_to_playlist(next_song["room_songs_id"])
+        add_song_to_spotify_playlist(next_song.song_uri, room_guid)
+        db_session = get_db_session()
+        db_session.query(RoomSong).filter(RoomSong.room_songs_id == next_song.room_songs_id).update(
+            {RoomSong.is_added_to_playlist: True}, synchronize_session=False
+        )
+        db_session.commit()
+        db_session.close()
     current_playing = get_current_song_playing(room_guid)
     # if the next song starts playing, set it as played
-    if current_playing["song_uri"] == next_song["song_uri"]:
+    if current_playing["song_uri"] == next_song.song_uri:
         print("updating next song to is_played")
-        db_queries.update_db_add_song_played(next_song["room_songs_id"])
+        db_session = get_db_session()
+        db_session.query(RoomSong).filter(RoomSong.room_songs_id == next_song.room_songs_id).update(
+            {RoomSong.is_played: True}, synchronize_session=False
+        )
+        db_session.commit()
+        db_session.close()
 
 
 def song_watch(room_guid: str) -> None:
-    next_song = db_queries.get_next_song(room_guid)
-    print(f"next song: {next_song}")
+    db_session = get_db_session()
+    next_song = (
+        db_session.query(
+            RoomSong.room_songs_id,
+            Song.song_uri,
+            RoomSong.is_added_to_playlist,
+            Song.song_name,
+        )
+        .join(Song)
+        .join(Room)
+        .filter(RoomSong.is_played == False, RoomSong.room_id == 1)
+        .order_by(RoomSong.insert_time.desc())
+        .first()
+    )
+    db_session.close()
+    print(f"next song: {dict(next_song)}")
     # if there is a next song
     if next_song:
         check_next_song(next_song, room_guid)
-
-
-@watcher_routes.route("/pollRoom", methods=["GET"])
-def poll_room_get():
-    room_guid = watcher_routes.current_request.query_params["room_guid"]
-    song_watch(room_guid)
-    return {"statusCode": 200, "body": json.dumps("success")}
 
 
 async def fetch(session: aiohttp.ClientSession, url: str):
@@ -72,8 +88,16 @@ async def poll_rooms(urls: List[str]):
 
 def poll_five_seconds():
     for i in range(10):
-        active_rooms = db_queries.get_active_rooms()
-        room_guids = [room["room_guid"] for room in active_rooms]
+        db_session = get_db_session()
+        active_rooms = (
+            db_session.query(
+                Room.room_guid,
+            )
+            .filter(Room.is_inactive == False)
+            .all()
+        )
+        db_session.close()
+        room_guids = [room.room_guid for room in active_rooms]
         print(f"Active rooms: {room_guids}")
         api = get_base_url()
         urls = [f"{api}/pollRoom?room_guid={room_guid}" for room_guid in room_guids]
@@ -81,9 +105,3 @@ def poll_five_seconds():
         asyncio.set_event_loop(loop)
         loop.run_until_complete(poll_rooms(urls))
         time.sleep(5)
-
-
-@watcher_routes.schedule(Rate(1, unit=Rate.MINUTES))
-def poll_app(event):
-    poll_five_seconds()
-    return {"statusCode": 200, "body": json.dumps("success")}
