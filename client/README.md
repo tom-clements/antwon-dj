@@ -86,7 +86,20 @@ State management and data access is built with Redux Toolkit and RTK Query.
     yarn install
     ```
 
-7. Start a local development server
+7. Setup local environment variables
+
+    At the root of the client, add a file called `.env.local` and paste the following snippet.
+
+    ```sh
+    API_BASE_SCHEME=
+    API_BASE_HOST=
+    API_BASE_STACK=
+    ```
+
+    For each variable with a missing value, find the appropriate from Taylor and paste.
+    These will be stored in a secret manager in the near future to aid setup.
+
+8. Start a local development server
 
     ```sh
     yarn dev
@@ -94,7 +107,7 @@ State management and data access is built with Redux Toolkit and RTK Query.
 
     The server should be accessible from http://localhost:3000/ by default.
 
-8. Code or have fun?
+9. Code or have fun?
 
     The possibilities are _almost_ endless.
 

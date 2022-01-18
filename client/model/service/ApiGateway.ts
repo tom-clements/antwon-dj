@@ -1,15 +1,21 @@
+export function getApiBaseScheme() {
+    const scheme = process.env.API_BASE_SCHEME;
+    if (!scheme) throw new Error('Missing API base scheme!');
+    return scheme;
+}
+
+export function getApiBaseHost() {
+    const host = process.env.API_BASE_HOST;
+    if (!host) throw new Error('Missing API base host!');
+    return host;
+}
+
+export function getApiBaseStack() {
+    const stack = process.env.API_BASE_STACK;
+    if (!stack) throw new Error('Missing API base stack!');
+    return stack;
+}
+
 export function getBaseUrl() {
-    const scheme = "https";
-
-    /**
-     * Warning - realistically, this should not be accessible beyond dev / if repo goes public!
-     */
-    const host = "m5ua2jc51a.execute-api.eu-west-2.amazonaws.com";
-    
-    /**
-     * This should update via environment variables or similar at a later stage
-     */
-    const stack = "dev";
-
-    return `${scheme}://${host}/${stack}/`;
+    return `${getApiBaseScheme()}://${getApiBaseHost()}/${getApiBaseStack()}/`;
 }
