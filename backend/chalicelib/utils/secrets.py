@@ -1,11 +1,9 @@
 import boto3
 import base64
-from botocore.exceptions import ClientError
 import json
 
 
 def get_secret(secret_name):
-
     region_name = "eu-west-2"
 
     # Create a Secrets Manager client

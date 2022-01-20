@@ -7,7 +7,11 @@ from functools import wraps
 import spotipy
 from spotipy import oauth2
 from spotipy.oauth2 import SpotifyClientCredentials
-from chalicelib.antwondb import db_queries
+from sqlalchemy.orm import session
+
+from chalicelib.antwondb import db
+from chalicelib.antwondb.db import get_db_session
+from chalicelib.antwondb.schema import Room, SpotifyUser
 from chalicelib.utils.secrets import get_secret
 from chalicelib.utils.chalice import get_base_url
 
@@ -67,22 +71,36 @@ def refresh_spotify_token(refresh_token):
     return token
 
 
-def get_spotify_session(f):
+@db.use_db_session
+def get_spotify_user(db_session: session, room_guid: str):
+    return (
+        db_session.query(
+            SpotifyUser.spotify_user_id, SpotifyUser.spotify_access_token, SpotifyUser.spotify_refresh_token
+        )
+            .select_from(SpotifyUser)
+            .join(Room, Room.owner_user_id == SpotifyUser.user_id)
+            .filter(Room.room_guid == room_guid)
+            .one()
+    )
+
+
+@db.use_db_session
+def update_spotify_token(db_session: session, token: str, spotify_user_id: str):
+    db_session.query(SpotifyUser).filter(SpotifyUser.spotify_user_id == spotify_user_id).update(
+        {SpotifyUser.spotify_access_token: token}, synchronize_session=False
+    )
+
+
+def use_spotify_session(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        user_id = db_queries.get_room_id_from_guid(kwargs["room_guid"])
-        spotify_user = db_queries.get_spotify_user_details(user_id)
+        spotify_user = get_spotify_user(kwargs["room_guid"])
         try:
-            spotify_session = get_spotify(auth=spotify_user["spotify_access_token"])
+            spotify_session = get_spotify(auth=spotify_user.spotify_access_token)
             return f(spotify_session, *args, **kwargs)
         except spotipy.client.SpotifyException:
-            try:
-                token = refresh_spotify_token(spotify_user["spotify_refresh_token"])
-                db_queries.update_access_token(spotify_user["spotify_user_id"], token)
-                spotify_session = get_spotify(auth=token)
-                return f(spotify_session, *args, **kwargs)
-            except:
-                raise
-                return get_spotify_session(f)
-
+            token = refresh_spotify_token(spotify_user.spotify_refresh_token)
+            update_spotify_token(token, spotify_user.spotify_user_id)
+            spotify_session = get_spotify(auth=token)
+            return f(spotify_session, *args, **kwargs)
     return decorated

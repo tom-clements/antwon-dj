@@ -1,9 +1,11 @@
 from chalice import Chalice
 from chalice.app import ConvertToMiddleware
-from chalicelib.endpoints import room_routes, spotify_routes, watcher_routes
 from aws_lambda_powertools import Logger
 from aws_lambda_powertools import Tracer
 
+from chalicelib.endpoints.room.endpoints import room_routes
+from chalicelib.endpoints.spotify.endpoints import spotify_routes
+from chalicelib.endpoints.watcher.endpoints import watcher_routes
 
 app = Chalice(app_name="backend")
 app.register_blueprint(room_routes)
