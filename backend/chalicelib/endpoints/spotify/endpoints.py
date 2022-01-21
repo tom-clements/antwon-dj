@@ -18,7 +18,9 @@ def spotify_connect_get():
 @spotify_routes.route("/spotifySearch", methods=["GET"], cors=True)
 def spotify_search_get():
     params = spotify_routes.current_request.query_params
-    res = search_songs(song_query=params["query"], room_guid=params["room_guid"])
+    spotify_routes.log.info(f"/spotifySearch {params['query']} initialised")
+    res = search_songs(song_query=params["query"], room_guid=params["room_guid"], spotify_routes=spotify_routes)
+    spotify_routes.log.info(f"/spotifySearch {params['query']} complete")
     return res
 
 

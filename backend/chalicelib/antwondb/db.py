@@ -2,7 +2,7 @@ from functools import wraps
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from chalicelib.utils.secrets import get_secret
+from chalicelib.utils.secrets import AwsSecretRetrieval
 
 
 def create_db_engine(db_conn_string, debug_mode=False):
@@ -17,11 +17,15 @@ def create_db_engine(db_conn_string, debug_mode=False):
     )
 
 
-def get_db_session() -> Session:
-    secrets = get_secret("antwon-rds-credentials")
-    print(secrets)
-    db_conn_string = f"mysql+pymysql://{secrets['username']}:{secrets['password']}@{secrets['host']}:{secrets['port']}/antwon"
-    print(db_conn_string)
+@AwsSecretRetrieval(
+    "antwon-rds-credentials",
+    username="username",
+    password="password",
+    host="host",
+    port="port",
+)
+def get_db_session(username, password, host, port) -> Session:
+    db_conn_string = f"mysql+pymysql://{username}:{password}@{host}:{port}/antwon"
     engine = create_db_engine(db_conn_string)
     Session = sessionmaker(bind=engine)
     # todo: setup connection pooling properties
@@ -35,4 +39,5 @@ def use_db_session(f):
         res = f(db_session, *args, **kwargs)
         db_session.close()
         return res
+
     return decorated
