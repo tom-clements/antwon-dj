@@ -151,12 +151,6 @@ if __name__ == "__main__":
     now(), now());
     """
 
-    sql12 = """
-    insert into antwon.SpotifyUsers
-    (spotify_user_guid, user_id,spotify_user_username, spotify_user_name,spotify_profile_image_url, spotify_access_token, spotify_refresh_token)
-    VALUES
-    ('45630889-760f-4dce-94df-faa9e8824386', 1, 'tom_clements', 'Tom Clements', 'https://scontent-cdt1-1.xx.fbcdn.net/v/t31.18172-1/s320x320/17620217_10154712243329565_7971345170084661803_o.jpg?_nc_cat=103&ccb=1-3&_nc_sid=0c64ff&_nc_ohc=ciPxv1ns8nwAX8XjUFR&_nc_ht=scontent-cdt1-1.xx&edm=AP4hL3IEAAAA&oh=cd68145673883bc83cdd948821b3a64b&oe=611E2393', 'BQBy6iMt-03NhZl89aSM0zMi6peG48Z7BL9G5bzF3Mi5ZSusAKcxIASxkfCFxib6sEnpW_fRvKzEXfYwmM9la62XoGHNnXsNQJisa_L9j5pEqUYZ6BQhBz5DNYTaUOZ7OtCgDuzXMhbiTNDO1CmaKpxYgMBZknxW8g1SZxQnWXKGzreM5m9GgkoBZq3wYbnFgIVkYSTpgYDRPnVGrU9EdLE45s2sKiGMZYttFNJcD-MhEYsm5Tp-Cw', 'AQBljYjFnl5VrnCFq1r3gmVeti4D3sxvtn6bzs6BfuQOJGEEJPzvabXSMvzh3YvzXIf0xMxASx-o0zCDYycbuELNeJSBvfGQ5Ay9byfSWYhR_yR7AG31ma_pTdGohYmiy-4');
-    """
 
     with engine.connect() as con:
         con.execute(sql1)

@@ -5,3 +5,4 @@ requests==2.26.0
 aiohttp==3.7.4.post0
 sqlalchemy==1.4.27
 pymysql==1.0.2
+aws-secretsmanager-caching==1.1.1.5

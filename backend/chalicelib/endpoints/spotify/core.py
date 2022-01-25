@@ -1,5 +1,6 @@
 import uuid
 from collections import namedtuple
+import time
 from typing import Dict, List, Any
 
 import spotipy
@@ -11,8 +12,14 @@ from chalicelib.utils import spotify
 
 
 @spotify.use_spotify_session
-def search_songs(spotify_session: spotipy.Spotify, song_query: str, room_guid: str) -> Dict[str, List[Dict[str, str]]]:
+def search_songs(
+    spotify_session: spotipy.Spotify, song_query: str, room_guid: str, spotify_routes
+) -> Dict[str, List[Dict[str, str]]]:
+    spotify_routes.log.info(f"/spotifySearch searching songs")
+    st = time.time()
     result = spotify_session.search(q=song_query, type="track")
+    spotify_routes.log.info(f"/spotifySearch spotify search result took {int(1000*(time.time()-st))}ms")
+
     songs = [
         {
             "id": r["uri"],
