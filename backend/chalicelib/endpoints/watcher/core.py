@@ -1,12 +1,14 @@
 import json
 import asyncio
 import time
-from collections import namedtuple
-
 import aiohttp
 import requests
-from typing import List, Dict
-from chalicelib.antwondb.db import get_db_session
+from typing import List, Dict, Tuple, Any
+from collections import namedtuple
+
+from sqlalchemy.orm import session
+
+from chalicelib.antwondb import db
 from chalicelib.antwondb.schema import RoomSong, Song, Room
 from chalicelib.utils.chalice import get_base_url
 
@@ -29,50 +31,58 @@ def get_current_song_playing(room_guid: str) -> Dict[str, str]:
     return current_playing
 
 
-def check_next_song(next_song: namedtuple, room_guid: str) -> None:
+@db.use_db_session(commit=True)
+def check_next_song(next_song: namedtuple, room_guid: str, db_session: session) -> Tuple[bool, bool]:
     # add next song to playlist if it hasn't been added already
+    added_to_playlist = removed_from_queue = False
     if not next_song.is_added_to_playlist:
         print(f"adding song to playlist: {next_song}")
         # TODO: Error handle adding to playlist
         add_song_to_spotify_playlist(next_song.song_uri, room_guid)
-        db_session = get_db_session()
         db_session.query(RoomSong).filter(RoomSong.room_songs_id == next_song.room_songs_id).update(
             {RoomSong.is_added_to_playlist: True}, synchronize_session=False
         )
         db_session.commit()
-        db_session.close()
+        added_to_playlist = True
     current_playing = get_current_song_playing(room_guid)
     # if the next song starts playing, set it as played
     if current_playing["song_uri"] == next_song.song_uri:
         print("updating next song to is_played")
-        db_session = get_db_session()
         db_session.query(RoomSong).filter(RoomSong.room_songs_id == next_song.room_songs_id).update(
             {RoomSong.is_played: True}, synchronize_session=False
         )
-        db_session.commit()
-        db_session.close()
+        removed_from_queue = True
+    return added_to_playlist, removed_from_queue
 
 
-def song_watch(room_guid: str) -> None:
-    db_session = get_db_session()
+@db.use_db_session()
+def song_watch(room_guid: str, db_session: session) -> Tuple[Any, bool, bool]:
     next_song = (
         db_session.query(
             RoomSong.room_songs_id,
             Song.song_uri,
             RoomSong.is_added_to_playlist,
             Song.song_name,
+            Song.song_artist,
+            RoomSong.is_played,
         )
         .join(Song)
         .join(Room)
         .filter(RoomSong.is_played == False, RoomSong.room_id == 1)
-        .order_by(RoomSong.insert_time.desc())
+        .order_by(RoomSong.insert_time)
         .first()
     )
-    db_session.close()
-    print(f"next song: {dict(next_song)}")
+    print(f"next song: {next_song}")
     # if there is a next song
     if next_song:
-        check_next_song(next_song, room_guid)
+        added_to_playlist, removed_from_queue = check_next_song(next_song, room_guid)
+        if removed_from_queue:
+            next_song, added_to_playlist, removed_from_queue = song_watch(room_guid)
+
+        return dict(next_song), added_to_playlist, removed_from_queue
+
+    else:
+        return None, False, False
 
 
 async def fetch(session: aiohttp.ClientSession, url: str):
@@ -86,9 +96,9 @@ async def poll_rooms(urls: List[str]):
         await asyncio.gather(*tasks)
 
 
-def poll_five_seconds():
+@db.use_db_session()
+def poll_five_seconds(db_session: session):
     for i in range(10):
-        db_session = get_db_session()
         active_rooms = (
             db_session.query(
                 Room.room_guid,
@@ -96,7 +106,6 @@ def poll_five_seconds():
             .filter(Room.is_inactive == False)
             .all()
         )
-        db_session.close()
         room_guids = [room.room_guid for room in active_rooms]
         print(f"Active rooms: {room_guids}")
         api = get_base_url()

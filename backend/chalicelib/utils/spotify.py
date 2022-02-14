@@ -10,25 +10,18 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from sqlalchemy.orm import session
 
 from chalicelib.antwondb import db
-from chalicelib.antwondb.db import get_db_session
 from chalicelib.antwondb.schema import Room, SpotifyUser
-from chalicelib.utils.secrets import get_secret
+from chalicelib.utils.secrets import AwsSecretRetrieval
 from chalicelib.utils.chalice import get_base_url
-
 
 SCOPES = "playlist-read-collaborative user-modify-playback-state user-read-playback-state user-read-private playlist-modify-private playlist-modify-public"
 
 
-def get_spotify_secrets():
-    secrets = get_secret("spotify_client")
-    return secrets
-
-
-def app_Authorization():
-    secrets = get_spotify_secrets()
+@AwsSecretRetrieval("spotify_client", spotify_id="SPOTIFY_CLIENT_ID")
+def app_authorization(spotify_id):
     f = {
         "response_type": "code",
-        "client_id": secrets["SPOTIFY_CLIENT_ID"],
+        "client_id": spotify_id,
         "scope": SCOPES,
         "redirect_uri": f"{get_base_url()}/spotifyCallback",
     }
@@ -36,32 +29,28 @@ def app_Authorization():
     return url
 
 
-def get_spotify(auth):
-    secrets = get_spotify_secrets()
-    client_credentials_manager = SpotifyClientCredentials(
-        client_id=secrets["SPOTIFY_CLIENT_ID"], client_secret=secrets["SPOTIFY_CLIENT_SECRET"]
-    )
+@AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
+def get_spotify(auth, spotify_id, spotify_secret):
+    client_credentials_manager = SpotifyClientCredentials(client_id=spotify_id, client_secret=spotify_secret)
     sp = spotipy.Spotify(auth=auth, client_credentials_manager=client_credentials_manager)
     return sp
 
 
-def get_token(code):
-    secrets = get_spotify_secrets()
+@AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
+def get_token(code, spotify_id, spotify_secret):
     data = {"code": code, "redirect_uri": f"{get_base_url()}/spotifyCallback", "grant_type": "authorization_code"}
     url = "https://accounts.spotify.com/api/token"
-    base64encoded = base64.b64encode(
-        bytes("{}:{}".format(secrets["SPOTIFY_CLIENT_ID"], secrets["SPOTIFY_CLIENT_SECRET"]), "utf-8")
-    )
+    base64encoded = base64.b64encode(bytes("{}:{}".format(spotify_id, spotify_secret), "utf-8"))
     headers = {"Authorization": "Basic {}".format(str(base64encoded, "utf-8"))}
     res = requests.post(url, headers=headers, data=data)
     return json.loads(res.text)
 
 
-def refresh_spotify_token(refresh_token):
-    secrets = get_spotify_secrets()
+@AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
+def refresh_spotify_token(refresh_token, spotify_secret, spotify_id):
     sp_oauth = oauth2.SpotifyOAuth(
-        client_id=secrets["SPOTIFY_CLIENT_ID"],
-        client_secret=secrets["SPOTIFY_CLIENT_SECRET"],
+        client_id=spotify_id,
+        client_secret=spotify_secret,
         redirect_uri=f"{get_base_url()}/spotifyCallback",
         scope=SCOPES,
     )
@@ -71,21 +60,21 @@ def refresh_spotify_token(refresh_token):
     return token
 
 
-@db.use_db_session
-def get_spotify_user(db_session: session, room_guid: str):
+@db.use_db_session()
+def get_spotify_user(room_guid: str, db_session: session):
     return (
         db_session.query(
             SpotifyUser.spotify_user_id, SpotifyUser.spotify_access_token, SpotifyUser.spotify_refresh_token
         )
-            .select_from(SpotifyUser)
-            .join(Room, Room.owner_user_id == SpotifyUser.user_id)
-            .filter(Room.room_guid == room_guid)
-            .one()
+        .select_from(SpotifyUser)
+        .join(Room, Room.owner_user_id == SpotifyUser.user_id)
+        .filter(Room.room_guid == room_guid)
+        .one()
     )
 
 
-@db.use_db_session
-def update_spotify_token(db_session: session, token: str, spotify_user_id: str):
+@db.use_db_session(commit=True)
+def update_spotify_token(token: str, spotify_user_id: str, db_session: session):
     db_session.query(SpotifyUser).filter(SpotifyUser.spotify_user_id == spotify_user_id).update(
         {SpotifyUser.spotify_access_token: token}, synchronize_session=False
     )
@@ -94,13 +83,19 @@ def update_spotify_token(db_session: session, token: str, spotify_user_id: str):
 def use_spotify_session(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        spotify_user = get_spotify_user(kwargs["room_guid"])
-        try:
-            spotify_session = get_spotify(auth=spotify_user.spotify_access_token)
-            return f(spotify_session, *args, **kwargs)
-        except spotipy.client.SpotifyException:
-            token = refresh_spotify_token(spotify_user.spotify_refresh_token)
-            update_spotify_token(token, spotify_user.spotify_user_id)
-            spotify_session = get_spotify(auth=token)
-            return f(spotify_session, *args, **kwargs)
+        if "spotify_session" not in kwargs:
+            spotify_user = get_spotify_user(kwargs["room_guid"])
+            try:
+                spotify_session = get_spotify(auth=spotify_user.spotify_access_token)
+                kwargs["spotify_session"] = spotify_session
+                return f(*args, **kwargs)
+            except spotipy.client.SpotifyException:
+                token = refresh_spotify_token(spotify_user.spotify_refresh_token)
+                update_spotify_token(token, spotify_user.spotify_user_id)
+                spotify_session = get_spotify(auth=token)
+                kwargs["spotify_session"] = spotify_session
+                return f(*args, **kwargs)
+        else:
+            return f(*args, **kwargs)
+
     return decorated

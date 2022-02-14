@@ -22,7 +22,6 @@ if PY2:
             _locs_ = _globs_
         exec("""exec _code_ in _globs_, _locs_""")
 
-
 else:
     string_types = (str,)
 

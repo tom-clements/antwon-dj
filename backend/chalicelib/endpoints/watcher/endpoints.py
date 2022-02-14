@@ -9,8 +9,9 @@ watcher_routes = Blueprint(__name__)
 @watcher_routes.route("/pollRoom", methods=["GET"])
 def poll_room_get():
     room_guid = watcher_routes.current_request.query_params["room_guid"]
-    song_watch(room_guid)
-    return {"statusCode": 200, "body": json.dumps("success")}
+    next_song, added_to_playlist, removed_from_queue = song_watch(room_guid)
+    body = {"next_song": next_song, "added_to_playlist": added_to_playlist, "removed_from_queue": removed_from_queue}
+    return {"statusCode": 200, "body": body}
 
 
 @watcher_routes.schedule(Rate(1, unit=Rate.MINUTES))

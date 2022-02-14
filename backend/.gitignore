@@ -5,3 +5,6 @@
 # Cached python
 *.pyc
 *.__pycache__
+
+# notebooks
+*.ipynb
