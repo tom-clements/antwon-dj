@@ -1,0 +1,28 @@
+name: backendCI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main  dev ]
+    
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black pytest
+        pip install -r requirements.txt
+    - name: Lint with black
+      run: |
+        black -l --check 120 .
+    - name: Test with pytest
+      run: |
+        pytest
