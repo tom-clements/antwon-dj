@@ -24,7 +24,7 @@ jobs:
         black --check -l 120 .
     - name: Test with pytest
       run: |
-        pytest
+        python -m pytest tests
     - name: chalice deploy
       uses: jayef0/chalice-extended-action@release-v0.2.1
       env:
