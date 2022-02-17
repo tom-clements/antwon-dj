@@ -1,8 +1,11 @@
 from functools import wraps
+from typing import Tuple
 
 from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session
-from chalicelib.utils.secrets import get_secret
+
+from chalicelib.utils.secrets import AwsSecretRetrieval
 
 
 def create_db_engine(db_conn_string, debug_mode=False):
@@ -11,28 +14,46 @@ def create_db_engine(db_conn_string, debug_mode=False):
         echo=debug_mode,
         pool_size=1,
         max_overflow=0,
-        pool_recycle=3600,
+        pool_recycle=60,
         pool_pre_ping=True,
         pool_use_lifo=True,
     )
 
 
-def get_db_session() -> Session:
-    secrets = get_secret("antwon-rds-credentials")
-    print(secrets)
-    db_conn_string = f"mysql+pymysql://{secrets['username']}:{secrets['password']}@{secrets['host']}:{secrets['port']}/antwon"
-    print(db_conn_string)
+@AwsSecretRetrieval(
+    "antwon-rds-credentials",
+    username="username",
+    password="password",
+    host="host",
+    port="port",
+)
+def get_db_session(username, password, host, port, database="antwon") -> Tuple[Session, Engine]:
+    db_conn_string = f"mysql+pymysql://{username}:{password}@{host}:{port}/{database}"
     engine = create_db_engine(db_conn_string)
     Session = sessionmaker(bind=engine)
     # todo: setup connection pooling properties
-    return Session()
+    return Session(), engine
 
 
-def use_db_session(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        db_session = get_db_session()
-        res = f(db_session, *args, **kwargs)
-        db_session.close()
-        return res
-    return decorated
+def use_db_session(database="antwon", commit=False, rollback=False, close=True):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if "db_session" not in kwargs:
+                db_session, engine = get_db_session(database=database)
+                kwargs["db_session"] = db_session
+                res = f(*args, **kwargs)
+                if commit:
+                    db_session.commit()
+                if rollback:
+                    db_session.rollback()
+                if close:
+                    db_session.close()
+                    engine.dispose()
+            else:
+                res = f(*args, **kwargs)
+            return res
+
+        return wrapper
+
+    return decorator

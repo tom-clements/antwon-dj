@@ -1,3 +1,5 @@
+import logging
+
 from chalice import Chalice
 from chalice.app import ConvertToMiddleware
 from aws_lambda_powertools import Logger
@@ -11,6 +13,7 @@ app = Chalice(app_name="backend")
 app.register_blueprint(room_routes)
 app.register_blueprint(spotify_routes)
 app.register_blueprint(watcher_routes)
+app.log.setLevel(logging.INFO)
 logger = Logger()
 tracer = Tracer()
 
@@ -22,8 +25,3 @@ app.register_middleware(ConvertToMiddleware(tracer.capture_lambda_handler))
 def inject_route_info(event, get_response):
     logger.structure_logs(append=True, request_path=event.path)
     return get_response(event)
-
-
-@app.route("/")
-def index():
-    return {"hello": "worlds"}

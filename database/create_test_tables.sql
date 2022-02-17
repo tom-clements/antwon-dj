@@ -1,4 +1,4 @@
-CREATE TABLE antwon.SpotifyUsers (
+CREATE TABLE antwontest.SpotifyUsers (
     spotify_user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     spotify_user_guid varchar(36) NOT NULL,
     user_id int,
@@ -10,7 +10,7 @@ CREATE TABLE antwon.SpotifyUsers (
     insert_time datetime
 );
 
-CREATE TABLE antwon.Users (
+CREATE TABLE antwontest.Users (
     user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_guid varchar(36) NOT NULL,
     cognito_access_token varchar(500),
@@ -18,7 +18,7 @@ CREATE TABLE antwon.Users (
     create_time datetime
 );
 
-CREATE TABLE antwon.Rooms (
+CREATE TABLE antwontest.Rooms (
     room_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     room_guid varchar(36) NOT NULL,
     room_code varchar(6),
@@ -27,7 +27,7 @@ CREATE TABLE antwon.Rooms (
     create_time datetime
 );
 
-CREATE TABLE antwon.Songs (
+CREATE TABLE antwontest.Songs (
     song_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     song_guid varchar(500) NOT NULL,
     song_uri varchar(500),
@@ -38,7 +38,7 @@ CREATE TABLE antwon.Songs (
     last_accessed datetime
 );
 
-CREATE TABLE antwon.RoomSongs (
+CREATE TABLE antwontest.RoomSongs (
     room_song_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     room_song_guid varchar(500) NOT NULL,
     room_id int,
@@ -50,7 +50,7 @@ CREATE TABLE antwon.RoomSongs (
     is_added_to_playlist boolean
 );
 
-CREATE TABLE antwon.RoomSongLikes (
+CREATE TABLE antwontest.RoomSongLikes (
     room_song_like_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     room_song_like_guid varchar(500) NOT NULL,
     room_songs_id int,
@@ -59,41 +59,41 @@ CREATE TABLE antwon.RoomSongLikes (
     create_time datetime
 );
 
-insert into antwon.Users
+insert into antwontest.Users
 (user_guid, create_time)
 VALUES
-("2962e800-e543-4a31-9b9f-49ee9e82d52c", now());
+("1962e800-e543-4a31-9b9f-49ee9e82d52c", now());
 
-insert into antwon.Rooms
+insert into antwontest.Rooms
 (room_guid, room_code, is_inactive, owner_user_id, create_time)
 VALUES
-("5fbc1ed4-8dd0-45a8-95a2-2f8d2ffb7faa", "SOIREE", false, 1, now());
+("1fbc1ed4-8dd0-45a8-95a2-2f8d2ffb7faa", "ABCDEF", false, 1, now());
 
-insert into antwon.RoomSongs
-(room_songs_guid, room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
+insert into antwontest.RoomSongs
+(room_song_guid, room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
 VALUES
 ("7aa3c95c-7406-4a47-af5a-5c087fa4c6b1", 1, 1, false, now(), false, false, false);
 
-insert into antwon.RoomSongs
+insert into antwontest.RoomSongs
 (room_songs_guid, room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
 VALUES
 ("02d451a2-39d3-49b7-8c3b-4953470a22df", 1, 2, false, now(), false, false, false);
 
-insert into antwon.Songs
+insert into antwontest.Songs
 (song_guid, song_uri, song_name, song_artist, song_album_url, insert_time, last_accessed)
 VALUES
 ('ddd1de01-6eee-4bdf-85c6-d06c83696972', 'spotify:track:1u8c2t2Cy7UBoG4ArRcF5g',
 'Blank Space', 'Taylor Swift', 'https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a',
 now(), now());
 
-insert into antwon.Songs
+insert into antwontest.Songs
 (song_guid, song_uri, song_name, song_artist, song_album_url, insert_time, last_accessed)
 VALUES
 ('6f422b09-60a1-4673-9e55-326e32117b6c', 'spotify:track:0cqRj7pUJDkTCEsJkx8snD',
 'Shake It Off', 'Taylor Swift', 'https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a',
 now(), now());
 
-insert into antwon.RoomSongLikes
+insert into antwontest.RoomSongLikes
 (room_song_like_guid, room_songs_id, user_id, like_value, create_time)
 VALUES
 ("55572d31-41b5-4deb-b3b9-f19f13e01221", 1, 1, 1, now());
