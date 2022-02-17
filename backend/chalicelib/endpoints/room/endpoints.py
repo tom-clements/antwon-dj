@@ -42,8 +42,6 @@ def room_queue_post():
 
 
 @room_routes.route("/roomSongsLike", methods=["POST"], cors=True)
-@authenticate_user
-@error_handle
 def room_songs_like_post():
     body = room_routes.current_request.json_body
     if body["is_liked"]:
