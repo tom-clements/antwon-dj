@@ -6,7 +6,7 @@ CREATE TABLE antwon.SpotifyUsers (
     spotify_user_name varchar(50),
     spotify_profile_image_url varchar(500),
     spotify_access_token varchar(500),
-    spotify_refresh_token varchar(500)
+    spotify_refresh_token varchar(500),
     insert_time datetime
 );
 
