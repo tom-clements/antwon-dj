@@ -25,7 +25,7 @@ interface RoomSongPostDto extends SongDto {
 
 function mapRoomSongPostDto(dto: RoomSongPostDto) {
     return {
-        song_uri: dto.id,
+        song_uri: dto.song_uri,
         song_name: dto.song_name,
         song_artist: dto.song_artist,
         song_album_url: dto.song_album_url,
