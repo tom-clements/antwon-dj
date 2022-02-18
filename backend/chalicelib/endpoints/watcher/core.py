@@ -39,7 +39,7 @@ def check_next_song(next_song: namedtuple, room_guid: str, db_session: session) 
         print(f"adding song to playlist: {next_song}")
         # TODO: Error handle adding to playlist
         add_song_to_spotify_playlist(next_song.song_uri, room_guid)
-        db_session.query(RoomSong).filter(RoomSong.room_songs_id == next_song.room_songs_id).update(
+        db_session.query(RoomSong).filter(RoomSong.room_song_id == next_song.room_song_id).update(
             {RoomSong.is_added_to_playlist: True}, synchronize_session=False
         )
         db_session.commit()
@@ -48,7 +48,7 @@ def check_next_song(next_song: namedtuple, room_guid: str, db_session: session) 
     # if the next song starts playing, set it as played
     if current_playing["song_uri"] == next_song.song_uri:
         print("updating next song to is_played")
-        db_session.query(RoomSong).filter(RoomSong.room_songs_id == next_song.room_songs_id).update(
+        db_session.query(RoomSong).filter(RoomSong.room_song_id == next_song.room_song_id).update(
             {RoomSong.is_played: True}, synchronize_session=False
         )
         removed_from_queue = True
@@ -59,7 +59,7 @@ def check_next_song(next_song: namedtuple, room_guid: str, db_session: session) 
 def song_watch(room_guid: str, db_session: session) -> Tuple[Any, bool, bool]:
     next_song = (
         db_session.query(
-            RoomSong.room_songs_id,
+            RoomSong.room_song_id,
             Song.song_uri,
             RoomSong.is_added_to_playlist,
             Song.song_name,

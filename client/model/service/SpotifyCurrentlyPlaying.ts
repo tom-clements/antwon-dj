@@ -3,7 +3,6 @@ import { getBaseUrl } from "model/service/ApiGateway";
 import { SongDto } from "model/service/SpotifySearchApi";
 
 interface SongsForSearchResponseDto {
-    status: 200;
     "song": SongDto;
 }
 
