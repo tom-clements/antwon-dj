@@ -4,6 +4,7 @@ from typing import Tuple
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.pool import NullPool
 
 from chalicelib.utils.secrets import AwsSecretRetrieval
 
@@ -17,6 +18,7 @@ def create_db_engine(db_conn_string, debug_mode=False):
         pool_recycle=60,
         pool_pre_ping=True,
         pool_use_lifo=True,
+        # poolclass=NullPool
     )
 
 
@@ -42,14 +44,19 @@ def use_db_session(database="antwon", commit=False, rollback=False, close=True):
             if "db_session" not in kwargs:
                 db_session, engine = get_db_session(database=database)
                 kwargs["db_session"] = db_session
-                res = f(*args, **kwargs)
-                if commit:
-                    db_session.commit()
-                if rollback:
-                    db_session.rollback()
-                if close:
+                try:
+                    res = f(*args, **kwargs)
+                    if commit:
+                        db_session.commit()
+                    if rollback:
+                        db_session.rollback()
+                    if close:
+                        db_session.close()
+                        engine.dispose()
+                except:
                     db_session.close()
                     engine.dispose()
+                    raise
             else:
                 res = f(*args, **kwargs)
             return res
