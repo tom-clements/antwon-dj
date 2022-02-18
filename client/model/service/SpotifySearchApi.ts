@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getBaseUrl } from "model/service/ApiGateway";
 
 export interface SongDto {
-    "id": string;
+    "song_uri": string;
     "song_artist": string;
     "song_name": string;
     "song_album_url": string;

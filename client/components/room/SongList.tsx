@@ -38,7 +38,7 @@ const SongRow: FC<SongRowProps> = props => {
     return (
         <SongItem
             style={props.style}
-            key={`${props.data[props.index].id}_${props.index}`}
+            key={`${props.data[props.index].song_uri}_${props.index}`}
             title={props.data[props.index].song_name}
             artist={props.data[props.index].song_artist}
             albumUrl={props.data[props.index].song_album_url}
