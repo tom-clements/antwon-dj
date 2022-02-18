@@ -3,7 +3,8 @@ name: backendCI
 on:
   workflow_dispatch:
   pull_request:
-    branches: [ main  dev ]
+    branches:
+      - main
     
 jobs:
   ci:
