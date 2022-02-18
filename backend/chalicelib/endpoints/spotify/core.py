@@ -14,12 +14,12 @@ from chalicelib.utils import spotify
 def format_songs(songs):
     return [
         {
-            "id": r["uri"],
+            "song_uri": r["uri"],
             "song_artist": ", ".join([n["name"] for n in r["artists"]]),
             "song_name": r["name"],
             "song_album_url": r["album"]["images"][0]["url"],
         }
-        for i, r in enumerate(songs["tracks"]["items"])
+        for i, r in enumerate(songs)
     ]
 
 
@@ -31,7 +31,7 @@ def search_songs(
     st = time.time()
     result = spotify_session.search(q=song_query, type="track")
     spotify_routes.log.info(f"/spotifySearch spotify search result took {int(1000*(time.time()-st))}ms")
-    return format_songs(result)
+    return format_songs(result["tracks"]["items"])
 
 
 @db.use_db_session(commit=True)

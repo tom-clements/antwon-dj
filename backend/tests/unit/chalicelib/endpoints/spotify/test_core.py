@@ -9,33 +9,29 @@ from chalicelib.endpoints.spotify.core import search_songs, format_songs
     "example_input,expected_output",
     [
         (
-            {
-                "tracks": {
-                    "items": [
-                        {
-                            "uri": "example_uri1",
-                            "name": "song_name1",
-                            "artists": [{"name": "artist1"}, {"name": "artist2"}],
-                            "album": {"images": [{"url": "image1address.com"}]},
-                        },
-                        {
-                            "uri": "example_uri2",
-                            "name": "song_name2",
-                            "artists": [{"name": "artist3"}],
-                            "album": {"images": [{"url": "image2address.com"}]},
-                        },
-                    ]
-                }
-            },
             [
                 {
-                    "id": "example_uri1",
+                    "uri": "example_uri1",
+                    "name": "song_name1",
+                    "artists": [{"name": "artist1"}, {"name": "artist2"}],
+                    "album": {"images": [{"url": "image1address.com"}]},
+                },
+                {
+                    "uri": "example_uri2",
+                    "name": "song_name2",
+                    "artists": [{"name": "artist3"}],
+                    "album": {"images": [{"url": "image2address.com"}]},
+                },
+            ],
+            [
+                {
+                    "song_uri": "example_uri1",
                     "song_artist": "artist1, artist2",
                     "song_name": "song_name1",
                     "song_album_url": "image1address.com",
                 },
                 {
-                    "id": "example_uri2",
+                    "song_uri": "example_uri2",
                     "song_artist": "artist3",
                     "song_name": "song_name2",
                     "song_album_url": "image2address.com",
@@ -43,11 +39,7 @@ from chalicelib.endpoints.spotify.core import search_songs, format_songs
             ],
         ),
         (
-            {
-                "tracks": {
-                    "items": [],
-                }
-            },
+            [],
             [],
         ),
     ],
@@ -82,13 +74,13 @@ def test_format_songs(example_input, expected_output):
             },
             [
                 {
-                    "id": "example_uri1",
+                    "song_uri": "example_uri1",
                     "song_artist": "artist1, artist2",
                     "song_name": "song_name1",
                     "song_album_url": "image1address.com",
                 },
                 {
-                    "id": "example_uri2",
+                    "song_uri": "example_uri2",
                     "song_artist": "artist3",
                     "song_name": "song_name2",
                     "song_album_url": "image2address.com",

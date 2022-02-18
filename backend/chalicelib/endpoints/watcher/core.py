@@ -1,15 +1,21 @@
-import json
 import asyncio
 import time
+import uuid
+from datetime import datetime as dt
+
 import aiohttp
 import requests
 from typing import List, Dict, Tuple, Any
 from collections import namedtuple
 
+import spotipy
+from sqlalchemy.engine import Row
 from sqlalchemy.orm import session
 
 from chalicelib.antwondb import db
-from chalicelib.antwondb.schema import RoomSong, Song, Room
+from chalicelib.antwondb.schema import RoomSong, Song, Room, User
+from chalicelib.endpoints.spotify.core import format_songs
+from chalicelib.utils import spotify
 from chalicelib.utils.chalice import get_base_url
 
 
@@ -35,20 +41,20 @@ def get_current_song_playing(room_guid: str) -> Dict[str, str]:
 def check_next_song(next_song: namedtuple, room_guid: str, db_session: session) -> Tuple[bool, bool]:
     # add next song to playlist if it hasn't been added already
     added_to_playlist = removed_from_queue = False
-    if not next_song.is_added_to_playlist:
+    if not next_song["is_added_to_playlist"]:
         print(f"adding song to playlist: {next_song}")
         # TODO: Error handle adding to playlist
-        add_song_to_spotify_playlist(next_song.song_uri, room_guid)
-        db_session.query(RoomSong).filter(RoomSong.room_song_id == next_song.room_song_id).update(
+        add_song_to_spotify_playlist(next_song["song_uri"], room_guid)
+        db_session.query(RoomSong).filter(RoomSong.room_song_id == next_song["room_song_id"]).update(
             {RoomSong.is_added_to_playlist: True}, synchronize_session=False
         )
         db_session.commit()
         added_to_playlist = True
     current_playing = get_current_song_playing(room_guid)
     # if the next song starts playing, set it as played
-    if current_playing["song_uri"] == next_song.song_uri:
+    if current_playing["song_uri"] == next_song["song_uri"]:
         print("updating next song to is_played")
-        db_session.query(RoomSong).filter(RoomSong.room_song_id == next_song.room_song_id).update(
+        db_session.query(RoomSong).filter(RoomSong.room_song_id == next_song["room_song_id"]).update(
             {RoomSong.is_played: True}, synchronize_session=False
         )
         removed_from_queue = True
@@ -56,7 +62,7 @@ def check_next_song(next_song: namedtuple, room_guid: str, db_session: session) 
 
 
 @db.use_db_session()
-def song_watch(room_guid: str, db_session: session) -> Tuple[Any, bool, bool]:
+def get_song_next_to_play(room_guid: str, db_session: session) -> Dict[str, Any]:
     next_song = (
         db_session.query(
             RoomSong.room_song_id,
@@ -68,21 +74,73 @@ def song_watch(room_guid: str, db_session: session) -> Tuple[Any, bool, bool]:
         )
         .join(Song)
         .join(Room)
-        .filter(RoomSong.is_played == False, RoomSong.room_id == 1)
+        .filter(RoomSong.is_played == False, Room.room_guid == room_guid)
         .order_by(RoomSong.insert_time)
         .first()
     )
-    print(f"next song: {next_song}")
-    # if there is a next song
-    if next_song:
-        added_to_playlist, removed_from_queue = check_next_song(next_song, room_guid)
-        if removed_from_queue:
-            next_song, added_to_playlist, removed_from_queue = song_watch(room_guid)
+    return dict(next_song) if next_song else None
 
-        return dict(next_song), added_to_playlist, removed_from_queue
 
-    else:
-        return None, False, False
+@spotify.use_spotify_session
+def get_spotify_recommended_song(preivous_track_uris: List[str], spotify_session: spotipy.Spotify, room_guid: str):
+    songs_result = spotify_session.recommendations(seed_tracks=preivous_track_uris, country="GB", limit=1)
+    return format_songs(songs_result["tracks"])[0]
+
+
+@db.use_db_session()
+def get_last_five_tracked_played(room_guid: str, db_session: session) -> List[str]:
+    result = (
+        db_session.query(Song.song_uri)
+        .join(RoomSong)
+        .join(Room)
+        .filter(Room.room_guid == room_guid)
+        .order_by(RoomSong.insert_time.desc())
+        .limit(5)
+        .all()
+    )
+    return [r.song_uri for r in result]
+
+
+# TODO: similar to function in room endpoints
+@db.use_db_session(commit=True)
+def add_recommended_song_to_db(room_guid: str, song: Dict[str, str], db_session: session) -> Dict[str, Any]:
+    room_id = db_session.query(Room.room_id).filter(Room.room_guid == room_guid).scalar()
+    song.update(dict(song_guid=str(uuid.uuid4()), insert_time=dt.now(), last_accessed=dt.now()))
+    new_song = Song(**song)
+    db_session.add(new_song)
+    db_session.flush()
+    new_room_song = RoomSong(
+        room_song_guid=str(uuid.uuid4()),
+        room_id=room_id,
+        song_id=new_song.song_id,
+        is_inactive=False,
+        insert_time=dt.now(),
+        is_played=False,
+        is_removed=False,
+        is_added_to_playlist=False,
+    )
+    db_session.add(new_room_song)
+
+
+def get_recommended_song(room_guid: str) -> Dict[str, Any]:
+    previous_track_uris = get_last_five_tracked_played(room_guid)
+    song = get_spotify_recommended_song(previous_track_uris, room_guid=room_guid)
+    add_recommended_song_to_db(room_guid, song)
+    return get_song_next_to_play(room_guid)
+
+
+def process_next_song(next_song: Row, room_guid: str) -> Tuple[Dict[str, str], bool, bool]:
+    added_to_playlist, removed_from_queue = check_next_song(next_song, room_guid)
+    if removed_from_queue:
+        next_song, added_to_playlist, removed_from_queue = song_watch(room_guid)
+
+    return dict(next_song), added_to_playlist, removed_from_queue
+
+
+def song_watch(room_guid: str) -> Tuple[Any, bool, bool]:
+    next_song = get_song_next_to_play(room_guid)
+    next_song = next_song if next_song else get_recommended_song(room_guid)
+    return process_next_song(next_song, room_guid)
 
 
 async def fetch(session: aiohttp.ClientSession, url: str):
