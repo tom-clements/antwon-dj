@@ -1,12 +1,13 @@
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     branches:
       - main
-name: Deploy branch to Chalice
+
+name: Deploy PR to AWS
 jobs:
   deploy:
-    name: dev-deploy
+    name: deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
@@ -31,12 +32,9 @@ jobs:
     - name: Test with pytest
       run: |
         cd backend && python -m pytest tests
-    - name: chalice deploy
-      run: |
-        cd backend && chalice deploy
     - name: Add PR stage to chalice config
       run: |
         cd backend && python add_pr_stage_to_chalice_config.py --pr-stage pr-${{ github.event.number }}
-    - name: Remove Chalice PR preview
+    - name: chalice deploy
       run: |
-        cd backend && chalice delete --stage pr-${{ github.event.number }}
+        cd backend && chalice deploy --stage pr-${{ github.event.number }}
