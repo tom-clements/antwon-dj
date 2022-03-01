@@ -1,0 +1,27 @@
+version: 1
+applications:
+  - backend:
+      phases:
+        build:
+          commands:
+            - '# Execute Amplify CLI with the helper script'
+            - amplifyPush --simple
+            - echo "API_BASE_HOST=api.djantwon.com" >> backend/.env
+            - echo "API_BASE_SCHEME=https" >> backend/.env
+            - echo "API_BASE_STACK=dev" >> backend/.env
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - yarn install
+        build:
+          commands:
+            - yarn run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+    appRoot: client
