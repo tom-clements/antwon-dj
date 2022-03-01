@@ -1,0 +1,40 @@
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+name: Deploy PR to AWS
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black pytest
+        pip install -r backend/requirements.txt
+    - name: Lint with black
+      run: |
+        black --check -l 120 .
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+    - name: Test with pytest
+      run: |
+        cd backend && python -m pytest tests
+    - name: Add PR stage to chalice config
+      run: |
+        cd backend && python add_pr_stage_to_chalice_config.py --pr-stage pr-${{ github.event.number }}
+    - name: chalice deploy
+      run: |
+        cd backend && chalice deploy --stage pr-${{ github.event.number }}

@@ -1,30 +1,26 @@
 {
-  "version": "2.0",
-  "app_name": "backend",
-  "xray": true,
-  "environment_variables": {
-    "POWERTOOLS_SERVICE_NAME": "backend-powertools"
-  },
-  "lambda_memory_size": 256,
-  "stages": {
-    "dev": {
-      "api_gateway_stage": "dev",
-      "manage_iam_role": false,
-      "iam_role_arn": "arn:aws:iam::303078101535:role/AuroraLambdaRole",
-      "lambda_functions": {
-        "poll_app": {
-          "lambda_timeout": 120
-        }
-      }
+    "version": "2.0",
+    "app_name": "backend",
+    "xray": true,
+    "environment_variables": {
+        "POWERTOOLS_SERVICE_NAME": "backend-powertools"
     },
-    "prod": {
-      "manage_iam_role": false,
-      "iam_role_arn": "arn:aws:iam::303078101535:role/AuroraLambdaRole",
-      "lambda_functions": {
-        "poll_app": {
-          "lambda_timeout": 120
+    "lambda_memory_size": 256,
+    "stages": {
+        "dev": {
+            "api_gateway_stage": "dev",
+            "api_gateway_custom_domain": {
+                "domain_name": "api.djantwon.com",
+                "certificate_arn": "arn:aws:acm:us-east-1:303078101535:certificate/3a339f27-37cb-4dbb-806a-5b4d5bcae539",
+                "url_prefix": "dev"
+            },
+            "manage_iam_role": false,
+            "iam_role_arn": "arn:aws:iam::303078101535:role/AuroraLambdaRole",
+            "lambda_functions": {
+                "poll_app": {
+                    "lambda_timeout": 120
+                }
+            }
         }
-      }
     }
-  }
 }
