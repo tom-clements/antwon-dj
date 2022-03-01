@@ -18,8 +18,22 @@
     {
       "name": "rest_api",
       "resource_type": "rest_api",
-      "rest_api_id": "3mnr9rzo8e",
-      "rest_api_url": "https://3mnr9rzo8e.execute-api.eu-west-2.amazonaws.com/dev/"
+      "rest_api_id": "xuybsbc9n8",
+      "rest_api_url": "https://xuybsbc9n8.execute-api.eu-west-2.amazonaws.com/dev/"
+    },
+    {
+      "name": "api_gateway_custom_domain",
+      "resource_type": "domain_name",
+      "hosted_zone_id": "Z2FDTNDATAQYW2",
+      "alias_domain_name": "d3gigmmwpd1ji1.cloudfront.net",
+      "certificate_arn": "arn:aws:acm:us-east-1:303078101535:certificate/3a339f27-37cb-4dbb-806a-5b4d5bcae539",
+      "security_policy": "TLS_1_2",
+      "domain_name": "api.djantwon.com",
+      "api_mapping": [
+        {
+          "key": "/dev"
+        }
+      ]
     }
   ],
   "schema_version": "2.0",
