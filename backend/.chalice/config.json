@@ -9,16 +9,11 @@
     "stages": {
         "dev": {
             "api_gateway_stage": "dev",
-            "manage_iam_role": false,
-            "iam_role_arn": "arn:aws:iam::303078101535:role/AuroraLambdaRole",
-            "lambda_functions": {
-                "poll_app": {
-                    "lambda_timeout": 120
-                }
-            }
-        },
-        "api": {
-            "api_gateway_stage": "api",
+            "api_gateway_custom_domain": {
+                "domain_name": "api.djantwon.com",
+                "certificate_arn": "arn:aws:acm:us-east-1:303078101535:certificate/3a339f27-37cb-4dbb-806a-5b4d5bcae539",
+                "url_prefix": "dev"
+            },
             "manage_iam_role": false,
             "iam_role_arn": "arn:aws:iam::303078101535:role/AuroraLambdaRole",
             "lambda_functions": {
