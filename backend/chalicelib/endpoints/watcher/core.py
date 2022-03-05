@@ -13,15 +13,15 @@ from sqlalchemy.engine import Row
 from sqlalchemy.orm import session
 
 from chalicelib.antwondb import db
-from chalicelib.antwondb.schema import RoomSong, Song, Room, User
+from chalicelib.antwondb.schema import RoomSong, Song, Room
 from chalicelib.endpoints.spotify.core import format_songs
 from chalicelib.utils import spotify
-from chalicelib.utils.chalice import get_base_url
+from chalicelib.utils.chalice import get_api_url
 
 
 def add_song_to_spotify_playlist(song_uri: str, room_guid: str) -> None:
     print(f"adding song: {song_uri} to room: {room_guid}")
-    api = get_base_url()
+    api = get_api_url()
     spotify_api = f"{api}/spotifyAddToPlaylist"
     requests.post(
         url=spotify_api,
@@ -30,7 +30,7 @@ def add_song_to_spotify_playlist(song_uri: str, room_guid: str) -> None:
 
 
 def get_current_song_playing(room_guid: str) -> Dict[str, str]:
-    api = get_base_url()
+    api = get_api_url()
     current_playing_api = f"{api}/spotifyCurrentlyPlaying?room_guid={room_guid}"
     res = requests.get(current_playing_api).json()
     current_playing = res["song"]
@@ -166,7 +166,7 @@ def poll_five_seconds(db_session: session):
         )
         room_guids = [room.room_guid for room in active_rooms]
         print(f"Active rooms: {room_guids}")
-        api = get_base_url()
+        api = get_api_url()
         urls = [f"{api}/pollRoom?room_guid={room_guid}" for room_guid in room_guids]
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)

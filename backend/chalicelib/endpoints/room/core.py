@@ -1,14 +1,14 @@
 import uuid
 from datetime import datetime as dt
-from typing import Any, Dict, List
+from typing import List
 
+from chalice import ForbiddenError
 from sqlalchemy import cast, String
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import session
 
 from chalicelib.antwondb import db
 from chalicelib.antwondb.schema import Song, RoomSong, Room, RoomSongLike, User
-from chalicelib.utils.auth import authenticate_user
 
 
 @db.use_db_session()
@@ -56,7 +56,13 @@ def delete_room(room_guid, db_session):
 
 
 @db.use_db_session(commit=True)
-@authenticate_user
+def check_room_delete_permissions(room_guid: str, username: str, db_session: session):
+    owner_username = db_session.query(User.cognito_user_name).join(Room).filter(Room.room_guid == room_guid).one()
+    if owner_username != username:
+        raise ForbiddenError("Insufficient permissions to perform this action")
+
+
+@db.use_db_session(commit=True)
 def add_like_to_song(room_song_guid: str, db_session: session, token: str, user: User):
     room_song_id = db_session.query(RoomSong.room_song_id).filter(RoomSong.room_song_guid == room_song_guid).scalar()
     db_session.add(
@@ -67,15 +73,14 @@ def add_like_to_song(room_song_guid: str, db_session: session, token: str, user:
 
 
 @db.use_db_session(commit=True)
-@authenticate_user
 def remove_like_from_song(room_song_guid: str, db_session: session, token: str, user: User):
     num_deleted_rows = (
         db_session.query(RoomSongLike)
-        .filter(RoomSongLike.room_song_guid == room_song_guid, RoomSongLike.user_guid == user.user_guid)
+        .filter(RoomSongLike.room_song_guid == room_song_guid, RoomSongLike.user_cognito_guid == user.user_cognito_guid)
         .delete()
     )
     if num_deleted_rows == 0:
-        raise ValueError(f"User {user.user_guid} has not liked room song {room_song_guid}")
+        raise ValueError(f"User {user.user_cognito_guid} has not liked room song {room_song_guid}")
 
 
 @db.use_db_session(commit=True)

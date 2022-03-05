@@ -1,4 +1,3 @@
-import json
 from chalicelib.endpoints.watcher.core import poll_five_seconds, song_watch
 from chalice import Blueprint, Rate
 

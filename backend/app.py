@@ -7,12 +7,14 @@ from aws_lambda_powertools import Tracer
 
 from chalicelib.endpoints.room.endpoints import room_routes
 from chalicelib.endpoints.spotify.endpoints import spotify_routes
+from chalicelib.endpoints.user.endpoints import user_routes
 from chalicelib.endpoints.watcher.endpoints import watcher_routes
 
 app = Chalice(app_name="backend")
 app.register_blueprint(room_routes)
 app.register_blueprint(spotify_routes)
 app.register_blueprint(watcher_routes)
+app.register_blueprint(user_routes)
 app.log.setLevel(logging.INFO)
 logger = Logger()
 tracer = Tracer()

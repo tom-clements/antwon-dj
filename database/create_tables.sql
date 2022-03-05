@@ -12,9 +12,7 @@ CREATE TABLE antwon.SpotifyUsers (
 
 CREATE TABLE antwon.Users (
     user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_guid varchar(36) NOT NULL,
-    cognito_access_token varchar(500),
-    cognito_refresh_token varchar(500),
+    user_cognito_guid varchar(36) NOT NULL,
     create_time datetime
 );
 
@@ -59,10 +57,6 @@ CREATE TABLE antwon.RoomSongLikes (
     create_time datetime
 );
 
-insert into antwon.Users
-(user_guid, create_time)
-VALUES
-("2962e800-e543-4a31-9b9f-49ee9e82d52c", now());
 
 insert into antwon.Rooms
 (room_guid, room_code, is_inactive, owner_user_id, create_time)

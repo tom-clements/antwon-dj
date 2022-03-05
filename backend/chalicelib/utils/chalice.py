@@ -1,3 +1,8 @@
-def get_base_url():
+def get_api_url():
     # TODO: set this an env variable
-    return "https://3mnr9rzo8e.execute-api.eu-west-2.amazonaws.com/dev"
+    return "https://api.djantwon.com/dev"
+
+
+def get_auth_url():
+    # TODO: set this an env variable
+    return "https://auth.djantwon.com"

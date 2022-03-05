@@ -1,77 +1,48 @@
-import uuid
 import datetime
-import secrets
 
-import jwt
-from sqlalchemy.exc import NoResultFound
+import requests
+from chalice import Response
 
 from chalicelib.antwondb import db
 from chalicelib.antwondb.schema import User
+from chalicelib.utils.chalice import get_auth_url, get_api_url
 from chalicelib.utils.secrets import AwsSecretRetrieval
 
 
-@AwsSecretRetrieval(
-    "antwon-backend",
-    backend_app_secret_key="BACKEND_APP_SECRET_KEY",
-)
-def generate_access_token(user_guid, backend_app_secret_key):
-    data = {"user_guid": user_guid, "exp": datetime.datetime.now() + datetime.timedelta(days=1)}
-    return jwt.encode(data, backend_app_secret_key, algorithm="HS256")
-
-
-def generate_refresh_token():
-    refresh_token = secrets.token_hex(32)
-    return refresh_token
-
-
 @db.use_db_session(commit=True)
-def store_refresh_token(refresh_token, user_guid, db_session):
-    db_session.query(User).filter(User.user_guid == user_guid).update(
-        {User.refresh_token: refresh_token}, synchronize_session=False
-    )
+def add_new_user(user_cognito_guid, db_session):
+    if not db_session.query(User).filter(User.user_cognito_guid == user_cognito_guid).scalar():
+        new_user = User(user_cognito_guid=user_cognito_guid, create_time=datetime.datetime.now())
+        db_session.add(new_user)
+        return new_user.user_cognito_guid
 
 
-@db.use_db_session(commit=True)
-def store_access_token(access_token, user_guid, db_session):
-    db_session.query(User).filter(User.user_guid == user_guid).update(
-        {User.access_token: access_token}, synchronize_session=False
-    )
+def get_user_guid_from_token(access_token, token_type):
+    url = f"{get_auth_url()}/oauth2/userInfo"
+    headers = {"Authorization": f"{token_type} {access_token}"}
+    response = requests.get(url, headers=headers)
+    return response.json()["sub"]
 
 
-def generate_guest_token():
-    return generate_access_token(uuid.uuid4())
+@AwsSecretRetrieval("cognito_client_credentials", client_id="client_id", client_secret="client_secret")
+def get_tokens(client_id, client_secret, code):
+    url = f"{get_auth_url()}/oauth2/token"
+    params = {
+        "grant_type": "authorization_code",
+        "code": code,
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "redirect_uri": "https://api.djantwon.com/dev/callback",
+    }
+    response = requests.post(url, data=params)
+    return response.json()
 
 
-@db.use_db_session(commit=True)
-def add_new_user(username, password, db_session):
-    new_user = User(
-        user_guuid=str(uuid.uuid4()), username=username, password=password, create_time=datetime.datetime.now()
-    )
-    db_session.add(new_user)
-    return new_user.user_guid
+def redirect_to_spotify_connect(user_cognito_guid):
+    url = f"{get_api_url()}/spotifyConnect?" + f"user_guid={user_cognito_guid}"
+    return Response(body="", headers={"Location": url}, status_code=302)
 
 
-def generate_user_tokens(user_guid):
-    access_token = generate_access_token(user_guid)
-    refresh_token = generate_refresh_token()
-    store_access_token(access_token, user_guid)
-    store_refresh_token(refresh_token, user_guid)
-    return access_token, refresh_token, 200
-
-
-@db.use_db_session()
-def obtain_user_tokens(username, password, db_session):
-    try:
-        user = db_session.query(User.user_guid).filter(User.user_name == username, User.password == password).scalar()
-        access_token = user.access_token
-        refresh_token = user.refresh_token
-        return access_token, refresh_token, 200
-    except NoResultFound:
-        return "", "", 401
-
-
-@db.use_db_session()
-def new_access_token_from_refresh_token(refresh_token, db_session):
-    user_guid = db_session.query(User.user_guid).filter(User.refresh_token == refresh_token).scalar()
-    access_token = generate_access_token(user_guid)
-    return access_token, 200
+def redirect_to_client_with_tokens(tokens):
+    url = "https://www.djantwon.com/?" + "&".join([f"{k}={v}" for k, v in tokens.items()])
+    return Response(body="", headers={"Location": url}, status_code=302)

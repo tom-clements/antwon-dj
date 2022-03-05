@@ -31,17 +31,12 @@ class User(Base):
     __tablename__ = "Users"
 
     user_id = Column(Integer, primary_key=True)
-    user_guid = Column(String)
-    cognito_access_token = Column(String)
-    cognito_refresh_token = Column(String)
+    user_cognito_guid = Column(String)
     create_time = Column(DateTime)
 
     def __repr__(self):
-        return (
-            f"<User(user_id='{self.user_id}', user_guid='{self.user_guid}', \
-        cognito_access_token='{self.cognito_access_token}', cognito_refresh_token='{self.cognito_refresh_token},"
-            f"create_time='{self.create_time}')>"
-        )
+        return f"<User(user_id='{self.user_id}', user_cognito_guid='{self.user_cognito_guid}', \
+        cognito_user_name='{self.cognito_user_name}', create_time='{self.create_time},"
 
 
 class Song(Base):

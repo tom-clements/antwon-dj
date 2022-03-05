@@ -1,12 +1,7 @@
-import base64
-import json
-
-import requests
 from chalice import Blueprint, Response
 
 from chalicelib.endpoints.spotify.core import add_spotify_user, search_songs, get_currently_playing, add_to_playlist
 from chalicelib.utils import spotify
-from chalicelib.utils.secrets import AwsSecretRetrieval
 from chalicelib.utils.spotify import get_token
 
 spotify_routes = Blueprint(__name__)
@@ -16,7 +11,7 @@ spotify_routes = Blueprint(__name__)
 def spotify_connect_get():
     user_guid = spotify_routes.current_request.query_params["user_guid"]
     url = spotify.app_authorization() + "&state=" + str(user_guid)
-    return {"oauth2_redirect_url": url}
+    return Response(body="", headers={"Location": url}, status_code=302)
 
 
 @spotify_routes.route("/spotifySearch", methods=["GET"], cors=True)
