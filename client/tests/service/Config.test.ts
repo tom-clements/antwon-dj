@@ -1,21 +1,53 @@
-import { getApiBaseUrl } from 'service/Config';
+import { getApiBaseUrl, getClientBaseUrl } from 'service/Config';
+
+const urlTestCases = [
+    { input: 'http://localhost', expectation: 'http://localhost/' },
+    { input: 'http://localhost/', expectation: 'http://localhost/' },
+    { input: '   http://localhost/      ', expectation: 'http://localhost/' },
+    { input: 'http://localhost:8080', expectation: 'http://localhost:8080/' },
+    { input: 'http://localhost:8080/', expectation: 'http://localhost:8080/' },
+];
+
+const falsyCases = [
+    { input: '', text: '\'\'' },
+];
 
 describe('getApiBaseUrl()', () => {
-    const testCases = [
-        { API_BASE_URL: 'http://localhost', expectation: 'http://localhost/' },
-        { API_BASE_URL: 'http://localhost/', expectation: 'http://localhost/' },
-        { API_BASE_URL: '   http://localhost/      ', expectation: 'http://localhost/' },
-        { API_BASE_URL: 'http://localhost:8080', expectation: 'http://localhost:8080/' },
-        { API_BASE_URL: 'http://localhost:8080/', expectation: 'http://localhost:8080/' },
-    ];
-
-    for (const testCase of testCases) {
-        it(`returns correct URL from API_BASE_URL = "${testCase.API_BASE_URL}"`, () => {
-            process.env.API_BASE_URL = testCase.API_BASE_URL;
+    for (const testCase of urlTestCases) {
+        it(`returns correct URL if API_BASE_URL = "${testCase.input}"`, () => {
+            process.env.API_BASE_URL = testCase.input;
 
             const result = getApiBaseUrl();
 
             expect(result).toBe(testCase.expectation);
+        });
+    }
+
+    for (const testCase of falsyCases) {
+        it(`throws if API_BASE_URL = "${testCase.text}"`, () => {
+            process.env.API_BASE_URL = testCase.input;
+
+            expect(() => getApiBaseUrl()).toThrow();
+        });
+    }
+});
+
+describe('getClientBaseUrl()', () => {
+    for (const testCase of urlTestCases) {
+        it(`returns correct URL if CLIENT_BASE_URL = "${testCase.input}"`, () => {
+            process.env.CLIENT_BASE_URL = testCase.input;
+
+            const result = getClientBaseUrl();
+
+            expect(result).toBe(testCase.expectation);
+        });
+    }
+
+    for (const testCase of falsyCases) {
+        it(`throws if CLIENT_BASE_URL = "${testCase.text}"`, () => {
+            process.env.CLIENT_BASE_URL = testCase.input;
+
+            expect(() => getClientBaseUrl()).toThrow();
         });
     }
 });
