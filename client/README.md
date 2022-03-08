@@ -91,9 +91,7 @@ State management and data access is built with Redux Toolkit and RTK Query.
     At the root of the client, add a file called `.env.local` and paste the following snippet.
 
     ```sh
-    API_BASE_SCHEME=
-    API_BASE_HOST=
-    API_BASE_STACK=
+    API_BASE_URL
     ```
 
     For each variable with a missing value, find the appropriate from Taylor and paste.

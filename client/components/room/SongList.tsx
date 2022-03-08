@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { SongDto } from 'model/service/SpotifySearchApi';
+import { SongDto } from 'service/SpotifySearchApi';
 import { SongItem } from 'components/room/SongItem';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';

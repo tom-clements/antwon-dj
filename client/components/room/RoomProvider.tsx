@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from 'model/Store';
 import { ErrorCode } from 'model/enums/ErrorCode';
 import { setError } from 'model/slices/ErrorSlice';
 import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
-import { roomApi } from 'model/service/RoomApi';
+import { roomApi } from 'service/RoomApi';
 import { QueryResultStatus, QueryResult, isNotFound } from 'components/core/QueryResult';
 
 interface Props {

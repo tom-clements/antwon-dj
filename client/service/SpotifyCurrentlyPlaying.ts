@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getBaseUrl } from "model/service/ApiGateway";
-import { SongDto } from "model/service/SpotifySearchApi";
+import { getApiBaseUrl } from "service/Config";
+import { SongDto } from "service/SpotifySearchApi";
 
 interface SongsForSearchResponseDto {
     "song": SongDto;
@@ -8,7 +8,7 @@ interface SongsForSearchResponseDto {
 
 export const spotifyCurrentlyPlayingApi = createApi({
     reducerPath: "spotifyCurrentlyPlayingApi",
-    baseQuery: fetchBaseQuery({ baseUrl: getBaseUrl() }),
+    baseQuery: fetchBaseQuery({ baseUrl: getApiBaseUrl() }),
     tagTypes: ["SpotifyCurrentlyPlaying"],
     endpoints: (builder) => ({
         get: builder.query<SongDto, string>({

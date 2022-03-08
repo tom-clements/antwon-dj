@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { styled, Box } from '@mui/material';
-import { roomApi, RoomSongDto } from 'model/service/RoomApi';
+import { roomApi, RoomSongDto } from 'service/RoomApi';
 import { QueryResult, QueryResultStatus } from 'components/core/QueryResult';
 import { SongItem, SongItemSkeleton } from 'components/room/SongItem';
 

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getBaseUrl } from "model/service/ApiGateway";
-import { SongDto } from "model/service/SpotifySearchApi";
+import { getApiBaseUrl } from "service/Config";
+import { SongDto } from "service/SpotifySearchApi";
 
 
 interface RoomIdByCodeResponseDto {
@@ -35,7 +35,7 @@ function mapRoomSongPostDto(dto: RoomSongPostDto) {
 
 export const roomApi = createApi({
     reducerPath: "roomApi",
-    baseQuery: fetchBaseQuery({ baseUrl: getBaseUrl() }),
+    baseQuery: fetchBaseQuery({ baseUrl: getApiBaseUrl() }),
     tagTypes: ["Room", "RoomQueue"],
     endpoints: (builder) => ({
         getRoomIdByCode: builder.query<string, string>({

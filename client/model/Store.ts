@@ -3,9 +3,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import { errorSlice } from 'model/slices/ErrorSlice';
 import { RoomPortalSlice } from 'model/slices/RoomPortalSlice';
 import { UserSlice } from 'model/User';
-import { spotifyCurrentlyPlayingApi } from 'model/service/SpotifyCurrentlyPlaying';
-import { spotifySearchApi } from 'model/service/SpotifySearchApi';
-import { roomApi } from 'model/service/RoomApi';
+import { spotifyCurrentlyPlayingApi } from 'service/SpotifyCurrentlyPlaying';
+import { spotifySearchApi } from 'service/SpotifySearchApi';
+import { roomApi } from 'service/RoomApi';
 
 export function createStore(preloadedState: any) {
     return configureStore({

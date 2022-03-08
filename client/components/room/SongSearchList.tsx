@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { SongDto } from 'model/service/SpotifySearchApi';
+import { SongDto } from 'service/SpotifySearchApi';
 import { SongList } from 'components/room/SongList';
 
 export const SongListContainer = styled(Box)`
