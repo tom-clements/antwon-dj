@@ -12,7 +12,7 @@ from sqlalchemy.orm import session
 from chalicelib.antwondb import db
 from chalicelib.antwondb.schema import Room, SpotifyUser
 from chalicelib.utils.secrets import AwsSecretRetrieval
-from chalicelib.utils.chalice import get_base_url
+from chalicelib.utils.chalice import get_api_url
 
 SCOPES = "playlist-read-collaborative user-modify-playback-state user-read-playback-state user-read-private playlist-modify-private playlist-modify-public"
 
@@ -23,7 +23,7 @@ def app_authorization(spotify_id):
         "response_type": "code",
         "client_id": spotify_id,
         "scope": SCOPES,
-        "redirect_uri": f"{get_base_url()}/spotifyCallback",
+        "redirect_uri": f"{get_api_url()}/spotifyCallback",
     }
     url = "https://accounts.spotify.com/authorize?{}".format(urllib.parse.urlencode(f))
     return url
@@ -38,7 +38,7 @@ def get_spotify(auth, spotify_id, spotify_secret):
 
 @AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
 def get_token(code, spotify_id, spotify_secret):
-    data = {"code": code, "redirect_uri": f"{get_base_url()}/spotifyCallback", "grant_type": "authorization_code"}
+    data = {"code": code, "redirect_uri": f"{get_api_url()}/spotifyCallback", "grant_type": "authorization_code"}
     url = "https://accounts.spotify.com/api/token"
     base64encoded = base64.b64encode(bytes("{}:{}".format(spotify_id, spotify_secret), "utf-8"))
     headers = {"Authorization": "Basic {}".format(str(base64encoded, "utf-8"))}
@@ -51,7 +51,7 @@ def refresh_spotify_token(refresh_token, spotify_secret, spotify_id):
     sp_oauth = oauth2.SpotifyOAuth(
         client_id=spotify_id,
         client_secret=spotify_secret,
-        redirect_uri=f"{get_base_url()}/spotifyCallback",
+        redirect_uri=f"{get_api_url()}/spotifyCallback",
         scope=SCOPES,
     )
     # if sp_oauth.is_token_expired({'access_token': access_token, 'refresh_token': refresh_token}):

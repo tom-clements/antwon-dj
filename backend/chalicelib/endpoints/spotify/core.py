@@ -2,6 +2,7 @@ import uuid
 import time
 from collections import namedtuple
 from typing import Dict, List, Any
+from datetime import datetime as dt
 
 import spotipy
 from sqlalchemy.orm import session
@@ -36,20 +37,23 @@ def search_songs(
 
 @db.use_db_session(commit=True)
 def add_spotify_user(
-    user_guid: str, access_token: str, refresh_token: str, spotify_user: Dict[str, Any], db_session: session
+    user_cognito_guid: str, access_token: str, refresh_token: str, spotify_user: Dict[str, Any], db_session: session
 ):
-    user_id = db_session.query(User.user_id).filter(User.user_guid == user_guid).scalar()
-    db_session.add(
-        SpotifyUser(
-            spotify_user_guid=str(uuid.uuid4()),
-            user_id=user_id,
-            spotify_user_username=spotify_user["id"],
-            spotify_user_name=spotify_user["display_name"],
-            spotify_profile_image_url=spotify_user["images"][0]["url"],
-            spotify_access_token=access_token,
-            spotify_refresh_token=refresh_token,
+    user_id = db_session.query(User.user_id).filter(User.user_cognito_guid == user_cognito_guid).scalar()
+    # TODO: remove check for existence, need to capture elsewhere
+    if not db_session.query(SpotifyUser.user_id).filter(SpotifyUser.user_id == user_id).scalar():
+        db_session.add(
+            SpotifyUser(
+                spotify_user_guid=str(uuid.uuid4()),
+                user_id=user_id,
+                spotify_user_username=spotify_user["id"],
+                spotify_user_name=spotify_user["display_name"],
+                spotify_profile_image_url=spotify_user["images"][0]["url"],
+                spotify_access_token=access_token,
+                spotify_refresh_token=refresh_token,
+                insert_time=dt.now(),
+            )
         )
-    )
 
 
 @spotify.use_spotify_session
