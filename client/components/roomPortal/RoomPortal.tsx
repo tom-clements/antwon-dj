@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { RoomCodeInput } from 'components/roomPortal/RoomCodeInput';
 import { useAppSelector, useAppDispatch } from 'model/Store';
 import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
+import { getRelativeRoomUrl } from 'service/room/getRoomUrl';
 
 function isValidRoomCode(roomCode: string | null): roomCode is string {
     if (roomCode === null) return false;
@@ -20,10 +21,7 @@ export const RoomPortal: FC = () => {
     const onRoomSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (canGoToRoom) {
-            router.push({
-                pathname: 'room',
-                query: { code: roomCode },
-            });
+            router.push({ pathname: getRelativeRoomUrl(roomCode) });
         }
     };
 

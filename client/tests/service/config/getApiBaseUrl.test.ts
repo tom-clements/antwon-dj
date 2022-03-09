@@ -1,4 +1,4 @@
-import { getApiBaseUrl, getClientBaseUrl } from 'service/Config';
+import { getApiBaseUrl } from 'service/config/getApiBaseUrl';
 
 const urlTestCases = [
     { input: 'http://localhost', expectation: 'http://localhost/' },
@@ -28,26 +28,6 @@ describe('getApiBaseUrl()', () => {
             process.env.API_BASE_URL = testCase.input;
 
             expect(() => getApiBaseUrl()).toThrow();
-        });
-    }
-});
-
-describe('getClientBaseUrl()', () => {
-    for (const testCase of urlTestCases) {
-        it(`returns correct URL if CLIENT_BASE_URL = "${testCase.input}"`, () => {
-            process.env.CLIENT_BASE_URL = testCase.input;
-
-            const result = getClientBaseUrl();
-
-            expect(result).toBe(testCase.expectation);
-        });
-    }
-
-    for (const testCase of falsyCases) {
-        it(`throws if CLIENT_BASE_URL = "${testCase.text}"`, () => {
-            process.env.CLIENT_BASE_URL = testCase.input;
-
-            expect(() => getClientBaseUrl()).toThrow();
         });
     }
 });

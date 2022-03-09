@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getApiBaseUrl } from 'service/Config';
+import { getApiBaseUrl } from 'service/config/getApiBaseUrl';
 import { SongDto } from 'service/SpotifySearchApi';
-
 
 interface RoomIdByCodeResponseDto {
     'room_guid': string;

@@ -4,7 +4,7 @@ import { RootContainer } from 'components/core/RootContainer';
 import { QRCodeModuleVariant, SpinnerQRCode } from 'components/atoms/QRCode';
 import { Box, Link, styled, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { getClientBaseUrl } from 'service/Config';
+import { getRelativeRoomUrl, getFullRoomUrl } from 'service/room/getRoomUrl';
 import { getSingleFromUrlQuery } from 'service/GetFromUrlQuery';
 import { ErrorCode } from 'model/enums/ErrorCode';
 import { ErrorRedirect } from 'components/error/ErrorRedirect';
@@ -32,11 +32,6 @@ const TextBox = styled(Box)`
     margin: ${props => props.theme.spacing(5, 0)};
 `;
 
-export function getRoomUrl(roomCode: string) {
-    const clientBaseUrl = getClientBaseUrl();
-    return `${clientBaseUrl}room/${roomCode}`;
-}
-
 export default function RoomSharePage() {
     const router = useRouter();
     if (!router.isReady) return null;
@@ -45,13 +40,14 @@ export default function RoomSharePage() {
 
     if (!code) return <ErrorRedirect errorCode={ErrorCode.Unknown} />; 
 
-    const roomUrl = getRoomUrl(code);
+    const relativeRoomUrl = getRelativeRoomUrl(code);
+    const fullRoomUrl = getFullRoomUrl(code);
 
     return (
         <RootContainer>
             <RootBox>
                 <QRBox>
-                    <SpinnerQRCode data={roomUrl} variant={QRCodeModuleVariant.DiamondWithSquareFinder} />
+                    <SpinnerQRCode data={fullRoomUrl} variant={QRCodeModuleVariant.DiamondWithSquareFinder} />
                 </QRBox>
                 <TextBox>
                     <Typography variant="h2">
@@ -61,8 +57,8 @@ export default function RoomSharePage() {
                         Room code: <em><strong>{code}</strong></em>
                     </Typography>
                     <br />
-                    <Link variant='body2' underline="hover" href={roomUrl} target="_blank">
-                        {roomUrl}
+                    <Link variant='body2' underline="hover" href={relativeRoomUrl} target="_blank">
+                        {fullRoomUrl}
                     </Link>
                 </TextBox>
             </RootBox>

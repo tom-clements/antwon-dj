@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getApiBaseUrl } from 'service/Config';
+import { getApiBaseUrl } from 'service/config/getApiBaseUrl';
 
 export interface SongDto {
     'song_uri': string;
