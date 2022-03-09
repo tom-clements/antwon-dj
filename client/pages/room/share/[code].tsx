@@ -34,18 +34,18 @@ const TextBox = styled(Box)`
 
 export function getRoomUrl(roomCode: string) {
     const clientBaseUrl = getClientBaseUrl();
-    return `${clientBaseUrl}room?code=${roomCode}`;
+    return `${clientBaseUrl}room/${roomCode}`;
 }
 
-export default function SpinnerPage() {
+export default function RoomSharePage() {
     const router = useRouter();
     if (!router.isReady) return null;
 
-    const roomCode = getSingleFromUrlQuery(router.query, 'roomCode');
+    const code = getSingleFromUrlQuery(router.query, 'code');
 
-    if (!roomCode) return <ErrorRedirect errorCode={ErrorCode.Unknown} />; 
+    if (!code) return <ErrorRedirect errorCode={ErrorCode.Unknown} />; 
 
-    const roomUrl = getRoomUrl(roomCode);
+    const roomUrl = getRoomUrl(code);
 
     return (
         <RootContainer>
@@ -58,7 +58,7 @@ export default function SpinnerPage() {
                         djantwon.com
                     </Typography>
                     <Typography variant="h5">
-                        Room code: <em><strong>{roomCode}</strong></em>
+                        Room code: <em><strong>{code}</strong></em>
                     </Typography>
                     <br />
                     <Link variant='body2' underline="hover" href={roomUrl} target="_blank">

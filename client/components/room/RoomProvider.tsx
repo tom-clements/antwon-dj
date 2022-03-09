@@ -1,7 +1,5 @@
 import { FC, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { skipToken } from '@reduxjs/toolkit/query/react';
-import { ParsedUrlQuery } from 'querystring';
 import { useAppSelector, useAppDispatch } from 'model/Store';
 import { ErrorCode } from 'model/enums/ErrorCode';
 import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
@@ -10,25 +8,21 @@ import { QueryResultStatus, QueryResult, isNotFound } from 'components/core/Quer
 import { ErrorRedirect } from 'components/error/ErrorRedirect';
 
 interface Props {
+    roomCodeFromPage: string;
     render: (roomId: string) => JSX.Element;
     renderLoading: () => JSX.Element;
 }
 
-function getRoomCodeFromUrlQuery(query: ParsedUrlQuery): string | null {
-    if (query['code'] && query['code'] && !Array.isArray(query['code'])) return query['code'];
-    return null;
-}
-
 export const RoomProvider: FC<Props> = props => {
-    const router = useRouter();
+    const { roomCodeFromPage } = props;
+
     const dispatch = useAppDispatch();
-    const roomCodeFromUrlQuery = getRoomCodeFromUrlQuery(router.query);
     const roomCodeFromState = useAppSelector(selectRoomPortalCode);
     const result = roomApi.endpoints.getRoomIdByCode.useQuery(roomCodeFromState ?? skipToken);
 
     useEffect(() => {
-        if (roomCodeFromState !== roomCodeFromUrlQuery) dispatch(setRoomPortalCode(roomCodeFromUrlQuery));
-    }, [dispatch, roomCodeFromState, roomCodeFromUrlQuery]);
+        if (roomCodeFromState !== roomCodeFromPage) dispatch(setRoomPortalCode(roomCodeFromPage));
+    }, [dispatch, roomCodeFromState, roomCodeFromPage]);
 
     if (isNotFound(result)) return <ErrorRedirect errorCode={ErrorCode.RoomNotFound} />;
 
