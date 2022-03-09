@@ -11,5 +11,6 @@
  * ```
  */
 export enum ErrorCode {
+    Unknown = 0,
     RoomNotFound = 250,
 }

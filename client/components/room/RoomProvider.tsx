@@ -4,10 +4,10 @@ import { skipToken } from '@reduxjs/toolkit/query/react';
 import { ParsedUrlQuery } from 'querystring';
 import { useAppSelector, useAppDispatch } from 'model/Store';
 import { ErrorCode } from 'model/enums/ErrorCode';
-import { setError } from 'model/slices/ErrorSlice';
 import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
 import { roomApi } from 'service/RoomApi';
 import { QueryResultStatus, QueryResult, isNotFound } from 'components/core/QueryResult';
+import { ErrorRedirect } from 'components/error/ErrorRedirect';
 
 interface Props {
     render: (roomId: string) => JSX.Element;
@@ -30,12 +30,7 @@ export const RoomProvider: FC<Props> = props => {
         if (roomCodeFromState !== roomCodeFromUrlQuery) dispatch(setRoomPortalCode(roomCodeFromUrlQuery));
     }, [dispatch, roomCodeFromState, roomCodeFromUrlQuery]);
 
-    useEffect(() => {
-        if (isNotFound(result)) {
-            router.push({ pathname: '/' });
-            dispatch(setError(ErrorCode.RoomNotFound));
-        }
-    }, [router, dispatch, result]);
+    if (isNotFound(result)) return <ErrorRedirect errorCode={ErrorCode.RoomNotFound} />;
 
     return (
         <QueryResult<string> result={result}>
