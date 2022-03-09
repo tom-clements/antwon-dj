@@ -1,8 +1,5 @@
 on:
-  pull_request:
-    branches:
-      - deploy
-    types: [closed]
+  workflow_dispatch:
 
 name: Deploy merged PR to Chalice
 jobs:

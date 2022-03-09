@@ -1,0 +1,9 @@
+from unittest.mock import patch
+
+from chalicelib.data.delete_room_songs import delete_room_songs
+
+
+@patch("sqlalchemy.orm.session.Session")
+def test_delete_room_songs_from_db(mock_db_session):
+    delete_room_songs("test_guid", db_session=mock_db_session)
+    mock_db_session.query.return_value.join.return_value.filter.return_value.delete.assert_called()
