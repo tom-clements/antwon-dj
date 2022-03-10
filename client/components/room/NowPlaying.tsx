@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { spotifyCurrentlyPlayingApi } from 'model/service/SpotifyCurrentlyPlaying';
+import { spotifyCurrentlyPlayingApi } from 'service/SpotifyCurrentlyPlaying';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import Box from '@mui/material/Box';
-import { SongDto } from 'model/service/SpotifySearchApi';
+import { SongDto } from 'service/SpotifySearchApi';
 import { Spinner } from 'components/core/Spinner';
 import { QueryResult, QueryResultStatus } from 'components/core/QueryResult';
 import { Typography } from '@mui/material';

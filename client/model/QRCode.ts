@@ -1,13 +1,13 @@
-import { useMemo } from "react";
-import qrcode from "qrcode-generator";
+import { useMemo } from 'react';
+import qrcode from 'qrcode-generator';
 
 type QRCodeGenerator = typeof qrcode;
 export type QRCode = ReturnType<typeof qrcode>;
 
 type TypeNumber = Parameters<QRCodeGenerator>[0];
 type ErrorCorrectionLevel = Parameters<QRCodeGenerator>[1];
-type Data = Parameters<QRCode["addData"]>[0];
-type Mode = Exclude<Parameters<QRCode["addData"]>[1], undefined>;
+type Data = Parameters<QRCode['addData']>[0];
+type Mode = Exclude<Parameters<QRCode['addData']>[1], undefined>;
 
 export type UseQRCodeProps = {
     data: Data;
@@ -84,7 +84,7 @@ export function isFinderPatternModule(i: number, j: number, m: number) {
     }
 
     // TR corner
-    if (i < 7 && j >= m - 7 && j < m) return finderPatternXYMap(m)[i].includes(j)
+    if (i < 7 && j >= m - 7 && j < m) return finderPatternXYMap(m)[i].includes(j);
 
     return false;
 }

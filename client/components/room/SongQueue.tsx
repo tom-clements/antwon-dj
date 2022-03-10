@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { roomApi, RoomSongDto } from 'model/service/RoomApi';
+import { roomApi, RoomSongDto } from 'service/RoomApi';
 import { QueryResult, QueryResultStatus } from 'components/core/QueryResult';
 import { SongList } from 'components/room/SongList';
 import { Box, Skeleton } from '@mui/material';

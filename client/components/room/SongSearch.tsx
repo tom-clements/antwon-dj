@@ -3,8 +3,8 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled, InputAdornment, InputLabel, OutlinedInput, FormControl, IconButton } from '@mui/material';
 import { Clear, Search } from '@mui/icons-material';
-import { spotifySearchApi } from 'model/service/SpotifySearchApi';
-import { roomApi } from 'model/service/RoomApi';
+import { spotifySearchApi } from 'service/SpotifySearchApi';
+import { roomApi } from 'service/RoomApi';
 import { SongSearchList } from 'components/room/SongSearchList';
 
 interface Props {
