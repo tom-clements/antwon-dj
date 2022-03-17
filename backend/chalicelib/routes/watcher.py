@@ -1,12 +1,13 @@
 from chalice import Blueprint, Rate
 
+from chalicelib.cors import get_cors_config
 from chalicelib.services.watcher.get_scheduled_poll import poll_five_seconds
 from chalicelib.services.watcher.watch_room import watch_room
 
 watcher_routes = Blueprint(__name__)
 
 
-@watcher_routes.route("/pollRoom", methods=["GET"])
+@watcher_routes.route("/pollRoom", methods=["GET"], cors=get_cors_config(allow_origin="https://api.djantwon.com"))
 def poll_room_get():
     room_guid = watcher_routes.current_request.query_params["room_guid"]
     next_song, added_to_playlist, removed_from_queue = watch_room(room_guid)
