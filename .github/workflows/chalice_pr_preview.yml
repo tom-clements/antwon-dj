@@ -1,8 +1,5 @@
 on:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - main
 
 name: Deploy PR to AWS
 jobs:

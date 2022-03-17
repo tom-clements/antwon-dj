@@ -67,6 +67,8 @@ insert into antwontest.Rooms
 VALUES
 ("1fbc1ed4-8dd0-45a8-95a2-2f8d2ffb7faa", "ABCDEF", false, 1, now());
 
+
+
 insert into antwontest.RoomSongs
 (room_song_guid, room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
 VALUES
