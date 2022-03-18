@@ -32,6 +32,7 @@ def spotify_callback_get():
     sp = spotify.get_spotify(auth=token["access_token"])
     spotify_user = sp.current_user()
     add_spotify_user(params["state"], token["access_token"], token["refresh_token"], spotify_user)
+    return token
     return Response(body="", headers={"Location": "https://www.djantwon.com"}, status_code=302)
 
 
