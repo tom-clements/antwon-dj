@@ -14,7 +14,7 @@ def add_spotify_user(
     username: str, access_token: str, refresh_token: str, spotify_user: Dict[str, Any], db_session: session
 ):
     user_id = get_user_id_from_username(username)
-    if not is_spotify_user_exists:
+    if not is_spotify_user_exists(user_id):
         create_spotify_user(user_id, access_token, refresh_token, spotify_user)
     # TODO: this shouldn't need to be handled, this is just to refresh tokens manually to aid development
     else:
