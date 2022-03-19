@@ -16,7 +16,7 @@ def mock_sql_row(input_data: Dict[str, Any], mock_row) -> Row:
 
 
 @pytest.mark.parametrize(
-    "example_room_guid,expected_queue",
+    "room_guid,expected_queue",
     [
         (
             "example_room_guid",
@@ -49,13 +49,13 @@ def mock_sql_row(input_data: Dict[str, Any], mock_row) -> Row:
                 ),
             ],
         ),
-        ("example_room_guid", []),
+        ("example_room_code", []),
     ],
 )
 @patch("sqlalchemy.orm.session.Session")
-def test_get_room_queue_from_room_guid(mock_db_session, example_room_guid, expected_queue):
+def test_get_room_queue_from_room_guid(mock_db_session, room_guid, expected_queue):
     mock_db_session.query.return_value.join.return_value.join.return_value.filter.return_value.all.return_value = (
         expected_queue
     )
-    actual_queue = read_room_queue(room_guid=example_room_guid, db_session=mock_db_session)
+    actual_queue = read_room_queue(room_guid=room_guid, db_session=mock_db_session)
     assert actual_queue == expected_queue

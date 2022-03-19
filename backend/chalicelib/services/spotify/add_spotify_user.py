@@ -9,7 +9,6 @@ from chalicelib.data.update_spotify_user import update_spotify_user
 from chalicelib.services.auth import db
 
 
-# TODO test this
 @db.use_db_session(commit=True)
 def add_spotify_user(
     username: str, access_token: str, refresh_token: str, spotify_user: Dict[str, Any], db_session: session

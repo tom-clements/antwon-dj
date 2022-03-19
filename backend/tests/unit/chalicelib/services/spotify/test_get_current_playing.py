@@ -91,4 +91,5 @@ def test_get_placeholder_empty_song():
 def test_get_currently_playing(mock_spotify_currently_playing_cached, currently_playing_result, expected_output):
     mock_spotify_currently_playing_cached.return_value = currently_playing_result
     actual_output = get_currently_playing(room_guid="test_room_guid")
+    mock_spotify_currently_playing_cached.assert_called()
     assert actual_output == expected_output

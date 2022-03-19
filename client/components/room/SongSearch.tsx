@@ -87,7 +87,7 @@ export const SongSearch: FC<Props> = props => {
                 {showDrawer && (
                     <SearchDrawer>
                         <SongSearchList songs={result.data ?? []} onSelectSong={s => {
-                            addSongToQueue({ ...s, room_guid: props.roomId });
+                            addSongToQueue({roomId: props.roomId, song: s});
                             setSearchTerm(''); // todo: compose this
                         }} />
                     </SearchDrawer>

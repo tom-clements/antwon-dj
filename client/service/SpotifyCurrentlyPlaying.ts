@@ -12,7 +12,7 @@ export const spotifyCurrentlyPlayingApi = createApi({
     tagTypes: ['SpotifyCurrentlyPlaying'],
     endpoints: (builder) => ({
         get: builder.query<SongDto, string>({
-            query: roomId => ({ url: `spotifyCurrentlyPlaying?room_guid=${roomId}` }),
+            query: roomId => ({ url: `room/${roomId}/playing` }),
             transformResponse: (response: SongsForSearchResponseDto) => response.song,
             providesTags: ['SpotifyCurrentlyPlaying'],
         }),

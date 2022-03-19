@@ -26,6 +26,7 @@ CREATE TABLE antwon.Rooms (
     create_time datetime NOT NULL
 );
 
+
 CREATE TABLE antwon.Songs (
     song_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     song_guid varchar(500) NOT NULL,
@@ -57,38 +58,3 @@ CREATE TABLE antwon.RoomSongLikes (
     like_value int NOT NULL,
     create_time datetime NOT NULL
 );
-
-
-insert into antwon.Rooms
-(room_guid, room_code, is_inactive, owner_user_id, create_time)
-VALUES
-("5fbc1ed4-8dd0-45a8-95a2-2f8d2ffb7faa", "SOIREE", false, 1, now());
-
-insert into antwon.RoomSongs
-(room_songs_guid, room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
-VALUES
-("7aa3c95c-7406-4a47-af5a-5c087fa4c6b1", 1, 1, false, now(), false, false, false);
-
-insert into antwon.RoomSongs
-(room_songs_guid, room_id, song_id, is_inactive, insert_time, is_played, is_removed, is_added_to_playlist)
-VALUES
-("02d451a2-39d3-49b7-8c3b-4953470a22df", 1, 2, false, now(), false, false, false);
-
-insert into antwon.Songs
-(song_guid, song_uri, song_name, song_artist, song_album_url, insert_time, last_accessed)
-VALUES
-('ddd1de01-6eee-4bdf-85c6-d06c83696972', 'spotify:track:1u8c2t2Cy7UBoG4ArRcF5g',
-'Blank Space', 'Taylor Swift', 'https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a',
-now(), now());
-
-insert into antwon.Songs
-(song_guid, song_uri, song_name, song_artist, song_album_url, insert_time, last_accessed)
-VALUES
-('6f422b09-60a1-4673-9e55-326e32117b6c', 'spotify:track:0cqRj7pUJDkTCEsJkx8snD',
-'Shake It Off', 'Taylor Swift', 'https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a',
-now(), now());
-
-insert into antwon.RoomSongLikes
-(room_song_like_guid, room_songs_id, user_id, like_value, create_time)
-VALUES
-("55572d31-41b5-4deb-b3b9-f19f13e01221", 1, 1, 1, now());
