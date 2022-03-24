@@ -15,6 +15,7 @@ def update_spotify_user(user_id: int, access_token: str, refresh_token: str, db_
         {
             SpotifyUser.spotify_access_token: access_token,
             SpotifyUser.spotify_refresh_token: refresh_token,
+            SpotifyUser.insert_time: datetime.datetime.now(),
         },
         synchronize_session=False,
     )
