@@ -17,12 +17,7 @@ export interface RoomSongDto extends SongDto {
     'insert_time': Date;
 }
 
-
-interface RoomSongPostDto extends SongDto {
-    'room_guid': string;
-}
-
-function mapRoomSongPostDto(dto: RoomSongPostDto) {
+function mapRoomSongPostDto(dto: SongDto) {
     return {
         song_uri: dto.song_uri,
         song_name: dto.song_name,
@@ -46,7 +41,7 @@ export const roomApi = createApi({
             transformResponse: (response: RoomQueueResponseDto) => response.room_queue,
             providesTags: ['RoomQueue'],
         }),
-        addSongToQueue: builder.mutation<void, {roomId: string, song: RoomSongPostDto}>({
+        addSongToQueue: builder.mutation<void, {roomId: string, song: SongDto}>({
             query: ( {roomId, song}) => ({ url: `room/${roomId}/queue`, method: 'POST', body: mapRoomSongPostDto(song) }),
             invalidatesTags: ['RoomQueue'],
         }),
