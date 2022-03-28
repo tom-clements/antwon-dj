@@ -1,6 +1,7 @@
 from typing import Dict, Any, List, Union
 
 import spotipy
+from chalice import ForbiddenError
 
 from chalicelib.data.read_room_info import read_room_info
 from chalicelib.services.auth.spotify import use_spotify_session
@@ -32,8 +33,7 @@ def add_to_spotify_playlist(
 
 def add_to_playlist(room_guid: str, song_uri: str):
     room_info = read_room_info(room_guid)
-    room_code = room_info.room_code
-    playlist = get_playlist(f"ANTWON-{room_code}", room_guid=room_guid)
+    playlist = get_playlist(f"ANTWON-{room_info.room_code}", room_guid=room_guid)
     if not playlist:
-        create_playlist(f"ANTWON-{room_code}", room_info.spotify_user_username, room_guid=room_guid)
+        create_playlist(f"ANTWON-{room_info.room_code}", room_info.spotify_user_username, room_guid=room_guid)
     add_to_spotify_playlist(playlist["id"], [song_uri], room_guid=room_guid)

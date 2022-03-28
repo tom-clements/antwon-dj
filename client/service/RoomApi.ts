@@ -28,7 +28,6 @@ function mapRoomSongPostDto(dto: RoomSongPostDto) {
         song_name: dto.song_name,
         song_artist: dto.song_artist,
         song_album_url: dto.song_album_url,
-        room_guid: dto.room_guid,
     };
 }
 
@@ -38,17 +37,17 @@ export const roomApi = createApi({
     tagTypes: ['Room', 'RoomQueue'],
     endpoints: (builder) => ({
         getRoomIdByCode: builder.query<string, string>({
-            query: code => ({ url: `room?room_code=${code}` }),
+            query: code => ({ url: `code/${code}` }),
             transformResponse: (response: RoomIdByCodeResponseDto) => response.room_guid,
             providesTags: ['Room'],
         }),
         getRoomQueue: builder.query<RoomSongDto[], string>({
-            query: roomId => ({ url: `roomQueue?room_guid=${roomId}` }),
+            query: roomId => ({ url: `room/${roomId}/queue` }),
             transformResponse: (response: RoomQueueResponseDto) => response.room_queue,
             providesTags: ['RoomQueue'],
         }),
-        addSongToQueue: builder.mutation<void, RoomSongPostDto>({
-            query: song => ({ url: 'roomQueue', method: 'POST', body: mapRoomSongPostDto(song) }),
+        addSongToQueue: builder.mutation<void, {roomId: string, song: RoomSongPostDto}>({
+            query: ( {roomId, song}) => ({ url: `room/${roomId}/queue`, method: 'POST', body: mapRoomSongPostDto(song) }),
             invalidatesTags: ['RoomQueue'],
         }),
     }),

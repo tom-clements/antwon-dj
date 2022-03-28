@@ -13,8 +13,10 @@ from chalicelib.services.spotify.add_to_playlist import (
 def test_create_playlist(mock_spotify_session):
     spotify_user_username = "test_spotify_username"
     playlist_name = "test_playlist_name"
-    room_guid = "test_room_guid"
-    create_playlist(playlist_name, spotify_user_username, room_guid=room_guid, spotify_session=mock_spotify_session)
+    test_room_guid = "test_room_guid"
+    create_playlist(
+        playlist_name, spotify_user_username, room_guid=test_room_guid, spotify_session=mock_spotify_session
+    )
     mock_spotify_session.user_playlist_create.assert_called_with(
         spotify_user_username, playlist_name, public=True, collaborative=False, description=""
     )

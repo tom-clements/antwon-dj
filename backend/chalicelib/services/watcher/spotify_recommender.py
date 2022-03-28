@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 import spotipy
 
@@ -15,8 +15,10 @@ def get_spotify_recommended_song(previous_track_uris: List[str], spotify_session
     return format_songs(songs_result["tracks"])[0]
 
 
-def get_recommended_song(room_guid: str) -> Dict[str, Any]:
+def get_recommended_song(room_guid: str) -> Union[Dict[str, Any], None]:
     previous_track_uris = read_last_five_played_tracked(room_guid)
+    if not previous_track_uris:
+        return
     song = get_spotify_recommended_song(previous_track_uris, room_guid=room_guid)
     add_song_to_room_queue(song, room_guid)
     return read_top_room_song(room_guid)

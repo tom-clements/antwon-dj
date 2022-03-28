@@ -18,7 +18,7 @@ export const spotifySearchApi = createApi({
     tagTypes: ['SpotifySearch'],
     endpoints: (builder) => ({
         getSongsForSearch: builder.query<SongDto[], { query: string, roomId: string }>({
-            query: ({ query, roomId }) => ({ url: `spotifySearch?query=${query}&room_guid=${roomId}` }),
+            query: ({ query, roomId }) => ({ url: `room/${roomId}/search?query=${query}}` }),
             transformResponse: (response: SongsForSearchResponseDto) => response.songs,
             providesTags: ['SpotifySearch'],
         }),

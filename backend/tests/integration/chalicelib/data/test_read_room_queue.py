@@ -29,7 +29,7 @@ def read_room_queue_test_db(room_guid, db_session):
                 }
             ],
         ),
-        ("non_existent_room_guid", []),
+        ("non_existent_room_code", []),
     ],
 )
 def test_read_room_queue(room_guid, expected_queue):

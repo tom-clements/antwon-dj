@@ -11,7 +11,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from chalicelib.data.read_spotify_user import read_spotify_user
 from chalicelib.data.update_spotify_user import update_spotify_user
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
-from chalicelib.utils.env import API_URL
+from chalicelib.utils.env import API_URL, API_STAGE
 
 SCOPES = "playlist-read-collaborative user-modify-playback-state user-read-playback-state user-read-private playlist-modify-private playlist-modify-public"
 
@@ -22,7 +22,7 @@ def app_authorization(spotify_id: str):
         "response_type": "code",
         "client_id": spotify_id,
         "scope": SCOPES,
-        "redirect_uri": f"{API_URL}/spotifyCallback",
+        "redirect_uri": f"{API_URL}/{API_STAGE}/user/spotify/callback",
     }
     url = "https://accounts.spotify.com/authorize?{}".format(urllib.parse.urlencode(f))
     return url
@@ -37,7 +37,11 @@ def get_spotify(auth: str, spotify_id: str, spotify_secret: str):
 
 @AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
 def get_token(code: str, spotify_id: str, spotify_secret: str):
-    data = {"code": code, "redirect_uri": f"{API_URL}/spotifyCallback", "grant_type": "authorization_code"}
+    data = {
+        "code": code,
+        "redirect_uri": f"{API_URL}/{API_STAGE}/user/spotify/callback",
+        "grant_type": "authorization_code",
+    }
     url = "https://accounts.spotify.com/api/token"
     base64encoded = base64.b64encode(bytes("{}:{}".format(spotify_id, spotify_secret), "utf-8"))
     headers = {"Authorization": "Basic {}".format(str(base64encoded, "utf-8"))}
@@ -50,7 +54,7 @@ def refresh_spotify_token(refresh_token: str, spotify_secret: str, spotify_id: s
     sp_oauth = oauth2.SpotifyOAuth(
         client_id=spotify_id,
         client_secret=spotify_secret,
-        redirect_uri=f"{API_URL}/spotifyCallback",
+        redirect_uri=f"{API_URL}/{API_STAGE}/user/spotify/callback",
         scope=SCOPES,
     )
     # if sp_oauth.is_token_expired({'access_token': access_token, 'refresh_token': refresh_token}):

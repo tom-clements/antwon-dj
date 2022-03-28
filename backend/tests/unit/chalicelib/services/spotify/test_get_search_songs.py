@@ -102,6 +102,6 @@ def test_format_songs(example_input, expected_output):
 def test_search_songs(spotify_session, example_song_query, spotify_search_result, expected_search_result):
     spotify_session.search.return_value = spotify_search_result
     actual_search_result = search_songs(
-        spotify_session=spotify_session, song_query=example_song_query, room_guid="test"
+        spotify_session=spotify_session, song_query=example_song_query, room_guid="test_room_guid"
     )
     assert actual_search_result == expected_search_result

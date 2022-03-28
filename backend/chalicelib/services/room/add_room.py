@@ -8,7 +8,7 @@ from chalicelib.data.read_scalar_queries import get_user_id_from_username, get_r
 
 def owner_add_room(room_code: str, username: str) -> Union[Response, None]:
     owner_user_id = get_user_id_from_username(username)
-    room_guid = get_room_guid_from_room_code()
+    room_guid = get_room_guid_from_room_code(room_code)
     if room_guid:
         return Response(body=f"Room already exists", status_code=409)
     else:
