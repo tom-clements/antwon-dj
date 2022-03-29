@@ -30,7 +30,7 @@ Secrets:
 ### Quick reference
 
 - Development server
-    - `chalice local`
+    - `chalice local --stage local`
         - http://localhost:8000/
 - Linting
   - `black -l 120 .`
