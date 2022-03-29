@@ -46,6 +46,7 @@ def test_user_login(state, expected):
 
 
 @patch("chalicelib.services.user.get_login.API_URL", "api_url.com")
+@patch("chalicelib.services.user.get_login.API_STAGE", "dev")
 def test_redirect_to_spotify_connect():
     actual = redirect_to_spotify_connect("test_username")
     expected = Response(

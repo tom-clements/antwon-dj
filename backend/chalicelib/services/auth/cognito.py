@@ -4,7 +4,7 @@ import requests
 from chalice import CognitoUserPoolAuthorizer
 
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
-from chalicelib.utils.env import AUTH_URL, LOGIN_REDIRECT_URL
+from chalicelib.utils.env import AUTH_URL, LOGIN_REDIRECT_ENDPOINT, API_STAGE, API_URL
 
 
 def get_authorizer(scopes=None):
@@ -32,7 +32,7 @@ def get_tokens(client_id: str, client_secret: str, code: str) -> Dict[str, str]:
         "code": code,
         "client_id": client_id,
         "client_secret": client_secret,
-        "redirect_uri": LOGIN_REDIRECT_URL,
+        "redirect_uri": f"{API_URL}/{API_STAGE}/{LOGIN_REDIRECT_ENDPOINT}",
     }
     response = requests.post(url, data=params)
     return response.json()

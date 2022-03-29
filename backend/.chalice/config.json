@@ -8,6 +8,12 @@
     "lambda_memory_size": 256,
     "stages": {
         "dev": {
+            "environment_variables": {
+                "API_STAGE": "dev",
+                "BASE_URL": "https://www.djantwon.com",
+                "API_URL": "https://api.djantwon.com",
+                "AUTH_URL": "https://auth.djantwon.com"
+            },
             "api_gateway_stage": "dev",
             "api_gateway_custom_domain": {
                 "domain_name": "api.djantwon.com",
@@ -20,6 +26,22 @@
                 "poll_app": {
                     "lambda_timeout": 120
                 }
+            }
+        },
+        "local": {
+            "environment_variables": {
+                "API_STAGE": "",
+                "BASE_URL": "http://localhost:3000",
+                "API_URL": "http://localhost:8000",
+                "AUTH_URL": "https://auth.djantwon.com"
+            }
+        },
+        "local_backend": {
+            "environment_variables": {
+                "API_STAGE": "",
+                "BASE_URL": "https://www.djantwon.com",
+                "API_URL": "http://localhost:8000",
+                "AUTH_URL": "https://auth.djantwon.com"
             }
         }
     }

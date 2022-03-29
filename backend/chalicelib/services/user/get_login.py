@@ -4,7 +4,7 @@ from chalice import Response
 
 from chalicelib.services.auth.cognito import get_username_from_token, get_tokens
 from chalicelib.services.user.add_user import add_user_if_not_exists
-from chalicelib.utils.env import API_URL, LOGIN_REDIRECT_URL, AUTH_URL, BASE_URL, API_STAGE
+from chalicelib.utils.env import API_URL, LOGIN_REDIRECT_ENDPOINT, AUTH_URL, BASE_URL, API_STAGE
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
 
 
@@ -14,7 +14,7 @@ def user_login(client_id: str, state=None) -> Response:
         "client_id": client_id,
         "response_type": "code",
         "scope": "aws.cognito.signin.user.admin+email+openid+profile",
-        "redirect_uri": LOGIN_REDIRECT_URL,
+        "redirect_uri": f"{API_URL}/{API_STAGE}/{LOGIN_REDIRECT_ENDPOINT}",
     }
     if state:
         params.update({"state": state})
