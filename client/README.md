@@ -32,6 +32,18 @@ State management and data access is built with Redux Toolkit and RTK Query.
 
 ### Initial setup
 
+#### Docker
+
+#### Local
+
+> Note: NO LONGER RECOMMENDED
+
+This will roughly follow a combination of the [antwon/dj-node-env](../docker/builds/node-env/Dockerfile)
+and [dev.Dockerfile](./dev.Dockerfile) image builds.
+The notes here are left and updated here for documentation purposes.
+
+> The Amplify CLI _might_ not be required anymore.
+
 1. Confirm environment dependencies
 
     Please confirm the following minimum versions in your development environment:

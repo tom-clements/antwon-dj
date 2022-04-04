@@ -13,7 +13,7 @@
     "test": "jest",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 3001",
     "storybook:build": "build-storybook"
   },
   "dependencies": {

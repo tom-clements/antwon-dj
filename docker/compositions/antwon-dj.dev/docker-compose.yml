@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+    client:
+        image: antwon-dj/dev.client
+        container_name: antwon-dj.dev_client
+        build:
+            context: ../../../client
+            dockerfile: dev.Dockerfile
+        command: yarn dev
+        networks:
+            - internal-network
+        ports:
+            - 3000:3000
+        volumes:
+            - ../../../client/src:/client/src
+            - ../../../client/test:/client/test
+
+    client-storybook:
+        image: antwon-dj/dev.client-storybook
+        container_name: antwon-dj.dev_client-storybook
+        build:
+            context: ../../../client
+            dockerfile: dev.Dockerfile
+        command: yarn storybook
+        networks:
+            - internal-network
+        ports:
+            - 3001:3001
+        volumes:
+            - ../../../client/src:/client/src
+            - ../../../client/test:/client/test
+
+networks:
+    internal-network:
+        driver: bridge
