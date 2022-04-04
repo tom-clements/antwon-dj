@@ -1,6 +1,16 @@
 version: "3.9"
 
 services:
+    backend:
+        image: antwon-dj/dev.backend
+        container_name: antwon-dj.dev_backend
+        build:
+            context: ../../../backend
+            dockerfile: dev.Dockerfile
+        command: chalice local --stage local
+        ports:
+            - 8000:8000
+
     client:
         image: antwon-dj/dev.client
         container_name: antwon-dj.dev_client

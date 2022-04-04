@@ -12,4 +12,5 @@ build_image() {
 
 echo -e "\n# Bulding antwon/dj-* images...\n"
 
+build_image python-env
 build_image node-env
