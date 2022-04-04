@@ -105,11 +105,6 @@ Secrets:
 This folder has a **protected name**, which is picked up by chalice and deployed onto AWS lambda.  
 Inside here should contain all application code.
 
-#### vendor/
-
-This folder has a **protected name**, which is picked up by chalice and deployed onto AWS lambda.  
-Inside here any custom packages not available on AWS's python repository should be stored here.
-
 #### tests/
 
 Containing all unit and integration tests for the application. Please run using:
