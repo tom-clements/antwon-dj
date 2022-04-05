@@ -67,7 +67,18 @@ businesses and might be fine for us now; but as an alternative, I recommend
 [`lazydocker`](https://github.com/jesseduffield/lazydocker) - a no-nonsense (and faster) terminal
 UI written in Go.
 
-### Running tests
+### Running package manger and other CLI commands
+
+There are essentially three options here.
+
+1. Shell into the container and run `yarn` / `pip` as required
+
+2. Use VS Code to remote into the container and use its terminal
+
+3. Run one of the convenience compositions in the next few sub-sections
+   for testing, linting, and running Storybook.
+
+#### Tests
 
 ```sh
 ./dev.sh backend-test client-test
@@ -75,7 +86,7 @@ UI written in Go.
 
 You can selectively omit `backend-test` or `client-test` as appropriate.
 
-### Linting
+#### Linting
 
 ```sh
 ./dev.sh backend-lint client-lint
@@ -83,8 +94,10 @@ You can selectively omit `backend-test` or `client-test` as appropriate.
 
 You can selectively omit `backend-lint` or `client-lint` as appropriate.
 
-### Using Storybook for client development
+#### Storybook
 
 ```sh
 ./dev.sh client-storybook
 ```
+
+This is useful for developing and showcasing client components independently.

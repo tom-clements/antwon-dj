@@ -32,11 +32,8 @@ services:
             - ../../../client/src:/client/src
 
     client-storybook:
-        image: antwon-dj/dev.client-storybook
+        image: antwon-dj/dev.client
         container_name: antwon-dj.dev_client-storybook
-        build:
-            context: ../../../client
-            dockerfile: dev.Dockerfile
         command: yarn storybook
         profiles:
             - storybook
@@ -49,11 +46,8 @@ services:
             - ../../../client/tests:/client/tests
 
     backend-test:
-        image: antwon-dj/dev.backend-test
+        image: antwon-dj/dev.backend
         container_name: antwon-dj.dev_backend-test
-        build:
-            context: ../../../backend
-            dockerfile: dev.Dockerfile
         command: python -m pytest tests
         profiles:
             - test
@@ -66,11 +60,8 @@ services:
             - ../../../backend/tests:/backend/tests
 
     client-test:
-        image: antwon-dj/dev.client-test
+        image: antwon-dj/dev.client
         container_name: antwon-dj.dev_client-test
-        build:
-            context: ../../../client
-            dockerfile: dev.Dockerfile
         command: yarn test
         profiles:
             - test
@@ -81,11 +72,8 @@ services:
             - ../../../client/tests:/client/tests
 
     backend-lint:
-        image: antwon-dj/dev.backend-lint
+        image: antwon-dj/dev.backend
         container_name: antwon-dj.dev_backend-lint
-        build:
-            context: ../../../backend
-            dockerfile: dev.Dockerfile
         command: black -l 120 .
         profiles:
             - lint
@@ -97,11 +85,8 @@ services:
             - ../../../backend/tests:/backend/tests
 
     client-lint:
-        image: antwon-dj/dev.client-lint
+        image: antwon-dj/dev.client
         container_name: antwon-dj.dev_client-lint
-        build:
-            context: ../../../client
-            dockerfile: dev.Dockerfile
         command: yarn lint
         profiles:
             - lint

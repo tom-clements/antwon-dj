@@ -9,6 +9,8 @@ COPY .yarnrc.yml .yarnrc.yml
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
+RUN yarn install
+
 COPY .storybook .storybook/
 COPY .env.local .env.local
 COPY .eslintrc .eslintrc
@@ -16,5 +18,3 @@ COPY jest.config.js jest.config.js
 COPY next-env.d.ts next-env.d.ts
 COPY next.config.js next.config.js
 COPY tsconfig.json tsconfig.json
-
-RUN yarn install

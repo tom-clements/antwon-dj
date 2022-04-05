@@ -23,7 +23,7 @@
   "include": [
     "next-env.d.ts",
     "./src/**/*",
-    "./test/**/*"
+    "./tests/**/*"
   ],
   "exclude": [
     "node_modules"
