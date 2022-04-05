@@ -89,7 +89,7 @@ Secrets:
 6. Start a local development server
 
     ```sh
-    chalice local
+    chalice local --stage local
     ```
 
     The server should be accessible from <http://localhost:8000/> by default.
