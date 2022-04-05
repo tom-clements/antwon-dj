@@ -21,6 +21,26 @@ compatible with PowerShell and or any other CLI.
 - Install `docker` and `docker-compose`
   - Follow <https://docs.docker.com/get-docker/> for your OS/env of choice
 
+- Clone or symlink your `~/.aws/config` to `.aws.config`
+
+  E.g.,
+
+  ```sh
+  cp ~/.aws/config aws.config
+  ```
+
+  or
+
+  ```sh
+  ln -s ~/.aws/config aws.config
+  ```
+
+  > **NOTE** naming is important and of course **DO NO COMMIT TO THE REPOSITORY!**.
+  >
+  > Follow <https://aws.github.io/chalice/quickstart.html#credentials> and
+  > <https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html>
+  > for setting up your default profile.
+
 - Build all base image dependencies
 
   ```sh

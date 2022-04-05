@@ -7,9 +7,15 @@ services:
         build:
             context: ../../../backend
             dockerfile: dev.Dockerfile
-        command: chalice local --stage local
+        command: chalice local --stage local --host=0.0.0.0 --port=8000
+        networks:
+            - internal-network
         ports:
             - 8000:8000
+        volumes:
+            - ../../../.aws.config:/root/.aws/config:ro
+            - ../../../backend/app.py:/backend/app.py
+            - ../../../backend/chalicelib:/backend/chalicelib
 
     client:
         image: antwon-dj/dev.client
