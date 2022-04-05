@@ -57,13 +57,34 @@ compatible with PowerShell and or any other CLI.
   For example, `./dev.sh -d` starts the services detached from the current terminal
   and `./dev.sh --build` re-builds the local development environment - the latter is important
   if changing development or environment dependencies. You can also selectively start
-  services by specifying a space delimited list (see the compose file) - e.g.,
-  `./dev.sh client backend` or `./dev.sh client-storybook`.
+  services by specifying a space delimited list (see the compose file).
 
-#### Managing docker containers and images
+### Managing docker containers and images
 
 Docker for Windows (or the upcoming beta Linux release) is a good graphical manager for Docker but
 the license preclude commercial use under certain circumstances. There is an exclusion for small
 businesses and might be fine for us now; but as an alternative, I recommend
 [`lazydocker`](https://github.com/jesseduffield/lazydocker) - a no-nonsense (and faster) terminal
 UI written in Go.
+
+### Running tests
+
+```sh
+./dev.sh backend-test client-test
+```
+
+You can selectively omit `backend-test` or `client-test` as appropriate.
+
+### Linting
+
+```sh
+./dev.sh backend-lint client-lint
+```
+
+You can selectively omit `backend-lint` or `client-lint` as appropriate.
+
+### Using Storybook for client development
+
+```sh
+./dev.sh client-storybook
+```
