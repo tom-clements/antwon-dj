@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import { ErrorCode } from "model/enums/ErrorCode";
-import { setError } from "model/slices/ErrorSlice";
-import { useAppDispatch } from "model/Store";
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { ErrorCode } from 'model/enums/ErrorCode';
+import { setError } from 'model/slices/ErrorSlice';
+import { useAppDispatch } from 'model/Store';
 
 export const useErrorRedirect = (
     condition: boolean,
@@ -17,5 +17,5 @@ export const useErrorRedirect = (
             router.push({ pathname: redirectPath });
             dispatch(setError(errorCode));
         }
-    }, [router, dispatch, condition]);
-}
+    }, [router, dispatch, condition, errorCode, redirectPath]);
+};
