@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 SCRIPT_PATH=$(dirname "$(realpath -s "$BASH_SOURCE")")
 
 build_image() {
