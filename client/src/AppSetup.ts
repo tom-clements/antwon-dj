@@ -1,9 +1,9 @@
-import Amplify from "aws-amplify";
+// import Amplify from 'aws-amplify';
 // import awsExports from "aws-exports";
-import { createStore, RootState, Store } from "model/Store";
-import { useMemo } from "react";
-import { connectAmplifyToStore } from "model/Amplify";
-import createCache from "@emotion/cache";
+import { createStore, RootState, Store } from 'model/Store';
+import { useMemo } from 'react';
+import { connectAmplifyToStore } from 'model/Amplify';
+import createCache from '@emotion/cache';
 
 let store: Store | undefined;
 
@@ -35,10 +35,10 @@ export const initializeStore = (preloadedState: RootState) => {
     // Create the store once in the client
     if (!store) store = _store;
 
-    connectAmplifyToStore(_store);;
+    connectAmplifyToStore(_store);
 
     return _store;
-}
+};
 
 export function useAppStore(initialState: RootState) {
     const store = useMemo(() => initializeStore(initialState), [initialState]);

@@ -1,4 +1,5 @@
 const path = require('path');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
     addons: [
@@ -6,7 +7,7 @@ module.exports = {
         "@storybook/addon-links",
     ],
     stories: [
-        "../**/*.stories.@(ts|tsx)"
+        "../src/**/*.stories.@(ts|tsx)"
     ],
     reactOptions: {
         fastRefresh: true,
@@ -26,6 +27,10 @@ module.exports = {
                     path.resolve(__dirname, ".."),
                     "node_modules",
                 ],
+                plugins: [
+                    ...config.resolve.plugins,
+                    new TsconfigPathsPlugin()
+                ]
             },
         };
     }

@@ -1,0 +1,101 @@
+version: "3.9"
+
+services:
+    backend:
+        image: antwon-dj/dev.backend
+        container_name: antwon-dj.dev_backend
+        build:
+            context: ../../../backend
+            dockerfile: dev.Dockerfile
+        command: chalice local --stage local --host=0.0.0.0 --port=8000
+        networks:
+            - internal-network
+        ports:
+            - 8000:8000
+        volumes:
+            - ../../../.aws.config:/root/.aws/config:ro
+            - ../../../backend/app.py:/backend/app.py
+            - ../../../backend/chalicelib:/backend/chalicelib
+
+    client:
+        image: antwon-dj/dev.client
+        container_name: antwon-dj.dev_client
+        build:
+            context: ../../../client
+            dockerfile: dev.Dockerfile
+        command: yarn dev
+        networks:
+            - internal-network
+        ports:
+            - 3000:3000
+        volumes:
+            - ../../../client/src:/client/src
+
+    client-storybook:
+        image: antwon-dj/dev.client
+        container_name: antwon-dj.dev_client-storybook
+        command: yarn storybook
+        profiles:
+            - storybook
+        networks:
+            - internal-network
+        ports:
+            - 3001:3001
+        volumes:
+            - ../../../client/src:/client/src
+            - ../../../client/tests:/client/tests
+
+    backend-test:
+        image: antwon-dj/dev.backend
+        container_name: antwon-dj.dev_backend-test
+        command: python -m pytest tests
+        profiles:
+            - test
+        ports:
+            - 8000:8000
+        volumes:
+            - ../../../.aws.config:/root/.aws/config:ro
+            - ../../../backend/app.py:/backend/app.py
+            - ../../../backend/chalicelib:/backend/chalicelib
+            - ../../../backend/tests:/backend/tests
+
+    client-test:
+        image: antwon-dj/dev.client
+        container_name: antwon-dj.dev_client-test
+        command: yarn test
+        profiles:
+            - test
+        networks:
+            - internal-network
+        volumes:
+            - ../../../client/src:/client/src
+            - ../../../client/tests:/client/tests
+
+    backend-lint:
+        image: antwon-dj/dev.backend
+        container_name: antwon-dj.dev_backend-lint
+        command: black -l 120 .
+        profiles:
+            - lint
+        ports:
+            - 8000:8000
+        volumes:
+            - ../../../backend/app.py:/backend/app.py
+            - ../../../backend/chalicelib:/backend/chalicelib
+            - ../../../backend/tests:/backend/tests
+
+    client-lint:
+        image: antwon-dj/dev.client
+        container_name: antwon-dj.dev_client-lint
+        command: yarn lint
+        profiles:
+            - lint
+        networks:
+            - internal-network
+        volumes:
+            - ../../../client/src:/client/src
+            - ../../../client/tests:/client/tests
+
+networks:
+    internal-network:
+        driver: bridge

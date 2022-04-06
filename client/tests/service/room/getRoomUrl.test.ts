@@ -1,4 +1,3 @@
-
 import { getClientBaseUrl } from 'service/config/getClientBaseUrl';
 import { getRelativeRoomUrl, getFullRoomUrl } from 'service/room/getRoomUrl';
 
@@ -27,7 +26,7 @@ describe('getRelativeRoomUrl()', () => {
 describe('getFullRoomUrl()', () => {
     for (const testCase of testCases) {
         it(`returns correct full URL for code = '${testCase.input}'`, () => {
-            const clientBaseUrl = 'https://localhost/';
+            const clientBaseUrl = 'https://localhost';
             mocks.getClientBaseUrl.mockReturnValue(clientBaseUrl);
 
             const result = getFullRoomUrl(testCase.input);

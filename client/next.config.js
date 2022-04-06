@@ -1,11 +1,7 @@
 module.exports = {
     eslint: {
         dirs: [
-            'components',
-            'model',
-            'pages',
-            'service',
-            'styles',
+            'src',
             'tests'
         ],
     },

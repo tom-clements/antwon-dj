@@ -1,6 +1,6 @@
 import React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from 'styles/ThemeProvider';
+import { ThemeProvider } from 'src/styles/ThemeProvider';
 
 export const decorators = [
     Story => (
