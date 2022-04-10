@@ -7,6 +7,7 @@ from aws_lambda_powertools import Tracer
 from chalicelib.middleware import middleware
 from chalicelib.routes.room import room_routes
 from chalicelib.routes.spotify import spotify_routes
+from chalicelib.routes.swagger import swagger_routes
 from chalicelib.routes.user import user_routes
 from chalicelib.routes.watcher import watcher_routes
 
@@ -19,6 +20,7 @@ def register_blueprints(app: Chalice):
     app.register_blueprint(spotify_routes)
     app.register_blueprint(user_routes)
     app.register_blueprint(watcher_routes)
+    app.register_blueprint(swagger_routes)
 
 
 def register_middleware(app: Chalice):
