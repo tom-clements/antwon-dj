@@ -16,4 +16,4 @@ def poll_room_get(room_guid):
 
 @watcher_routes.schedule(Rate(1, unit=Rate.MINUTES))
 def poll_app(event):
-    poll_five_seconds()
+    poll_five_seconds(local_polling=True)

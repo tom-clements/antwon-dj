@@ -5,6 +5,7 @@ from typing import List
 import aiohttp
 
 from chalicelib.data.read_room import read_active_rooms
+from chalicelib.services.watcher.watch_room import watch_room
 from chalicelib.utils.env import API_URL, API_STAGE
 
 
@@ -13,18 +14,36 @@ async def fetch(http_session: aiohttp.ClientSession, url: str):
         return await response.text()
 
 
-async def poll_rooms(urls: List[str]):
+async def poll_rooms_api(urls: List[str]):
     async with aiohttp.ClientSession() as http_session:
         tasks = [fetch(http_session, url) for url in urls]
         await asyncio.gather(*tasks)
 
 
-def poll_five_seconds():
+async def poll_rooms_local(room_guids: List[str]):
+    tasks = [watch_room(room_guid) for room_guid in room_guids]
+    await asyncio.gather(*tasks)
+
+
+def async_poll_rooms_api(room_guids: List[str]):
+    urls = [f"{API_URL}/{API_STAGE}/room/{room_guid}/watch" for room_guid in room_guids]
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(poll_rooms_api(urls))
+
+
+def async_poll_rooms_local(room_guids: List[str]):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(poll_rooms_local(room_guids))
+
+
+def poll_five_seconds(local_polling=True):
     for i in range(10):
         active_rooms = read_active_rooms()
         room_guids = [room.room_guid for room in active_rooms]
-        urls = [f"{API_URL}/{API_STAGE}/room/{room_guid}/watch" for room_guid in room_guids]
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(poll_rooms(urls))
+        if local_polling:
+            async_poll_rooms_local(room_guids)
+        else:
+            async_poll_rooms_api(room_guids)
         time.sleep(5)
