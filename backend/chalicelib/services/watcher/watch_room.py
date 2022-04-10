@@ -1,6 +1,6 @@
-import random
 from typing import Dict, Tuple, Any
-from collections import namedtuple
+
+from sqlalchemy.util import namedtuple
 
 from chalicelib.data.read_top_room_song import read_top_room_song
 from chalicelib.data.update_room_song import update_added_to_playlist, update_played
@@ -38,3 +38,4 @@ def watch_room(room_guid: str) -> Tuple[Any, bool]:
     # if recommended song is not None -> when no Songs have played before
     if next_song:
         return process_next_song(next_song, room_guid)
+    return None, False
