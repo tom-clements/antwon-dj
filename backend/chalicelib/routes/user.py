@@ -1,4 +1,4 @@
-from chalice import Blueprint
+from chalice import Blueprint, Response
 
 from chalicelib.cors import get_cors_config
 from chalicelib.services.user.get_login import user_login, user_signup_callback
@@ -7,7 +7,7 @@ user_routes = Blueprint(__name__)
 
 
 @user_routes.route("/login", methods=["GET"], cors=get_cors_config())
-def get_login():
+def get_login() -> Response:
     state = None
     if user_routes.current_request.query_params and ("state" in user_routes.current_request.query_params):
         state = user_routes.current_request.query_params["state"]
@@ -15,7 +15,7 @@ def get_login():
 
 
 @user_routes.route("/login/callback", methods=["GET"], cors=get_cors_config())
-def get_signup_callback():
+def get_signup_callback() -> Response:
     params = user_routes.current_request.query_params
     spotify_login = False
     if ("state" in user_routes.current_request.query_params) and (

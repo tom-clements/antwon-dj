@@ -13,4 +13,4 @@ def delete_like_from_song(room_song_guid: str, username: str) -> Union[Response,
     if is_like_exists(room_song_id, user_id):
         delete_like(room_song_id, user_id)
     else:
-        return Response(body=f"Like doesn't exists", status_code=409)
+        return Response(body="Like doesn't exists", status_code=409)

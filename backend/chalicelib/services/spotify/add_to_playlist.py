@@ -1,7 +1,6 @@
 from typing import Dict, Any, List, Union
 
 import spotipy
-from chalice import ForbiddenError
 
 from chalicelib.data.read_room_info import read_room_info
 from chalicelib.services.auth.spotify import use_spotify_session

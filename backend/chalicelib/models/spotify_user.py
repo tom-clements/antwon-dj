@@ -21,9 +21,11 @@ class SpotifyUser(Base):
 
     def __repr__(self):
         return (
-            f"<SpotifyUser(spotify_user_id='{self.spotify_user_id}', spotify_user_guid='{self.spotify_user_guid}', \
-        user_id='{self.user_id}', spotify_user_username='{self.spotify_user_username}',"
-            f"spotify_user_name='{self.spotify_user_name}', spotify_profile_image_url='{self.spotify_profile_image_url}',"
-            f"spotify_profile_image_url='{self.spotify_profile_image_url}', spotify_refresh_token='{self.spotify_refresh_token},"
+            f"<SpotifyUser(spotify_user_id='{self.spotify_user_id}', spotify_user_guid='{self.spotify_user_guid}',"
+            f"user_id='{self.user_id}', spotify_user_username='{self.spotify_user_username}',"
+            f"spotify_user_name='{self.spotify_user_name}',"
+            f"spotify_profile_image_url='{self.spotify_profile_image_url}',"
+            f"spotify_profile_image_url='{self.spotify_profile_image_url}',"
+            f"spotify_refresh_token='{self.spotify_refresh_token},"
             f"insert_time='{self.insert_time})>"
         )

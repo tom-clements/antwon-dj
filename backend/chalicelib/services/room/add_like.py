@@ -11,6 +11,6 @@ def add_like_to_song(room_song_guid: str, username: str) -> Union[Response, None
     room_song_id = get_room_song_id_from_room_song_guid(room_song_guid)
     user_id = get_user_id_from_username(username)
     if is_like_exists(room_song_id, user_id):
-        return Response(body=f"Like already exists", status_code=409)
+        return Response(body="Like already exists", status_code=409)
     else:
         create_like(room_song_id, user_id)

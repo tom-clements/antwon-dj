@@ -1,4 +1,4 @@
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Optional
 
 from chalice import Blueprint, Response
 
@@ -29,7 +29,7 @@ def room_delete(room_guid) -> Union[Response, None]:
 
 
 @room_routes.route("/room", methods=["POST"], cors=get_cors_config(), authorizer=get_authorizer())
-def room_add() -> Union[Response, None]:
+def room_add() -> Optional[Response]:
     room_code = room_routes.current_request.json_body["room_code"]
     username = room_routes.current_request.context["authorizer"]["claims"]["username"]
     return owner_add_room(room_code=room_code, username=username)
@@ -42,21 +42,21 @@ def room_queue_get(room_guid) -> Dict[str, List[Dict[str, str]]]:
 
 
 @room_routes.route("/room/{room_guid}/queue", methods=["POST"], cors=get_cors_config())
-def room_queue_post(room_guid):
+def room_queue_post(room_guid: str) -> None:
     song = room_routes.current_request.json_body
     add_song_to_room_queue(song, room_guid)
 
 
 @room_routes.route("/room/{room_guid}/queue", methods=["DELETE"], cors=get_cors_config(), authorizer=get_authorizer())
-def room_songs_purge_post(room_guid):
+def room_songs_purge_post(room_guid: str) -> Optional[Response]:
     username = room_routes.current_request.context["authorizer"]["claims"]["username"]
-    delete_queue(room_guid, username)
+    return delete_queue(room_guid, username)
 
 
 @room_routes.route(
     "/room/{room_guid}/queue/like", methods=["POST"], cors=get_cors_config(), authorizer=get_authorizer()
 )
-def room_songs_like_post(room_guid):
+def room_songs_like_post(room_guid: str) -> Optional[Response]:
     body = room_routes.current_request.json_body
     username = room_routes.current_request.context["authorizer"]["claims"]["username"]
     if body["is_liked"]:

@@ -35,9 +35,10 @@ Secrets:
   - `chalice local --stage local`
     - <http://localhost:8000/>
 - Linting
+  - `flak8 --max-line-length 120`
   - `black -l 120 .`
 - Testing
-  - `python -m pytest tests`
+  - `pytest --mypy tests/`
 - Upgrading
   - `pip install -U -r requirements.txt`
   - `pip check`: checks for conflicts
@@ -75,16 +76,17 @@ Secrets:
 4. Install python dependencies
 
     ```sh
-    pip install black pytest
+    pip install black flake8 pytest pytest-mypy
     pip install -r requirements.txt
     ```
 
-5. Configure AWS credentials (if not done already; otherwise confirm details)
+5. Configure AWS credentials
 
-    Roughly follow this official guide <https://docs.amplify.aws/cli/start/install#option-2-follow-the-instructions>.
+    Follow this official guide https://aws.github.io/chalice/quickstart.html.  
+    Refer to the **Credentials** section.
 
-    Opt for the default username. Ensure the accessKeyId and secretAccessKey are setup for
-    your local profile.
+    Ensure the access and secret keys are setup for your local profile.
+
 
 6. Start a local development server
 
@@ -110,7 +112,7 @@ Inside here should contain all application code.
 Containing all unit and integration tests for the application. Please run using:
 
 ```sh
-python -m pytest tests/
+pytest --mypy tests/
 ```
 
 ### .chalice/config.json
@@ -129,7 +131,7 @@ Stored on AWS Secrets Manager
 
 ### Production endpoint
 
-Endpoint is configured to: `https://3mnr9rzo8e.execute-api.eu-west-2.amazonaws.com`
+Endpoint is configured to: `https://api.djantwon.com/dev/`
 
 ### Logs
 

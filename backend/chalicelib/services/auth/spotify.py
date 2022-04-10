@@ -13,7 +13,10 @@ from chalicelib.data.update_spotify_user import update_spotify_user
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
 from chalicelib.utils.env import API_URL, API_STAGE
 
-SCOPES = "playlist-read-collaborative user-modify-playback-state user-read-playback-state user-read-private playlist-modify-private playlist-modify-public"
+SCOPES = (
+    "playlist-read-collaborative user-modify-playback-state user-read-playback-state "
+    "user-read-private playlist-modify-private playlist-modify-public"
+)
 
 
 @AwsSecretRetrieval("spotify_client", spotify_id="SPOTIFY_CLIENT_ID")

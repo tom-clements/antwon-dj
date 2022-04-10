@@ -15,4 +15,4 @@ def owner_delete_room(room_guid: str, username: str) -> Union[Response, None]:
         else:
             delete_room(room_guid)
     else:
-        return Response(body=f"Room doesn't exist", status_code=409)
+        return Response(body="Room doesn't exist", status_code=409)

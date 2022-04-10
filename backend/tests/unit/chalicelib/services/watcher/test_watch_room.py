@@ -151,7 +151,7 @@ def test_process_next_song(mock_watch_room, mock_check_next_song, next_song, rem
 @pytest.mark.parametrize(
     "next_song, recommended_song, expected",
     [
-        (None, None, None),
+        (None, None, (None, False)),
         (
             None,
             {

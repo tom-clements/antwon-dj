@@ -19,7 +19,9 @@ from chalicelib.services.user.get_login import (
             Response(
                 body="",
                 headers={
-                    "Location": "mock_auth_url.com/login?client_id=test_client_id&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=mock_redirect_url.com"
+                    "Location": "mock_auth_url.com/login?client_id=test_client_id&response_type=code&scope="
+                    "aws.cognito.signin.user.admin+email+openid+profile&"
+                    "redirect_uri=mock_redirect_url.com/mock_stage/mock_redirect_endpoint"
                 },
                 status_code=302,
             ),
@@ -29,7 +31,9 @@ from chalicelib.services.user.get_login import (
             Response(
                 body="",
                 headers={
-                    "Location": "mock_auth_url.com/login?client_id=test_client_id&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+profile&redirect_uri=mock_redirect_url.com&state=test_state"
+                    "Location": "mock_auth_url.com/login?client_id=test_client_id&response_type=code&scope="
+                    "aws.cognito.signin.user.admin+email+openid+profile&"
+                    "redirect_uri=mock_redirect_url.com/mock_stage/mock_redirect_endpoint&state=test_state"
                 },
                 status_code=302,
             ),
@@ -37,7 +41,9 @@ from chalicelib.services.user.get_login import (
     ],
 )
 @patch("chalicelib.services.user.get_login.AUTH_URL", "mock_auth_url.com")
-@patch("chalicelib.services.user.get_login.LOGIN_REDIRECT_URL", "mock_redirect_url.com")
+@patch("chalicelib.services.user.get_login.API_URL", "mock_redirect_url.com")
+@patch("chalicelib.services.user.get_login.API_STAGE", "mock_stage")
+@patch("chalicelib.services.user.get_login.LOGIN_REDIRECT_ENDPOINT", "mock_redirect_endpoint")
 def test_user_login(state, expected):
     actual = user_login.__wrapped__("test_client_id", state=state)
     assert actual.body == expected.body
@@ -78,7 +84,7 @@ def test_redirect_to_client_with_tokens():
 @patch("chalicelib.services.user.get_login.add_user_if_not_exists")
 @patch("chalicelib.services.user.get_login.redirect_to_spotify_connect")
 @patch("chalicelib.services.user.get_login.redirect_to_client_with_tokens")
-def test_user_login(
+def test_user_signup_callback(
     mock_redirect_to_client_with_tokens,
     mock_redirect_to_spotify_connect,
     mock_add_user_if_not_exists,

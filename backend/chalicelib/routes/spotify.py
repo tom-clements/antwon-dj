@@ -1,3 +1,5 @@
+from typing import Dict
+
 from chalice import Blueprint, Response
 
 from chalicelib.cors import get_cors_config
@@ -12,7 +14,7 @@ spotify_routes = Blueprint(__name__)
 
 
 @spotify_routes.route("/user/spotify/connect", methods=["GET"], cors=get_cors_config())
-def spotify_connect_get():
+def spotify_connect_get() -> Response:
     username = spotify_routes.current_request.query_params["username"]
     url = spotify.app_authorization() + "&state=" + str(username)
     return Response(body="", headers={"Location": url}, status_code=302)
@@ -26,7 +28,7 @@ def spotify_search_get(room_guid):
 
 
 @spotify_routes.route("/user/spotify/callback", methods=["GET"], cors=get_cors_config())
-def spotify_callback_get():
+def spotify_callback_get() -> Response:
     params = spotify_routes.current_request.query_params
     token = get_token(code=params["code"])
     sp = spotify.get_spotify(auth=token["access_token"])
@@ -36,6 +38,6 @@ def spotify_callback_get():
 
 
 @spotify_routes.route("/room/{room_guid}/playing", methods=["GET"], cors=get_cors_config())
-def spotify_currently_playing_get(room_guid):
+def spotify_currently_playing_get(room_guid) -> Dict[str, Dict[str, str]]:
     song = get_currently_playing(room_guid=room_guid)
     return {"song": song}

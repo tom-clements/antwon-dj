@@ -1,5 +1,5 @@
 import pytest
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 
 from chalicelib.data.delete_room import delete_room
 from chalicelib.models import Room

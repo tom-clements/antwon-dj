@@ -2,13 +2,13 @@ from typing import Dict, Any
 from unittest.mock import patch
 
 import pytest
-from sqlalchemy.engine import Row
+from sqlalchemy import Sequence
 
 from chalicelib.data.read_room_queue import read_room_queue
 
 
 @patch("sqlalchemy.engine.Row")
-def mock_sql_row(input_data: Dict[str, Any], mock_row) -> Row:
+def mock_sql_row(input_data: Dict[str, Any], mock_row) -> Sequence:
     row = mock_row()
     for k, v in input_data.items():
         setattr(row, k, v)

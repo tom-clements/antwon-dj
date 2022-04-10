@@ -54,7 +54,7 @@ def use_db_session(database="antwon", commit=False, rollback=False, close=True):
                     if close:
                         db_session.close()
                         engine.dispose()
-                except:
+                except:  # noqa: E722
                     db_session.close()
                     engine.dispose()
                     raise
