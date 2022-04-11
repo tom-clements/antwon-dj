@@ -1,14 +1,16 @@
-from typing import Dict, Any
+from typing import Optional
 
+from dacite import from_dict
 from sqlalchemy import false
-from sqlalchemy.orm import session
+from sqlalchemy.orm import Session
 
 from chalicelib.models import RoomSong, Song, Room
+from chalicelib.models.data_queries.next_song import NextSong
 from chalicelib.services.auth import db
 
 
 @db.use_db_session()
-def read_top_room_song(room_guid: str, db_session: session) -> Dict[str, Any]:
+def read_next_song(room_guid: str, db_session: Session) -> Optional[NextSong]:
     next_song = (
         db_session.query(
             RoomSong.room_song_id,
@@ -24,4 +26,4 @@ def read_top_room_song(room_guid: str, db_session: session) -> Dict[str, Any]:
         .order_by(RoomSong.insert_time)
         .first()
     )
-    return dict(next_song) if next_song else None
+    return from_dict(data_class=NextSong, data=next_song) if next_song else None

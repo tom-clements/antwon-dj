@@ -14,15 +14,22 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
+        cd backend
         python -m pip install --upgrade pip
         pip install black flake8 pytest pytest-mypy
-        pip install -r backend/requirements.txt
+        pip install -r requirements.txt
     - name: Lint with black
       run: |
+        cd backend
         black --check -l 120 .
     - name: Lint with flake8
       run: |
+        cd backend
         flake8 --max-line-length 120
+    - name: Type check with mypy
+      run: |
+        cd backend
+        mypy app.py
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -31,10 +38,13 @@ jobs:
         aws-region: eu-west-2
     - name: Test with pytest
       run: |
-        cd backend && pytest tests/
+        cd backend
+        pytest --mypy tests/
     - name: Add PR stage to chalice config
       run: |
-        cd backend && python add_pr_stage_to_chalice_config.py --pr-stage pr-${{ github.event.number }}
+        cd backend
+        python add_pr_stage_to_chalice_config.py --pr-stage pr-${{ github.event.number }}
     - name: chalice deploy
       run: |
-        cd backend && chalice deploy --stage pr-${{ github.event.number }}
+        cd backend
+        chalice deploy --stage pr-${{ github.event.number }}

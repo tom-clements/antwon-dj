@@ -1,14 +1,14 @@
 import datetime
 import uuid
 
-from sqlalchemy.orm import session
+from sqlalchemy.orm import Session
 
 from chalicelib.models import Room
 from chalicelib.services.auth.db import use_db_session
 
 
 @use_db_session(commit=True)
-def create_room(room_code: str, owner_user_id: int, db_session: session) -> None:
+def create_room(room_code: str, owner_user_id: int, db_session: Session) -> None:
     db_session.add(
         Room(
             room_guid=str(uuid.uuid4()),

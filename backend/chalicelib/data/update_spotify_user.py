@@ -1,13 +1,13 @@
 import datetime
 
-from sqlalchemy.orm import session
+from sqlalchemy.orm import Session
 
 from chalicelib.models import SpotifyUser
 from chalicelib.services.auth.db import use_db_session
 
 
 @use_db_session(commit=True)
-def update_spotify_user(user_id: int, access_token: str, refresh_token: str, db_session: session) -> None:
+def update_spotify_user(user_id: int, access_token: str, refresh_token: str, db_session: Session) -> None:
     """
     Will be deprecated soon
     """

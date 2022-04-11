@@ -1,107 +1,65 @@
-from unittest.mock import patch
+from typing import List, Dict, Any
+from unittest.mock import patch, Mock
 
 import pytest
 
-from chalicelib.services.spotify.get_search_songs import format_songs, search_songs
+from chalicelib.models.spotify_api.search_result import SpotifySearchResult
+from chalicelib.models.spotify_api.track import SpotifyTrack, SpotifyTrackFormatted
+from chalicelib.services.spotify.get_search_songs import format_songs, search_songs, spotify_api_search
+from tests.unit.chalicelib.services.spotify.example_tracks import get_example_track_formatted, get_example_track
+from tests.unit.chalicelib.services.spotify.example_seach_result import (
+    get_example_search_result,
+    get_example_search_result_formatted,
+    get_example_search_no_result,
+    get_example_api_search_result,
+    get_example_search_api_no_result,
+)
 
 
 @pytest.mark.parametrize(
     "example_input,expected_output",
     [
-        (
-            [
-                {
-                    "uri": "example_uri1",
-                    "name": "song_name1",
-                    "artists": [{"name": "artist1"}, {"name": "artist2"}],
-                    "album": {"images": [{"url": "image1address.com"}]},
-                },
-                {
-                    "uri": "example_uri2",
-                    "name": "song_name2",
-                    "artists": [{"name": "artist3"}],
-                    "album": {"images": [{"url": "image2address.com"}]},
-                },
-            ],
-            [
-                {
-                    "song_uri": "example_uri1",
-                    "song_artist": "artist1, artist2",
-                    "song_name": "song_name1",
-                    "song_album_url": "image1address.com",
-                },
-                {
-                    "song_uri": "example_uri2",
-                    "song_artist": "artist3",
-                    "song_name": "song_name2",
-                    "song_album_url": "image2address.com",
-                },
-            ],
-        ),
-        (
-            [],
-            [],
-        ),
+        ([get_example_track(), get_example_track()], [get_example_track_formatted(), get_example_track_formatted()]),
+        ([], []),
     ],
 )
-def test_format_songs(example_input, expected_output):
+def test_format_songs(example_input: List[SpotifyTrack], expected_output: List[SpotifyTrackFormatted]) -> None:
     actual_output = format_songs(example_input)
     assert actual_output == expected_output
 
 
 @pytest.mark.parametrize(
-    "example_song_query,spotify_search_result,expected_search_result",
+    "spotify_search_result,expected",
     [
-        (
-            "example_song_query1",
-            {
-                "tracks": {
-                    "items": [
-                        {
-                            "uri": "example_uri1",
-                            "name": "song_name1",
-                            "artists": [{"name": "artist1"}, {"name": "artist2"}],
-                            "album": {"images": [{"url": "image1address.com"}]},
-                        },
-                        {
-                            "uri": "example_uri2",
-                            "name": "song_name2",
-                            "artists": [{"name": "artist3"}],
-                            "album": {"images": [{"url": "image2address.com"}]},
-                        },
-                    ]
-                }
-            },
-            [
-                {
-                    "song_uri": "example_uri1",
-                    "song_artist": "artist1, artist2",
-                    "song_name": "song_name1",
-                    "song_album_url": "image1address.com",
-                },
-                {
-                    "song_uri": "example_uri2",
-                    "song_artist": "artist3",
-                    "song_name": "song_name2",
-                    "song_album_url": "image2address.com",
-                },
-            ],
-        ),
-        (
-            "example_song_query2",
-            {
-                "tracks": {
-                    "items": [],
-                }
-            },
-            [],
-        ),
+        (get_example_api_search_result(), get_example_search_result()),
+        (get_example_search_api_no_result(), get_example_search_no_result()),
     ],
 )
-@patch("sqlalchemy.orm.session.Session")
-def test_search_songs(spotify_session, example_song_query, spotify_search_result, expected_search_result):
-    spotify_session.search.return_value = spotify_search_result
-    actual_search_result = search_songs(
-        spotify_session=spotify_session, song_query=example_song_query, room_guid="test_room_guid"
+@patch("spotipy.Spotify")
+def test_spotify_api_search(
+    mock_spotipy_session: Mock, spotify_search_result: Dict[str, Any], expected: SpotifySearchResult
+) -> None:
+    example_song_query = "example_song_query"
+    example_room_guid = "example_room_guid"
+    mock_spotipy_session.search.return_value = spotify_search_result
+    actual = spotify_api_search.__wrapped__(  # type: ignore
+        spotify_session=mock_spotipy_session, song_query=example_song_query, room_guid=example_room_guid
     )
-    assert actual_search_result == expected_search_result
+    mock_spotipy_session.search.assert_called_with(q=example_song_query, type="track")
+    assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "spotify_search_result,expected",
+    [(get_example_search_result(), get_example_search_result_formatted()), (get_example_search_no_result(), [])],
+)
+@patch("chalicelib.services.spotify.get_search_songs.spotify_api_search")
+def test_search_songs(
+    mock_spotify_api_search: Mock, spotify_search_result: SpotifySearchResult, expected: List[SpotifyTrackFormatted]
+) -> None:
+    example_song_query = "example_song_query"
+    example_room_guid = "example_room_guid"
+    mock_spotify_api_search.return_value = spotify_search_result
+    actual = search_songs(song_query=example_song_query, room_guid=example_room_guid)
+    mock_spotify_api_search.assert_called_once_with(song_query=example_song_query, room_guid=example_room_guid)
+    assert actual == expected
