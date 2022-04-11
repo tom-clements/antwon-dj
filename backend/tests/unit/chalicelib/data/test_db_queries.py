@@ -1,4 +1,5 @@
-from unittest.mock import patch
+from typing import Optional
+from unittest.mock import patch, Mock
 
 import pytest
 
@@ -13,7 +14,9 @@ from chalicelib.data.read_scalar_queries import get_room_guid_from_room_code
     ],
 )
 @patch("sqlalchemy.orm.session.Session")
-def test_get_room_guid_from_room_code(db_session, example_room_code, expected_room_guid):
+def test_get_room_guid_from_room_code(
+    db_session: Mock, example_room_code: str, expected_room_guid: Optional[None]
+) -> None:
     db_session.query.return_value.filter.return_value.scalar.return_value = expected_room_guid
     actual_room_guid = get_room_guid_from_room_code(room_code=example_room_code, db_session=db_session)
     assert actual_room_guid == expected_room_guid

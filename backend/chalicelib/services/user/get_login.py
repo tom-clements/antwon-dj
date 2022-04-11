@@ -9,7 +9,7 @@ from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
 
 
 @AwsSecretRetrieval("cognito_client_credentials", client_id="client_id")
-def user_login(client_id: str, state=None) -> Response:
+def user_login(client_id: str, state: str = None) -> Response:
     params = {
         "client_id": client_id,
         "response_type": "code",

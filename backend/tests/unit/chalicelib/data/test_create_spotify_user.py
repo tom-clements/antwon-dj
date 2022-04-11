@@ -1,10 +1,10 @@
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from chalicelib.data.create_spotify_user import create_spotify_user
 
 
 @patch("sqlalchemy.orm.session.Session")
-def test_add_spotify_user_to_db(mock_db_session):
+def test_add_spotify_user_to_db(mock_db_session: Mock) -> None:
     user_id = 1
     access_token = "test_access_token"
     refresh_token = "test_refresh_token"

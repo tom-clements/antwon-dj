@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# mypy: ignore-errors
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
-from chalicelib.models.user import User
+from chalicelib.models.tables.user import User
 
 Base = declarative_base()
 

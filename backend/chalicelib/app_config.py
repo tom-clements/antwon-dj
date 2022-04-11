@@ -15,7 +15,7 @@ LOGGER = Logger()
 TRACER = Tracer()
 
 
-def register_blueprints(app: Chalice):
+def register_blueprints(app: Chalice) -> None:
     app.register_blueprint(room_routes)
     app.register_blueprint(spotify_routes)
     app.register_blueprint(user_routes)
@@ -23,13 +23,13 @@ def register_blueprints(app: Chalice):
     app.register_blueprint(swagger_routes)
 
 
-def register_middleware(app: Chalice):
-    app.register_middleware(ConvertToMiddleware(LOGGER.inject_lambda_context))
-    app.register_middleware(ConvertToMiddleware(TRACER.capture_lambda_handler))
+def register_middleware(app: Chalice) -> None:
+    app.register_middleware(ConvertToMiddleware(LOGGER.inject_lambda_context))  # type: ignore
+    app.register_middleware(ConvertToMiddleware(TRACER.capture_lambda_handler))  # type: ignore
     app.register_blueprint(middleware)
 
 
-def set_log_level(app):
+def set_log_level(app: Chalice) -> None:
     app.log.setLevel(logging.INFO)
 
 

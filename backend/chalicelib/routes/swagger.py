@@ -6,7 +6,7 @@ swagger_routes = Blueprint(__name__)
 
 
 @swagger_routes.route("/model.json", methods=["GET"], cors=True)
-def get_swagger_model():
+def get_swagger_model() -> str:
 
     with open("chalicelib/public/model.json", "r") as f:
         model = json.load(f)
@@ -15,7 +15,7 @@ def get_swagger_model():
 
 
 @swagger_routes.route("/", methods=["GET"])
-def get_swagger_page():
+def get_swagger_page() -> Response:
 
     with open("chalicelib/public/swagger_model.html", "r") as f:
         html = f.read()

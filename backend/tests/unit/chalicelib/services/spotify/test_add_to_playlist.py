@@ -1,16 +1,19 @@
-from unittest.mock import patch
+from dataclasses import asdict
+from unittest.mock import patch, Mock
 
 import pytest
 
+from chalicelib.models.spotify_api.playlist import SpotifyPlaylist
 from chalicelib.services.spotify.add_to_playlist import (
     create_playlist,
     get_playlist,
     add_to_spotify_playlist,
 )
+from tests.unit.chalicelib.services.spotify.example_playlist import get_example_playlist
 
 
 @patch("spotipy.Spotify")
-def test_create_playlist(mock_spotify_session):
+def test_create_playlist(mock_spotify_session: Mock) -> None:
     spotify_user_username = "test_spotify_username"
     playlist_name = "test_playlist_name"
     test_room_guid = "test_room_guid"
@@ -23,21 +26,24 @@ def test_create_playlist(mock_spotify_session):
 
 
 @pytest.mark.parametrize(
-    "playlist_name,playlist_search_result,expected_playlist",
+    "playlist_name,playlist",
     [
-        ("test_playlist_name", {"items": [{"name": "test_playlist_name"}]}, {"name": "test_playlist_name"}),
-        ("test_playlist_name", {"items": [{"name": "test_diff_playlist_name"}]}, None),
+        ("test_playlist_name", get_example_playlist(name="test_playlist_name")),
+        ("test_playlist_name", get_example_playlist(name="diff_test_playlist_name")),
     ],
 )
 @patch("spotipy.Spotify")
-def test_get_playlist(mock_spotify_session, playlist_name, playlist_search_result, expected_playlist):
-    mock_spotify_session.current_user_playlists.return_value = playlist_search_result
+def test_get_playlist(mock_spotify_session: Mock, playlist_name: str, playlist: SpotifyPlaylist) -> None:
+    mock_spotify_session.current_user_playlists.return_value = {"items": [asdict(playlist)]}
     actual_playlist = get_playlist(playlist_name, room_guid="test_room_guid", spotify_session=mock_spotify_session)
-    assert actual_playlist == expected_playlist
+    if playlist_name == playlist.name:
+        assert actual_playlist == playlist
+    if playlist_name != playlist.name:
+        assert actual_playlist is None
 
 
 @patch("spotipy.Spotify")
-def test_add_to_spotify_playlist(mock_spotify_session):
+def test_add_to_spotify_playlist(mock_spotify_session: Mock) -> None:
     playlist_id = "test_playlist_id"
     items = ["test_song_uri"]
     add_to_spotify_playlist(playlist_id, items, room_guid="test_room_guid", spotify_session=mock_spotify_session)

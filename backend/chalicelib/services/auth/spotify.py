@@ -1,14 +1,16 @@
 import base64
 import urllib
 import json
+from typing import Dict, Any, Callable
+
 import requests
 from functools import wraps
 
-import spotipy
+import spotipy  # type: ignore
 from spotipy import oauth2
-from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyClientCredentials  # type: ignore
 
-from chalicelib.data.read_spotify_user import read_spotify_user
+from chalicelib.data.read_spotify_user_tokens import read_spotify_user_tokens
 from chalicelib.data.update_spotify_user import update_spotify_user
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
 from chalicelib.utils.env import API_URL, API_STAGE
@@ -20,7 +22,7 @@ SCOPES = (
 
 
 @AwsSecretRetrieval("spotify_client", spotify_id="SPOTIFY_CLIENT_ID")
-def app_authorization(spotify_id: str):
+def app_authorization(spotify_id: str) -> str:
     f = {
         "response_type": "code",
         "client_id": spotify_id,
@@ -32,14 +34,14 @@ def app_authorization(spotify_id: str):
 
 
 @AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
-def get_spotify(auth: str, spotify_id: str, spotify_secret: str):
+def get_spotify(auth: str, spotify_id: str, spotify_secret: str) -> spotipy.Spotify:
     client_credentials_manager = SpotifyClientCredentials(client_id=spotify_id, client_secret=spotify_secret)
     sp = spotipy.Spotify(auth=auth, client_credentials_manager=client_credentials_manager)
     return sp
 
 
 @AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
-def get_token(code: str, spotify_id: str, spotify_secret: str):
+def get_token(code: str, spotify_id: str, spotify_secret: str) -> Dict[str, str]:
     data = {
         "code": code,
         "redirect_uri": f"{API_URL}/{API_STAGE}/user/spotify/callback",
@@ -53,7 +55,7 @@ def get_token(code: str, spotify_id: str, spotify_secret: str):
 
 
 @AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
-def refresh_spotify_token(refresh_token: str, spotify_secret: str, spotify_id: str):
+def refresh_spotify_token(refresh_token: str, spotify_secret: str, spotify_id: str) -> str:
     sp_oauth = oauth2.SpotifyOAuth(
         client_id=spotify_id,
         client_secret=spotify_secret,
@@ -66,11 +68,11 @@ def refresh_spotify_token(refresh_token: str, spotify_secret: str, spotify_id: s
     return token
 
 
-def use_spotify_session(f):
+def use_spotify_session(f: Callable) -> Callable:
     @wraps(f)
-    def decorated(*args, **kwargs):
+    def decorated(*args: Any, **kwargs: Dict[str, Any]) -> Any:
         if "spotify_session" not in kwargs:
-            spotify_user = read_spotify_user(kwargs["room_guid"])
+            spotify_user = read_spotify_user_tokens(kwargs["room_guid"])
             try:
                 spotify_session = get_spotify(auth=spotify_user.spotify_access_token)
                 kwargs["spotify_session"] = spotify_session

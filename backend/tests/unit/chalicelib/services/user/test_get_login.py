@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 import pytest
 from chalice import Response
@@ -44,8 +44,8 @@ from chalicelib.services.user.get_login import (
 @patch("chalicelib.services.user.get_login.API_URL", "mock_redirect_url.com")
 @patch("chalicelib.services.user.get_login.API_STAGE", "mock_stage")
 @patch("chalicelib.services.user.get_login.LOGIN_REDIRECT_ENDPOINT", "mock_redirect_endpoint")
-def test_user_login(state, expected):
-    actual = user_login.__wrapped__("test_client_id", state=state)
+def test_user_login(state: str, expected: Response) -> None:
+    actual = user_login.__wrapped__("test_client_id", state=state)  # type: ignore
     assert actual.body == expected.body
     assert actual.headers == expected.headers
     assert actual.status_code == expected.status_code
@@ -53,7 +53,7 @@ def test_user_login(state, expected):
 
 @patch("chalicelib.services.user.get_login.API_URL", "api_url.com")
 @patch("chalicelib.services.user.get_login.API_STAGE", "dev")
-def test_redirect_to_spotify_connect():
+def test_redirect_to_spotify_connect() -> None:
     actual = redirect_to_spotify_connect("test_username")
     expected = Response(
         body="", headers={"Location": "api_url.com/dev/user/spotify/connect?username=test_username"}, status_code=302
@@ -64,7 +64,7 @@ def test_redirect_to_spotify_connect():
 
 
 @patch("chalicelib.services.user.get_login.BASE_URL", "base_url.com")
-def test_redirect_to_client_with_tokens():
+def test_redirect_to_client_with_tokens() -> None:
     actual = redirect_to_client_with_tokens({"token1": "1", "token2": "2"})
     expected = Response(body="", headers={"Location": "base_url.com/?token1=1&token2=2"}, status_code=302)
     assert actual.body == expected.body
@@ -85,14 +85,14 @@ def test_redirect_to_client_with_tokens():
 @patch("chalicelib.services.user.get_login.redirect_to_spotify_connect")
 @patch("chalicelib.services.user.get_login.redirect_to_client_with_tokens")
 def test_user_signup_callback(
-    mock_redirect_to_client_with_tokens,
-    mock_redirect_to_spotify_connect,
-    mock_add_user_if_not_exists,
-    mock_get_username_from_token,
-    mock_get_tokens,
-    spotify_login,
-    expected,
-):
+    mock_redirect_to_client_with_tokens: Mock,
+    mock_redirect_to_spotify_connect: Mock,
+    mock_add_user_if_not_exists: Mock,
+    mock_get_username_from_token: Mock,
+    mock_get_tokens: Mock,
+    spotify_login: bool,
+    expected: Response,
+) -> None:
     test_tokens = {"access_token": "test_access_token", "token_type": "test_token_type"}
     test_username = "test_username"
     test_code = "test_code"

@@ -1,4 +1,5 @@
-from unittest.mock import patch
+from typing import Optional
+from unittest.mock import patch, Mock
 
 import pytest
 
@@ -9,7 +10,9 @@ from chalicelib.services.user.add_user import add_user_if_not_exists
 @pytest.mark.parametrize("read_user_value, expected_create_called", [(User(), False), (None, True)])
 @patch("chalicelib.services.user.add_user.read_user")
 @patch("chalicelib.services.user.add_user.create_user")
-def test_add_user_if_not_exists(mock_create_user, mock_read_user, read_user_value, expected_create_called):
+def test_add_user_if_not_exists(
+    mock_create_user: Mock, mock_read_user: Mock, read_user_value: Optional[User], expected_create_called: bool
+) -> None:
     mock_read_user.return_value = read_user_value
     add_user_if_not_exists("test_username")
     mock_read_user.assert_called_once_with("test_username")

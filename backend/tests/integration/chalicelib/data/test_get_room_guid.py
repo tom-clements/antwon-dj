@@ -1,11 +1,14 @@
+from typing import Optional
+
 import pytest
+from sqlalchemy.orm import Session
 
 from chalicelib.data.read_scalar_queries import get_room_guid_from_room_code
 from chalicelib.services.auth import db
 
 
 @db.use_db_session(database="antwontest")
-def get_room_guid_from_room_code_with_test_db(room_code, db_session):
+def get_room_guid_from_room_code_with_test_db(room_code: str, db_session: Session) -> None:
     actual_room_guid = get_room_guid_from_room_code(room_code=room_code, db_session=db_session)
     return actual_room_guid
 
@@ -17,6 +20,6 @@ def get_room_guid_from_room_code_with_test_db(room_code, db_session):
         ("nonexistent_room_code", None),
     ],
 )
-def test_get_room_guid_from_room_code(example_room_code, expected_room_guid):
+def test_get_room_guid_from_room_code(example_room_code: str, expected_room_guid: Optional[str]) -> None:
     actual_room_guid = get_room_guid_from_room_code_with_test_db(room_code=example_room_code)
     assert actual_room_guid == expected_room_guid

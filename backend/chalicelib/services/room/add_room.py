@@ -12,4 +12,4 @@ def owner_add_room(room_code: str, username: str) -> Union[Response, None]:
     if room_guid:
         return Response(body="Room already exists", status_code=409)
     else:
-        create_room(room_code, owner_user_id)
+        return create_room(room_code, owner_user_id)

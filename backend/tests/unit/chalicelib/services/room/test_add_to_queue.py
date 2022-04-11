@@ -1,62 +1,41 @@
 import datetime
-from unittest.mock import patch
+from dataclasses import asdict
+from typing import Any, Dict
+from unittest.mock import patch, Mock
 
 import pytest
 from freezegun import freeze_time
 
 from chalicelib.models import Song
+from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
 from chalicelib.services.room.add_to_queue import (
     compare_songs,
 )
+from tests.unit.chalicelib.services.spotify.example_tracks import get_example_track_formatted
 
 
 @freeze_time("2022-01-01")
 @pytest.mark.parametrize(
-    "song,song_in_db, assert_called_with",
+    "song, song_in_db, assert_called_with",
     [
         (
-            {
-                "song_uri": "spotify:track:1u8c2t2Cy7UBoG4ArRcF5g",
-                "song_name": "Blank Space",
-                "song_artist": "Taylor Swift",
-                "song_album_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
-            },
-            Song(
-                **{
-                    "song_uri": "spotify:track:1u8c2t2Cy7UBoG4ArRcF5g",
-                    "song_name": "Blank Space",
-                    "song_artist": "Taylor Swift",
-                    "song_album_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
-                }
-            ),
-            {"song_uri": "spotify:track:1u8c2t2Cy7UBoG4ArRcF5g", "last_accessed": datetime.datetime(2022, 1, 1)},
+            get_example_track_formatted(song_uri="test_uri"),
+            Song(**asdict(get_example_track_formatted(song_uri="test_uri"))),
+            {"song_uri": "test_uri", "last_accessed": datetime.datetime(2022, 1, 1)},
         ),
         (
+            get_example_track_formatted(song_uri="test_uri", song_name="Name Changed"),
+            Song(**asdict(get_example_track_formatted(song_uri="test_uri"))),
             {
-                "song_uri": "spotify:track:1u8c2t2Cy7UBoG4ArRcF5g",
-                "song_name": "Blank Space",
-                "song_artist": "Taylor Swift",
-                "song_album_url": "album_artwork_changed",
-            },
-            Song(
-                **{
-                    "song_uri": "spotify:track:1u8c2t2Cy7UBoG4ArRcF5g",
-                    "song_name": "Blank Space",
-                    "song_artist": "Taylor Swift",
-                    "song_album_url": "https://i.scdn.co/image/ab67616d0000b27352b2a3824413eefe9e33817a",
-                }
-            ),
-            {
-                "song_uri": "spotify:track:1u8c2t2Cy7UBoG4ArRcF5g",
-                "song_name": "Blank Space",
-                "song_artist": "Taylor Swift",
-                "song_album_url": "album_artwork_changed",
+                **asdict(get_example_track_formatted(song_uri="test_uri", song_name="Name Changed")),
                 "last_accessed": datetime.datetime(2022, 1, 1),
             },
         ),
     ],
 )
 @patch("chalicelib.services.room.add_to_queue.update_song")
-def test_compare_songs(update_song, song, song_in_db, assert_called_with):
+def test_compare_songs(
+    mock_update_song: Mock, song: SpotifyTrackFormatted, song_in_db: Song, assert_called_with: Dict[str, Any]
+) -> None:
     compare_songs(song, song_in_db)
-    update_song.assert_called_with(assert_called_with)
+    mock_update_song.assert_called_with(assert_called_with)

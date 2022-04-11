@@ -1,7 +1,10 @@
+from typing import Dict
+
 from chalice import Blueprint, Response
 
 from chalicelib.cors import get_cors_config
 from chalicelib.services.user.get_login import user_login, user_signup_callback
+from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs
 
 user_routes = Blueprint(__name__)
 
@@ -15,11 +18,9 @@ def get_login() -> Response:
 
 
 @user_routes.route("/login/callback", methods=["GET"], cors=get_cors_config())
-def get_signup_callback() -> Response:
-    params = user_routes.current_request.query_params
+@verify_parameter_inputs(user_routes, "username")
+def get_signup_callback(query_params: Dict[str, str]) -> Response:
     spotify_login = False
-    if ("state" in user_routes.current_request.query_params) and (
-        user_routes.current_request.query_params["state"] == "spotify"
-    ):
+    if ("state" in query_params) and query_params["state"] == "spotify":
         spotify_login = True
-    return user_signup_callback(code=params["code"], spotify_login=spotify_login)
+    return user_signup_callback(code=query_params["code"], spotify_login=spotify_login)

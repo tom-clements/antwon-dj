@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 import requests
 from chalice import CognitoUserPoolAuthorizer
@@ -7,17 +7,18 @@ from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
 from chalicelib.utils.env import AUTH_URL, LOGIN_REDIRECT_ENDPOINT, API_STAGE, API_URL
 
 
-def get_authorizer(scopes=None):
+def get_authorizer(scopes: List[str] = None) -> CognitoUserPoolAuthorizer:
     if scopes is None:
         scopes = ["email", "openid", "profile"]
     return CognitoUserPoolAuthorizer(
         name="antwon_user_pool",
         provider_arns=["arn:aws:cognito-idp:eu-west-2:303078101535:userpool/eu-west-2_Y4hA2uEzU"],
         scopes=scopes,
+        header=None,
     )
 
 
-def get_username_from_token(access_token, token_type) -> str:
+def get_username_from_token(access_token: str, token_type: str) -> str:
     url = f"{AUTH_URL}/oauth2/userInfo"
     headers = {"Authorization": f"{token_type} {access_token}"}
     response = requests.get(url, headers=headers)

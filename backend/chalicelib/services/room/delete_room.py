@@ -13,6 +13,6 @@ def owner_delete_room(room_guid: str, username: str) -> Union[Response, None]:
         if room_owner != username:
             raise ForbiddenError("Insufficient permissions to perform this action")
         else:
-            delete_room(room_guid)
+            return delete_room(room_guid)
     else:
         return Response(body="Room doesn't exist", status_code=409)
