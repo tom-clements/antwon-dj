@@ -35,7 +35,8 @@ Secrets:
   - `chalice local --stage local`
     - <http://localhost:8000/>
 - Linting
-  - `flak8 --max-line-length 120`
+  - `flake8 --max-line-length 120`
+  - `mypy app.py`
   - `black -l 120 .`
 - Testing
   - `pytest --mypy tests/`
