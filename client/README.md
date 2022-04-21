@@ -125,3 +125,52 @@ for performing this task from the command-line:
 ```sh
 yarn upgrade-interactive
 ```
+
+### Pending project architecture
+
+I'll preface this with yes, I've been flip-flopping over architectural and code organization lately.
+
+I think I've settled on functional organization - a concept stemming from domain driven development.
+
+What won it? This analogy.
+
+Code is often segregated by their category - e.g., folder for components, pages, controllers,
+services, etc.
+
+Liken this to forks, knifes, and spoons.
+If we applied this common categorical sorting, we would be storing our cutlery in separate drawers
+by category: one for knifes, one for forks, and one for spoons.
+
+What's their purpose or functional domain?
+Cutlery for eating right? So the common operation here would be opening
+3 separate drawers to fulfil the task of eating. That's a lot of effort.
+
+The same _applies_ to controllers, components, services, etc. Why sort by category? If we are working on
+functionality pertaining to a user, we'd be darting around _multiple_ different directories as we'd likely
+be working on user code across multiple categories.
+
+The tl;dr is, I will eventually move everything over to functional organization. _THIS DOES_ not mean
+cross-cutting categories of concern or multiple responsibilities - you know the usual SOLID speal.
+State should be de-coupled from components for example. Categorization per aggregate or functional
+area is permitted and encouraged unless the aggregate is _simple_.
+
+E.g., going forward, this will be the target structure over time - relative to `src/`
+
+- common
+  - components
+  - hooks
+  - model
+  - styles
+  - services
+  - ...
+- room
+  - components
+  - model
+  - styles
+  - services
+- user
+  - ...
+
+There are two exceptions. The first will be `pages/`, as this is a `Next.js` concept and has a specific set of
+hardcoded possible locations - I guess we'll just say, it is an `aggregate` or functional area.
+The second will be `tests/` to ease environment configuration.
