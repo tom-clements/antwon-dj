@@ -85,6 +85,11 @@ The notes here are left and updated here for documentation purposes.
     yarn global add @aws-amplify/cli@5.1.0
     ```
 
+    > **EDIT** - This _should_ be removable either now or within the immediate future.
+    > It's useful for deploying the client currently locally but this is handled through CI
+    > now. Also will be entirely redundant with Terraform.
+    > Leaving here until confirmed or Terraform replaces entire stack CD.
+
 5. Configure AWS Amplify locally (if not done already; otherwise confirm details)
 
     Roughly follow this official guide <https://docs.amplify.aws/cli/start/install#option-2-follow-the-instructions>.
