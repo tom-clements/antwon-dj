@@ -4,10 +4,9 @@ import { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache, Global } from '@emotion/react';
 import { ThemeProvider, defaultTheme } from 'styles/ThemeProvider';
-import { setupApp, useAppStore, createEmotionCache } from 'AppSetup';
+import { useAppStore, createEmotionCache } from 'AppSetup';
 import { ErrorToast } from 'components/core/ErrorToast';
 
-setupApp();
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {

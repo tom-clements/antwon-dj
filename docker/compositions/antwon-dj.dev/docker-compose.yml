@@ -29,6 +29,7 @@ services:
         ports:
             - 3000:3000
         volumes:
+            - ../../../client/public:/client/public
             - ../../../client/src:/client/src
 
     client-storybook:
