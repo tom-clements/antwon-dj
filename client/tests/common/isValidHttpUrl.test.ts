@@ -9,7 +9,7 @@ global.URL = jest.fn((value: string) => ({
 })) as any;
 
 describe('isValidHttpUrl()', () => {
-    type TestCase = [string | undefined | null, boolean];
+    type TestCase = [input: string | undefined | null, expectation: boolean];
 
     const cases: TestCase[] = [
         [undefined, false],
