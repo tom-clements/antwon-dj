@@ -36,6 +36,7 @@
         "@typescript-eslint/no-explicit-any": "off", // Sometimes, it is unfortunately necessary :(
         "react/prop-types": "off", // Strict typing is again, just fine
         "@typescript-eslint/no-empty-interface": ["error", { "allowSingleExtends": true }], // Extending is fine and has purpose in module augmentation
-        "@typescript-eslint/explicit-module-boundary-types": "off" // Would be nice, but difficult to achieve with Next.js/Redux toolkit 
+        "@typescript-eslint/explicit-module-boundary-types": "off", // Would be nice, but difficult to achieve with Next.js/Redux toolkit
+        "@typescript-eslint/no-non-null-assertion": "off" // Useful in tests and sometimes I think I know better
     }
 }
