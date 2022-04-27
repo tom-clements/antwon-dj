@@ -14,7 +14,7 @@ def get_authorizer(scopes: List[str] = None) -> CognitoUserPoolAuthorizer:
         name="antwon_user_pool",
         provider_arns=["arn:aws:cognito-idp:eu-west-2:303078101535:userpool/eu-west-2_Y4hA2uEzU"],
         scopes=scopes,
-        header=None,
+        header="Authorization",
     )
 
 
