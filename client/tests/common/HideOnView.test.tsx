@@ -1,8 +1,8 @@
-import { ComponentProps } from "react";
-import { render } from "@testing-library/react";
-import { HideOnScroll } from "common/components/HideOnView";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
-import Slide from "@mui/material/Slide";
+import { ComponentProps } from 'react';
+import { render } from '@testing-library/react';
+import { HideOnScroll } from 'common/components/HideOnView';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import Slide from '@mui/material/Slide';
 
 jest.mock('@mui/material/useScrollTrigger', () => ({
     __esModule: true,
@@ -13,7 +13,7 @@ jest.mock('@mui/material/Slide', () => ({
     __esModule: true,
     default: (props: ComponentProps<typeof Slide>) => (
         <div
-            id={"slideTest"}
+            id={'slideTest'}
             data-appear={props.appear}
             data-direction={props.direction}
             data-in={props.in}
