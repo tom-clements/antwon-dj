@@ -7,6 +7,16 @@ jest.mock('user/components/UserAvatar', () => ({
     UserAvatar: () => null,
 }));
 
+jest.mock('@mui/icons-material', () => ({
+    __esModule: true,
+    Login: () => null,
+    Logout: () => null,
+    Share: () => null,
+    ArrowBack: () => null,
+    Settings: () => null,
+    Chair: () => null,
+}));
+
 function testRender(props: ComponentProps<typeof UserPopoverMenu>) {
     return render(<UserPopoverMenu {...props} />);
 }
