@@ -49,15 +49,15 @@ describe('<UserPopoverMenu />', () => {
         expect(menu).toBeDefined();
     });
 
-    describe("when user logged in", () => {
+    describe('when user logged in', () => {
         type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onClickProps];
 
         const cases: TestCase[] = [
-            ["My Room", "myRoom"],
-            ["Room Settings", "roomSettings"],
-            ["Share Room", "shareRoom"],
-            ["Back", "back"],
-            ["Logout", "logout"],
+            ['My Room', 'myRoom'],
+            ['Room Settings', 'roomSettings'],
+            ['Share Room', 'shareRoom'],
+            ['Back', 'back'],
+            ['Logout', 'logout'],
         ];
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
@@ -78,13 +78,13 @@ describe('<UserPopoverMenu />', () => {
         });
     });
 
-    describe("when user logged out", () => {
+    describe('when user logged out', () => {
         type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onClickProps];
 
         const cases: TestCase[] = [
-            ["Share Room", "shareRoom"],
-            ["Back", "back"],
-            ["Login", "login"],
+            ['Share Room', 'shareRoom'],
+            ['Back', 'back'],
+            ['Login', 'login'],
         ];
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
