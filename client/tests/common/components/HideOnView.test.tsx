@@ -23,15 +23,15 @@ jest.mock('@mui/material/Slide', () => ({
     ),
 }));
 
-function testRender(props: ComponentProps<typeof HideOnScroll>) {
-    return render(<HideOnScroll {...props}>Test</HideOnScroll>);
+function testRender() {
+    return render(<HideOnScroll><div>Test</div></HideOnScroll>);
 }
 
 describe('<HideOnScroll />', () => {
     it('render children with slide in if not scrolled', () => {
         jest.mocked(useScrollTrigger).mockReturnValue(false);
 
-        const { container } = testRender({});
+        const { container } = testRender();
 
         const slide = container.querySelector('div#slideTest');
         expect(slide?.textContent).toBe('Test');
@@ -43,7 +43,7 @@ describe('<HideOnScroll />', () => {
     it('render children with slide out if scrolled', () => {
         jest.mocked(useScrollTrigger).mockReturnValue(true);
 
-        const { container } = testRender({});
+        const { container } = testRender();
 
         const slide = container.querySelector('div#slideTest');
         expect(slide?.textContent).toBe('Test');
