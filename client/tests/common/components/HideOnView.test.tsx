@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 import { render } from '@testing-library/react';
-import { HideOnScroll } from 'common/components/HideOnView';
+import { HideOnView } from 'common/components/HideOnView';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
 
@@ -24,7 +24,7 @@ jest.mock('@mui/material/Slide', () => ({
 }));
 
 function testRender() {
-    return render(<HideOnScroll><div>Test</div></HideOnScroll>);
+    return render(<HideOnView><div>Test</div></HideOnView>);
 }
 
 describe('<HideOnScroll />', () => {

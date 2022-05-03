@@ -1,4 +1,6 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, ReactNode } from 'react';
+
+export type AnyChildProps = { children?: ReactNode | null };
 
 export type ElementChildProps = { children: ReactElement };
 
