@@ -7,10 +7,10 @@ import pytest
 from chalicelib.models.spotify_api.currently_playing_result import SpotifyCurrentlyPlaying
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
 from chalicelib.services.spotify.get_current_playing import (
-    is_currently_playing_a_song,
-    get_placeholder_empty_song,
+    _is_currently_playing_a_song,
+    _get_placeholder_empty_song,
     get_currently_playing,
-    spotify_currently_playing_cached,
+    _spotify_currently_playing_cached,
 )
 from tests.unit.chalicelib.services.spotify.example_currently_playing import (
     get_example_current_playing,
@@ -31,7 +31,7 @@ def test_spotify_currently_playing_cached(
         mock_spotify_session.currently_playing.return_value = asdict(expected_playing)
     else:
         mock_spotify_session.currently_playing.return_value = None
-    actual_playing = spotify_currently_playing_cached(
+    actual_playing = _spotify_currently_playing_cached(
         room_guid="test_room_guid", ttl_hash=1, spotify_session=mock_spotify_session
     )
     mock_spotify_session.currently_playing.assert_called()
@@ -49,13 +49,13 @@ def test_spotify_currently_playing_cached(
 def test_is_currently_playing_a_song(
     currently_playing: Optional[SpotifyCurrentlyPlaying], expected_output: bool
 ) -> None:
-    actual_output = is_currently_playing_a_song(currently_playing)
+    actual_output = _is_currently_playing_a_song(currently_playing)
     assert actual_output == expected_output
 
 
 def test_get_placeholder_empty_song() -> None:
     expected = get_example_empty_track_formatted()
-    actual = get_placeholder_empty_song()
+    actual = _get_placeholder_empty_song()
     assert actual == expected
 
 
@@ -67,13 +67,17 @@ def test_get_placeholder_empty_song() -> None:
         (None, get_example_empty_track_formatted()),
     ],
 )
-@patch("chalicelib.services.spotify.get_current_playing.spotify_currently_playing_cached")
+@patch("chalicelib.services.spotify.get_current_playing._spotify_currently_playing_cached")
+@patch("chalicelib.services.spotify.get_current_playing.is_room_exists", return_value=True)
 def test_get_currently_playing(
+    mock_is_room_exists: Mock,
     mock_spotify_currently_playing_cached: Mock,
     currently_playing_result: Optional[SpotifyCurrentlyPlaying],
     expected_output: SpotifyTrackFormatted,
 ) -> None:
+    room_guid = "test_room_guid"
     mock_spotify_currently_playing_cached.return_value = currently_playing_result
-    actual_output = get_currently_playing(room_guid="test_room_guid")
+    actual_output = get_currently_playing(room_guid=room_guid)
+    mock_is_room_exists.assert_called_with(room_guid)
     mock_spotify_currently_playing_cached.assert_called()
     assert actual_output == expected_output

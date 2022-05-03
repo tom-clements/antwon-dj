@@ -16,4 +16,4 @@ def read_active_rooms(db_session: Session) -> List[str]:
         .filter(Room.is_inactive == false())
         .all()
     )
-    return [r.room_guid for r in result]
+    return [r.room_guid for r in result]  # type: ignore

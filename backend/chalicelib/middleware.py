@@ -1,8 +1,9 @@
-from collections import Callable
+from typing import Callable
 
 from aws_lambda_powertools import Logger
 from chalice import Blueprint
 from chalice.app import Request, Response
+
 
 LOGGER = Logger()
 

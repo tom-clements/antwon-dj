@@ -9,6 +9,7 @@
     "stages": {
         "dev": {
             "environment_variables": {
+                "ENVIRONMENT": "dev",
                 "API_STAGE": "dev",
                 "BASE_URL": "https://www.djantwon.com",
                 "API_URL": "https://api.djantwon.com",
@@ -30,6 +31,7 @@
         },
         "local": {
             "environment_variables": {
+                "ENVIRONMENT": "local",
                 "API_STAGE": "",
                 "BASE_URL": "http://localhost:3000",
                 "API_URL": "http://localhost:8000",
@@ -38,6 +40,7 @@
         },
         "local_backend": {
             "environment_variables": {
+                "ENVIRONMENT": "local",
                 "API_STAGE": "",
                 "BASE_URL": "https://www.djantwon.com",
                 "API_URL": "http://localhost:8000",

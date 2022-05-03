@@ -11,16 +11,12 @@ user_routes = Blueprint(__name__)
 
 @user_routes.route("/login", methods=["GET"], cors=get_cors_config())
 def get_login() -> Response:
-    state = None
-    if user_routes.current_request.query_params and ("state" in user_routes.current_request.query_params):
-        state = user_routes.current_request.query_params["state"]
-    return user_login(state=state)
+    url = user_login()
+    return Response(body="", headers={"Location": url}, status_code=302)
 
 
 @user_routes.route("/login/callback", methods=["GET"], cors=get_cors_config())
 @verify_parameter_inputs(user_routes, "username")
 def get_signup_callback(query_params: Dict[str, str]) -> Response:
-    spotify_login = False
-    if ("state" in query_params) and query_params["state"] == "spotify":
-        spotify_login = True
-    return user_signup_callback(code=query_params["code"], spotify_login=spotify_login)
+    url = user_signup_callback(code=query_params["code"])
+    return Response(body="", headers={"Location": url}, status_code=302)

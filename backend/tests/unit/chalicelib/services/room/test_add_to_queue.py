@@ -9,7 +9,7 @@ from freezegun import freeze_time
 from chalicelib.models import Song
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
 from chalicelib.services.room.add_to_queue import (
-    compare_songs,
+    _compare_songs,
 )
 from tests.unit.chalicelib.services.spotify.example_tracks import get_example_track_formatted
 
@@ -37,5 +37,5 @@ from tests.unit.chalicelib.services.spotify.example_tracks import get_example_tr
 def test_compare_songs(
     mock_update_song: Mock, song: SpotifyTrackFormatted, song_in_db: Song, assert_called_with: Dict[str, Any]
 ) -> None:
-    compare_songs(song, song_in_db)
+    _compare_songs(song, song_in_db)
     mock_update_song.assert_called_with(assert_called_with)

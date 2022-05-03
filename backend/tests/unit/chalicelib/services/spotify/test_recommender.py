@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock
 import pytest
 
 from chalicelib.models.data_queries.next_song import NextSong
-from chalicelib.services.spotify.recommender import get_spotify_recommended_song, get_recommended_song
+from chalicelib.services.spotify.recommender import _get_spotify_recommended_song, get_recommended_song
 from tests.unit.chalicelib.data.example_next_song import get_example_next_song
 from tests.unit.chalicelib.services.spotify.example_recommender_result import (
     get_example_api_recommended,
@@ -20,7 +20,9 @@ def test_get_spotify_recommended_song(mock_spotify_session: Mock) -> None:
     expected = get_example_recommended()
 
     mock_spotify_session.recommendations.return_value = recommended_tracks
-    actual = get_spotify_recommended_song.__wrapped__(test_uris, mock_spotify_session, "test_room_code")  # type: ignore
+    actual = _get_spotify_recommended_song.__wrapped__(  # type: ignore
+        test_uris, mock_spotify_session, "test_room_code"
+    )
     mock_spotify_session.recommendations.assert_called_once_with(seed_tracks=test_uris, country="GB", limit=1)
     assert actual == expected
 
@@ -33,7 +35,7 @@ def test_get_spotify_recommended_song(mock_spotify_session: Mock) -> None:
     ],
 )
 @patch("chalicelib.services.spotify.recommender.read_last_five_played_tracked")
-@patch("chalicelib.services.spotify.recommender.get_spotify_recommended_song")
+@patch("chalicelib.services.spotify.recommender._get_spotify_recommended_song")
 @patch("chalicelib.services.spotify.recommender.read_next_song")
 @patch("chalicelib.services.spotify.recommender.add_song_to_room_queue")
 @patch("chalicelib.services.spotify.recommender.format_songs")

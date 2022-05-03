@@ -17,7 +17,6 @@ def create_db_engine(db_conn_string: str, debug_mode: bool = False) -> Engine:
         pool_recycle=60,
         pool_pre_ping=True,
         pool_use_lifo=True,
-        # poolclass=NullPool
     )
 
 
@@ -34,7 +33,6 @@ def get_db_session(
     db_conn_string = f"mysql+pymysql://{username}:{password}@{host}:{port}/{database}"
     engine = create_db_engine(db_conn_string)
     Session = sessionmaker(bind=engine)
-    # todo: setup connection pooling properties
     return Session(), engine
 
 
