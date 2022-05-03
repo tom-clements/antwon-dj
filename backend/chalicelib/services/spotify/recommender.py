@@ -13,7 +13,7 @@ from chalicelib.services.auth.spotify import use_spotify_session
 
 
 @use_spotify_session
-def get_spotify_recommended_song(
+def _get_spotify_recommended_song(
     previous_track_uris: List[str], spotify_session: spotipy.Spotify, room_guid: str
 ) -> SpotifyRecommenderResult:
     return from_dict(
@@ -26,7 +26,7 @@ def get_recommended_song(room_guid: str) -> Optional[NextSong]:
     previous_track_uris = read_last_five_played_tracked(room_guid)
     if not previous_track_uris:
         return None
-    song = get_spotify_recommended_song(previous_track_uris, room_guid=room_guid)
+    song = _get_spotify_recommended_song(previous_track_uris, room_guid=room_guid)
     song_formatted = format_songs(song.tracks)[0]
     add_song_to_room_queue(song_formatted, room_guid)
     return read_next_song(room_guid)

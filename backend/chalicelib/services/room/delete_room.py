@@ -1,18 +1,15 @@
-from typing import Union
-
-from chalice import ForbiddenError, Response
-
-from chalicelib.data.delete_room import delete_room
+from chalicelib.data.delete_room import db_delete_room
 from chalicelib.data.is_exists import is_room_exists
 from chalicelib.data.read_one_queries import get_room_owner
+from chalicelib.services.exceptions import NonExistantRoomServiceError, ForbiddenServiceError
 
 
-def owner_delete_room(room_guid: str, username: str) -> Union[Response, None]:
+def owner_delete_room(room_guid: str, username: str) -> None:
     if is_room_exists(room_guid):
         room_owner = get_room_owner(room_guid)
         if room_owner != username:
-            raise ForbiddenError("Insufficient permissions to perform this action")
+            raise ForbiddenServiceError()
         else:
-            return delete_room(room_guid)
+            db_delete_room(room_guid)
     else:
-        return Response(body="Room doesn't exist", status_code=409)
+        raise NonExistantRoomServiceError(room_guid)
