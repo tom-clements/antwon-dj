@@ -20,7 +20,7 @@ export const LoggedOut = {
     }
 };
 
-const users = {
+const optionMapping = {
     withImage: {
         name: 'Ablert Clements',
         imageUrl: 'https://mui.com/static/images/avatar/1.jpg'
@@ -33,18 +33,15 @@ const users = {
 export const LoggedIn = {
     ...Template.bind({}),
     args: {
-        user: users.withImage,
+        user: Object.keys(optionMapping)[0],
     },
     argTypes: {
         user: {
-            options: Object.keys(users),
-            mapping: users,
+            options: Object.keys(optionMapping),
+            mapping: optionMapping,
             control: {
                 type: 'select',
-                labels: {
-                    withImage: 'With image',
-                    withoutImage: 'Without image',
-                },
+                labels: { ...Object.keys(optionMapping) }
             },
         }
     }

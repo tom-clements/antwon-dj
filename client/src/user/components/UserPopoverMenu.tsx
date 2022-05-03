@@ -1,5 +1,5 @@
 import { FC, forwardRef, ForwardRefRenderFunction, RefObject, useRef, useState } from 'react';
-import { IconType } from 'common/model/IconType';
+import type { IconType } from 'common/model/IconType';
 import { UserModel } from 'user/model/UserModel';
 import { UserAvatar } from 'user/components/UserAvatar';
 import { styled } from '@mui/material/styles';
