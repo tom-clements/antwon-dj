@@ -1,18 +1,16 @@
 import { FC, forwardRef, ForwardRefRenderFunction, RefObject, useRef, useState } from 'react';
-import type { IconType } from 'common/model/IconType';
 import { UserModel } from 'user/model/UserModel';
 import { UserAvatar } from 'user/components/UserAvatar';
 import { styled } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
 import { Login, Logout, Share, ArrowBack, Settings, Chair } from '@mui/icons-material';
 import { UseUserMenuClickActions, useUserMenuClickActions as useUserMenuClickActionsImpl } from 'user/hooks/useUserMenuClickActions';
+import { MenuItem } from 'common/components/MenuItem';
 
 const MenuContainer = styled(Menu)`
     max-width: 256px;
@@ -51,31 +49,6 @@ const UserIconButton: ForwardRefRenderFunction<HTMLButtonElement, Props & OpenPr
 
 const UserIconButtonWithRef = forwardRef(UserIconButton);
 
-interface UserMenuIconItemProps {
-    icon?: IconType;
-    text: string;
-    onClick: () => void;
-}
-
-const UserMenuIconItem: FC<UserMenuIconItemProps> = props => {
-    return (
-        <MenuItem onClick={props.onClick}>
-            {
-                props.icon
-                    ? (
-                        <ListItemIcon>
-                            <props.icon fontSize="small" />
-                        </ListItemIcon>
-                    )
-                    : null
-            }
-            <Typography variant="inherit" noWrap>
-                {props.text}
-            </Typography>
-        </MenuItem>
-    );
-};
-
 const UserText = styled(Typography)`
     padding: ${props => props.theme.spacing(0.75, 2)};
     text-align: center;
@@ -96,12 +69,12 @@ const LoggedInMenuItems: FC<Props> = props => {
                 {props.user?.name ? props.user?.name : '?'}
             </UserText>
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <UserMenuIconItem icon={Chair} text="My Room" onClick={onMenuClicks.myRoom} />
-            <UserMenuIconItem icon={Settings} text="Room Settings" onClick={onMenuClicks.roomSettings} />
-            <UserMenuIconItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
+            <MenuItem icon={Chair} text="My Room" onClick={onMenuClicks.myRoom} />
+            <MenuItem icon={Settings} text="Room Settings" onClick={onMenuClicks.roomSettings} />
+            <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <UserMenuIconItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
-            <UserMenuIconItem icon={Logout} text="Logout" onClick={onMenuClicks.logout} />
+            <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
+            <MenuItem icon={Logout} text="Logout" onClick={onMenuClicks.logout} />
         </>
     );
 };
@@ -112,10 +85,10 @@ const LoggedOutMenuItems: FC<Props> = props => {
     return (
         <>
             <Spacer />
-            <UserMenuIconItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
+            <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <UserMenuIconItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
-            <UserMenuIconItem icon={Login} text="Login" onClick={onMenuClicks.login} />
+            <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
+            <MenuItem icon={Login} text="Login" onClick={onMenuClicks.login} />
         </>
     );
 };
