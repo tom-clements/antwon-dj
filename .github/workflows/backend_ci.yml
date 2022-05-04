@@ -20,7 +20,7 @@ jobs:
       run: |
         cd backend
         python -m pip install --upgrade pip
-        pip install black flake8 pytest mypy pytest-mypy
+        pip install black flake8 pytest mypy pytest-mypy pytest-cov
         pip install -r requirements.txt
     - name: Lint with black
       run: |
@@ -40,7 +40,10 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
-    - name: Test with pytest
+    - name: Test with pytest and collect coverage
       run: |
-        cd backend
-        pytest --mypy tests/
+        pytest --mypy --cov backend/
+    - name: Upload coverage reports to Codecov with GitHub Action
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_UPLOAD_TOKEN }}
