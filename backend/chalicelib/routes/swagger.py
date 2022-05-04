@@ -17,7 +17,7 @@ def get_swagger_model() -> str:
 @swagger_routes.route("/", methods=["GET"])
 def get_swagger_page() -> Response:
 
-    with open("chalicelib/public/swagger_model.html", "r") as f:
+    with open("chalicelib/public/swagger_page.html", "r") as f:
         html = f.read()
 
     return Response(
