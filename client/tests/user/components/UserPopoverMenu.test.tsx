@@ -21,7 +21,7 @@ function testRender(props: ComponentProps<typeof UserPopoverMenu>) {
     return render(<UserPopoverMenu {...props} />);
 }
 
-const onClickProps = {
+const onMenuClicks = {
     myRoom: jest.fn(),
     roomSettings: jest.fn(),
     shareRoom: jest.fn(),
@@ -29,6 +29,8 @@ const onClickProps = {
     login: jest.fn(),
     logout: jest.fn(),
 };
+
+const useUserMenuClickActions = () => onMenuClicks;
 
 beforeEach(() => {
     jest.resetAllMocks();
@@ -38,7 +40,7 @@ describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
             user: { name: 'Name' },
-            onClick: onClickProps,
+            useUserMenuClickActions,
         });
 
         const button = container.querySelector('button.MuiIconButton-root');
@@ -49,7 +51,7 @@ describe('<UserPopoverMenu />', () => {
     it('renders menu when icon button receives onClick', () => {
         const { container } = testRender({
             user: { name: 'Name' },
-            onClick: onClickProps,
+            useUserMenuClickActions,
         });
 
         const button = container.querySelector('button.MuiIconButton-root');
@@ -60,7 +62,7 @@ describe('<UserPopoverMenu />', () => {
     });
 
     describe('when user logged in', () => {
-        type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onClickProps];
+        type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onMenuClicks];
 
         const cases: TestCase[] = [
             ['My Room', 'myRoom'],
@@ -73,7 +75,7 @@ describe('<UserPopoverMenu />', () => {
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
                 user: { name: 'Name' },
-                onClick: onClickProps,
+                useUserMenuClickActions,
             });
             const button = container.querySelector('button.MuiIconButton-root');
             fireEvent.click(button!);
@@ -83,13 +85,13 @@ describe('<UserPopoverMenu />', () => {
 
             fireEvent.click(menuItem);
 
-            const mockCallback = onClickProps[expectedMockCallbackKey];
+            const mockCallback = onMenuClicks[expectedMockCallbackKey];
             expect(mockCallback).toHaveBeenCalledTimes(1);
         });
     });
 
     describe('when user logged out', () => {
-        type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onClickProps];
+        type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onMenuClicks];
 
         const cases: TestCase[] = [
             ['Share Room', 'shareRoom'],
@@ -100,7 +102,7 @@ describe('<UserPopoverMenu />', () => {
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
                 user: null,
-                onClick: onClickProps,
+                useUserMenuClickActions,
             });
             const button = container.querySelector('button.MuiIconButton-root');
             fireEvent.click(button!);
@@ -110,7 +112,7 @@ describe('<UserPopoverMenu />', () => {
 
             fireEvent.click(menuItem);
 
-            const mockCallback = onClickProps[expectedMockCallbackKey];
+            const mockCallback = onMenuClicks[expectedMockCallbackKey];
             expect(mockCallback).toHaveBeenCalledTimes(1);
         });
     });

@@ -3,10 +3,20 @@ import { UserPopoverMenu as UserPopoverMenuComponent } from 'user/components/Use
 
 export default {
     title: 'user/UserPopoverMenu',
+    args: {
+        useUserMenuClickActions: () => ({
+            myRoom: () => undefined,
+            roomSettings: () => undefined,
+            shareRoom: () => undefined,
+            back: () => undefined,
+            login: () => undefined,
+            logout: () => undefined,
+        }),
+    },
     component: UserPopoverMenuComponent,
     argTypes: {
         user: { control: false },
-        onClick: { control: false },
+        useUserMenuClickActions: { control: false },
     },
 };
 

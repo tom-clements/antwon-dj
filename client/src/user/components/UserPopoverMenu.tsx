@@ -12,6 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
 import { Login, Logout, Share, ArrowBack, Settings, Chair } from '@mui/icons-material';
+import { UseUserMenuClickActions, useUserMenuClickActions as useUserMenuClickActionsImpl } from 'user/hooks/useUserMenuClickActions';
 
 const MenuContainer = styled(Menu)`
     max-width: 256px;
@@ -20,14 +21,10 @@ const MenuContainer = styled(Menu)`
 interface Props {
     user: UserModel | null;
 
-    onClick: {
-        myRoom: () => void;
-        roomSettings: () => void;
-        shareRoom: () => void;
-        back: () => void;
-        login: () => void;
-        logout: () => void;
-    };
+    /**
+     * Injected `useUserMenuClickActions` hook or default implementation
+     */
+    useUserMenuClickActions?: UseUserMenuClickActions;
 }
 
 interface OpenProps {
@@ -90,6 +87,8 @@ const Spacer = styled('div')`
 `;
 
 const LoggedInMenuItems: FC<Props> = props => {
+    const { useUserMenuClickActions = useUserMenuClickActionsImpl } = props;
+    const onMenuClicks = useUserMenuClickActions();
     return (
         <>
             <Spacer />
@@ -97,24 +96,26 @@ const LoggedInMenuItems: FC<Props> = props => {
                 {props.user?.name ? props.user?.name : '?'}
             </UserText>
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <UserMenuIconItem icon={Chair} text="My Room" onClick={props.onClick.myRoom} />
-            <UserMenuIconItem icon={Settings} text="Room Settings" onClick={props.onClick.roomSettings} />
-            <UserMenuIconItem icon={Share} text="Share Room" onClick={props.onClick.shareRoom} />
+            <UserMenuIconItem icon={Chair} text="My Room" onClick={onMenuClicks.myRoom} />
+            <UserMenuIconItem icon={Settings} text="Room Settings" onClick={onMenuClicks.roomSettings} />
+            <UserMenuIconItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <UserMenuIconItem icon={ArrowBack} text="Back" onClick={props.onClick.back} />
-            <UserMenuIconItem icon={Logout} text="Logout" onClick={props.onClick.logout} />
+            <UserMenuIconItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
+            <UserMenuIconItem icon={Logout} text="Logout" onClick={onMenuClicks.logout} />
         </>
     );
 };
 
 const LoggedOutMenuItems: FC<Props> = props => {
+    const { useUserMenuClickActions = useUserMenuClickActionsImpl } = props;
+    const onMenuClicks = useUserMenuClickActions();
     return (
         <>
             <Spacer />
-            <UserMenuIconItem icon={Share} text="Share Room" onClick={props.onClick.shareRoom} />
+            <UserMenuIconItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <UserMenuIconItem icon={ArrowBack} text="Back" onClick={props.onClick.back} />
-            <UserMenuIconItem icon={Login} text="Login" onClick={props.onClick.login} />
+            <UserMenuIconItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
+            <UserMenuIconItem icon={Login} text="Login" onClick={onMenuClicks.login} />
         </>
     );
 };
