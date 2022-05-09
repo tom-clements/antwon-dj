@@ -5,8 +5,11 @@ const createJestConfig = nextJest({
 });
 
 const customJestConfig = {
-    testMatch: ['<rootDir>/tests/**/*.(ts|tsx)'],
-    moduleDirectories: ['node_modules', '<rootDir>/src'],
+    testMatch: ['<rootDir>/tests/**/*.test.(ts|tsx)'],
+    moduleDirectories: ['node_modules', '<rootDir>/src', '<rootDir>/tests'],
+    moduleNameMapper: {
+        '^tests/(.*)$': '<rootDir>/tests/$1',
+    },
     testEnvironment: 'jest-environment-jsdom',
 };
 
