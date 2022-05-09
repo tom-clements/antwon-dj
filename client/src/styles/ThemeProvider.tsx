@@ -12,14 +12,3 @@ export const ThemeProvider: FC = props => {
     );
 };
 
-declare module '@mui/material/styles' {
-    // remove when expanding default theme shape
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface Theme {
-    }
-
-    // remove when expanding default theme shape
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface ThemeOptions {
-    }
-}
