@@ -1,4 +1,4 @@
-import { AccountLinkModel, AccountLinkModelType } from "user/model/AccountLinkModel";
+import { AccountLinkModel, AccountLinkModelType } from 'user/model/AccountLinkModel';
 
 export const mockAccountLinksFactory = (isLinked: boolean) => (): AccountLinkModel[] => ([
     {
