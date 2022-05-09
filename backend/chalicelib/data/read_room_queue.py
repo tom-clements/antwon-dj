@@ -1,6 +1,5 @@
 from typing import List
 
-from dacite import from_dict
 from sqlalchemy import String, cast, false
 from sqlalchemy.orm import Session
 
@@ -28,7 +27,7 @@ def read_room_queue(room_guid: str, db_session: Session) -> List[QueueSong]:
         .filter(RoomSong.is_played == false(), Room.room_guid == room_guid)
         .all()
     )
-    return [from_dict(data_class=QueueSong, data=r) for r in room_queue]
+    return [QueueSong(**r) for r in room_queue]
 
 
 @use_db_session()

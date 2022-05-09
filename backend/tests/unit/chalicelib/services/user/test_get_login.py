@@ -1,9 +1,9 @@
 from unittest.mock import patch, Mock
 
+from chalicelib.services.auth.cognito.responses import CodeTokenDto, UserInfoDto
 from chalicelib.services.user.get_login import (
     user_login,
     redirect_to_spotify_connect,
-    redirect_to_client_with_tokens,
     user_signup_callback,
 )
 
@@ -30,37 +30,30 @@ def test_redirect_to_spotify_connect() -> None:
     assert actual == expected
 
 
-@patch("chalicelib.services.user.get_login.BASE_URL", "base_url.com")
-def test_redirect_to_client_with_tokens() -> None:
-    actual = redirect_to_client_with_tokens({"token1": "1", "token2": "2"})
-    expected = "base_url.com/?token1=1&token2=2"
-    assert actual == expected
-
-
-@patch("chalicelib.services.user.get_login.get_tokens")
-@patch("chalicelib.services.user.get_login.get_username_from_token")
+@patch("chalicelib.services.user.get_login.get_tokens_from_code")
+@patch("chalicelib.services.user.get_login.get_cognito_user_info")
 @patch("chalicelib.services.user.get_login.add_user_if_not_exists")
-@patch("chalicelib.services.user.get_login.redirect_to_client_with_tokens")
 def test_user_signup_callback(
-    mock_redirect_to_client_with_tokens: Mock,
     mock_add_user_if_not_exists: Mock,
-    mock_get_username_from_token: Mock,
-    mock_get_tokens: Mock,
+    mock_get_cognito_user_info: Mock,
+    mock_get_tokens_from_code: Mock,
 ) -> None:
-    test_tokens = {"access_token": "test_access_token", "token_type": "test_token_type"}
-    test_username = "test_username"
-    test_code = "test_code"
-    test_redirect_url = "test_redirct.com"
-    expected = test_redirect_url
+    tokens = CodeTokenDto(
+        access_token="access_token",
+        token_type="token_type",
+        id_token="id_token",
+        refresh_token="refresh_token",
+        expires_in=0,
+    )
+    user_info = UserInfoDto(sub="sub", email_verified="true", name="name", email="email", username="username")
+    code = "code"
+    expected = tokens.refresh_token
 
-    mock_get_tokens.return_value = test_tokens
-    mock_get_username_from_token.return_value = test_username
-    mock_redirect_to_client_with_tokens.return_value = test_redirect_url
+    mock_get_tokens_from_code.return_value = tokens
+    mock_get_cognito_user_info.return_value = user_info
+    actual = user_signup_callback(code=code)
 
-    actual = user_signup_callback(code=test_code)
-
-    mock_get_tokens.assert_called_with(code=test_code)
-    mock_get_username_from_token.assert_called_once_with(test_tokens["access_token"], test_tokens["token_type"])
-    mock_add_user_if_not_exists.assert_called_once_with(test_username)
-    mock_redirect_to_client_with_tokens.assert_called_once_with(test_tokens)
+    mock_get_tokens_from_code.assert_called_with(code=code)
+    mock_get_cognito_user_info.assert_called_once_with(tokens.access_token, tokens.token_type)
+    mock_add_user_if_not_exists.assert_called_once_with(user_info.username)
     assert actual == expected

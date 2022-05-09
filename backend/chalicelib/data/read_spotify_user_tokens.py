@@ -1,4 +1,3 @@
-from dacite import from_dict
 from sqlalchemy.orm import Session
 
 from chalicelib.models import SpotifyUser, Room
@@ -17,4 +16,4 @@ def read_spotify_user_tokens(room_guid: str, db_session: Session) -> SpotifyUser
         .filter(Room.room_guid == room_guid)
         .one()
     )
-    return from_dict(data_class=SpotifyUserTokens, data=spotify_user_tokens)
+    return SpotifyUserTokens(**spotify_user_tokens)
