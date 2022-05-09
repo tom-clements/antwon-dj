@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
 import { Login, Logout, Share, ArrowBack, Settings, Chair } from '@mui/icons-material';
-import { UseUserMenuClickActions, useUserMenuClickActions as useUserMenuClickActionsImpl } from 'user/hooks/useUserMenuClickActions';
+import { UseUserMenuClickActions, useUserMenuClickActions as _useUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
 import { MenuItem } from 'common/components/MenuItem';
 
 const MenuContainer = styled(Menu)`
@@ -60,7 +60,7 @@ const Spacer = styled('div')`
 `;
 
 const LoggedInMenuItems: FC<Props> = props => {
-    const { useUserMenuClickActions = useUserMenuClickActionsImpl } = props;
+    const { useUserMenuClickActions = _useUserMenuClickActions } = props;
     const onMenuClicks = useUserMenuClickActions();
     return (
         <>
@@ -80,7 +80,7 @@ const LoggedInMenuItems: FC<Props> = props => {
 };
 
 const LoggedOutMenuItems: FC<Props> = props => {
-    const { useUserMenuClickActions = useUserMenuClickActionsImpl } = props;
+    const { useUserMenuClickActions = _useUserMenuClickActions } = props;
     const onMenuClicks = useUserMenuClickActions();
     return (
         <>
