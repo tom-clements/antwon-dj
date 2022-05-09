@@ -1,4 +1,3 @@
-from dacite import from_dict
 from sqlalchemy.orm import Session
 
 from chalicelib.models import SpotifyUser, Room, User
@@ -16,4 +15,4 @@ def read_room_info(room_guid: str, db_session: Session) -> RoomInfo:
         .filter(Room.room_guid == room_guid)
         .one()
     )
-    return from_dict(data_class=RoomInfo, data=room_info)
+    return RoomInfo(**room_info)

@@ -1,8 +1,6 @@
-from typing import Dict
-
-from chalicelib.services.auth.cognito import get_username_from_token, get_tokens
+from chalicelib.services.auth.cognito.endpoints import get_cognito_user_info, get_tokens_from_code
 from chalicelib.services.user.add_user import add_user_if_not_exists
-from chalicelib.utils.env import API_URL, LOGIN_REDIRECT_ENDPOINT, AUTH_URL, BASE_URL, API_STAGE
+from chalicelib.utils.env import API_URL, LOGIN_REDIRECT_ENDPOINT, AUTH_URL, API_STAGE
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
 
 
@@ -22,12 +20,8 @@ def redirect_to_spotify_connect(username: str) -> str:
     return f"{API_URL}/{API_STAGE}/user/spotify/connect?" + f"username={username}"
 
 
-def redirect_to_client_with_tokens(tokens: Dict[str, str]) -> str:
-    return f"{BASE_URL}/?" + "&".join([f"{k}={v}" for k, v in tokens.items()])
-
-
 def user_signup_callback(code: str) -> str:
-    tokens = get_tokens(code=code)
-    username = get_username_from_token(tokens["access_token"], tokens["token_type"])
-    add_user_if_not_exists(username)
-    return redirect_to_client_with_tokens(tokens)
+    tokens = get_tokens_from_code(code=code)
+    user_info = get_cognito_user_info(tokens.access_token, tokens.token_type)
+    add_user_if_not_exists(user_info.username)
+    return tokens.refresh_token

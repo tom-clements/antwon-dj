@@ -1,6 +1,5 @@
 from typing import Optional
 
-from dacite import from_dict
 from sqlalchemy import false
 from sqlalchemy.orm import Session
 
@@ -26,4 +25,4 @@ def read_next_song(room_guid: str, db_session: Session) -> Optional[NextSong]:
         .order_by(RoomSong.insert_time)
         .first()
     )
-    return from_dict(data_class=NextSong, data=next_song) if next_song else None
+    return NextSong(**next_song) if next_song else None

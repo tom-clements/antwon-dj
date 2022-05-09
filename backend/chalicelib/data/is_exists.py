@@ -27,7 +27,7 @@ def is_spotify_user_exists(user_id: int, db_session: Session) -> bool:
 
 @use_db_session(commit=True)
 def is_username_exist(user_username: str, db_session: Session) -> bool:
-    return bool(db_session.query(User).filter(User.user == user_username).scalar())
+    return bool(db_session.query(User).filter(User.user_username == user_username).scalar())
 
 
 @use_db_session(commit=True)

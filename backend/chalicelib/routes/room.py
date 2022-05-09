@@ -6,7 +6,7 @@ from chalice import Blueprint
 from chalicelib.cors import get_cors_config
 from chalicelib.error_handling import error_handle
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
-from chalicelib.services.auth.cognito import get_authorizer
+from chalicelib.services.auth.cognito.authorizer import get_authorizer
 from chalicelib.services.room.add_like import add_like_to_song
 from chalicelib.services.room.add_room import owner_add_room
 from chalicelib.services.room.add_to_queue import add_song_to_room_queue
@@ -18,6 +18,7 @@ from chalicelib.services.room.get_room_queue import get_room_queue_from_room_gui
 from chalicelib.services.spotify.get_current_playing import get_currently_playing
 from chalicelib.services.spotify.get_search_songs import search_songs
 from chalicelib.utils.endpoint_input_validation import verify_post_input, verify_parameter_inputs
+from chalicelib.utils.endpoint_parameter_injection import user_username
 
 room_routes = Blueprint(__name__)
 
@@ -31,16 +32,16 @@ def room_get(room_code: str) -> Dict[str, str]:
 
 @room_routes.route("/room/{room_guid}", methods=["DELETE"], cors=get_cors_config(), authorizer=get_authorizer())
 @error_handle
-def room_delete(room_guid: str) -> None:
-    username = room_routes.current_request.context["authorizer"]["claims"]["username"]
+@user_username(room_routes)
+def room_delete(room_guid: str, username: str) -> None:
     owner_delete_room(room_guid=room_guid, username=username)
 
 
 @room_routes.route("/room", methods=["POST"], cors=get_cors_config(), authorizer=get_authorizer())
 @error_handle
 @verify_post_input(room_routes, "room_code")
-def room_add(post_body: Dict[str, Any]) -> None:
-    username = room_routes.current_request.context["authorizer"]["claims"]["username"]
+@user_username(room_routes)
+def room_add(post_body: Dict[str, Any], username: str) -> None:
     owner_add_room(room_code=post_body["room_code"], username=username)
 
 
@@ -61,8 +62,8 @@ def room_queue_post(room_guid: str, post_body: Dict[str, Any]) -> None:
 
 @room_routes.route("/room/{room_guid}/queue", methods=["DELETE"], cors=get_cors_config(), authorizer=get_authorizer())
 @error_handle
-def room_songs_purge_post(room_guid: str) -> None:
-    username = room_routes.current_request.context["authorizer"]["claims"]["username"]
+@user_username(room_routes)
+def room_songs_purge_post(room_guid: str, username: str) -> None:
     delete_queue(room_guid, username)
 
 
@@ -71,8 +72,8 @@ def room_songs_purge_post(room_guid: str) -> None:
 )
 @verify_post_input(room_routes, "room_code")
 @error_handle
-def room_songs_like_post(room_guid: str, post_body: Dict[str, Any]) -> None:
-    username = room_routes.current_request.context["authorizer"]["claims"]["username"]
+@user_username(room_routes)
+def room_songs_like_post(room_guid: str, post_body: Dict[str, Any], username: str) -> None:
     add_like_to_song(post_body["room_song_guid"], username=username)
 
 
@@ -81,8 +82,8 @@ def room_songs_like_post(room_guid: str, post_body: Dict[str, Any]) -> None:
 )
 @error_handle
 @verify_post_input(room_routes, "room_code")
-def room_songs_like_delete(room_guid: str, post_body: Dict[str, Any]) -> None:
-    username = room_routes.current_request.context["authorizer"]["claims"]["username"]
+@user_username(room_routes)
+def room_songs_like_delete(room_guid: str, post_body: Dict[str, Any], username: str) -> None:
     delete_like_from_song(post_body["room_song_guid"], username=username)
 
 
