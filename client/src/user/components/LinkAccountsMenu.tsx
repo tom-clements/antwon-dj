@@ -17,10 +17,7 @@ const MenuContainer = styled(Paper)`
 
 export const LinkAccountsMenu: FC<Props> = props => {
     return (
-        <MenuContainer
-            id="link-accounts-menu"
-            elevation={0}
-        >
+        <MenuContainer elevation={0}>
             {
                 props.accountLinks.map((link, i) => (
                     <LinkAccountItem key={`${link.accountName}_${i}`} accountLink={link} />
