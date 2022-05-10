@@ -1,0 +1,119 @@
+import { ComponentProps } from 'react';
+import { fireEvent, render } from '@testing-library/react';
+import { UserPopoverMenu } from 'user/components/UserPopoverMenu';
+
+jest.mock('user/components/UserAvatar', () => ({
+    __esModule: true,
+    UserAvatar: () => null,
+}));
+
+jest.mock('@mui/icons-material', () => ({
+    __esModule: true,
+    Login: () => null,
+    Logout: () => null,
+    Share: () => null,
+    ArrowBack: () => null,
+    Settings: () => null,
+    Chair: () => null,
+}));
+
+function testRender(props: ComponentProps<typeof UserPopoverMenu>) {
+    return render(<UserPopoverMenu {...props} />);
+}
+
+const onMenuClicks = {
+    myRoom: jest.fn(),
+    roomSettings: jest.fn(),
+    shareRoom: jest.fn(),
+    back: jest.fn(),
+    login: jest.fn(),
+    logout: jest.fn(),
+};
+
+const useUserMenuClickActions = () => onMenuClicks;
+
+beforeEach(() => {
+    jest.resetAllMocks();
+});
+
+describe('<UserPopoverMenu />', () => {
+    it('renders icon button', () => {
+        const { container } = testRender({
+            user: { name: 'Name' },
+            useUserMenuClickActions,
+        });
+
+        const button = container.querySelector('button.MuiIconButton-root');
+        expect(button).toBeDefined();
+        expect(button?.getAttribute('aria-label')).toBe('User menu');
+    });
+
+    it('renders menu when icon button receives onClick', () => {
+        const { container } = testRender({
+            user: { name: 'Name' },
+            useUserMenuClickActions,
+        });
+
+        const button = container.querySelector('button.MuiIconButton-root');
+        fireEvent.click(button!);
+
+        const menu = container.querySelector('div.MuiMenu-paper');
+        expect(menu).toBeDefined();
+    });
+
+    describe('when user logged in', () => {
+        type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onMenuClicks];
+
+        const cases: TestCase[] = [
+            ['My Room', 'myRoom'],
+            ['Room Settings', 'roomSettings'],
+            ['Share Room', 'shareRoom'],
+            ['Back', 'back'],
+            ['Logout', 'logout'],
+        ];
+
+        test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
+            const { container, getByText } = testRender({
+                user: { name: 'Name' },
+                useUserMenuClickActions,
+            });
+            const button = container.querySelector('button.MuiIconButton-root');
+            fireEvent.click(button!);
+
+            const menuItem = getByText(menuText);
+            expect(menuItem).toBeDefined();
+
+            fireEvent.click(menuItem);
+
+            const mockCallback = onMenuClicks[expectedMockCallbackKey];
+            expect(mockCallback).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('when user logged out', () => {
+        type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onMenuClicks];
+
+        const cases: TestCase[] = [
+            ['Share Room', 'shareRoom'],
+            ['Back', 'back'],
+            ['Login', 'login'],
+        ];
+
+        test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
+            const { container, getByText } = testRender({
+                user: null,
+                useUserMenuClickActions,
+            });
+            const button = container.querySelector('button.MuiIconButton-root');
+            fireEvent.click(button!);
+
+            const menuItem = getByText(menuText);
+            expect(menuItem).toBeDefined();
+
+            fireEvent.click(menuItem);
+
+            const mockCallback = onMenuClicks[expectedMockCallbackKey];
+            expect(mockCallback).toHaveBeenCalledTimes(1);
+        });
+    });
+});

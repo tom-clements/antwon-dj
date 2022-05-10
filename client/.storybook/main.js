@@ -12,6 +12,15 @@ module.exports = {
     reactOptions: {
         fastRefresh: true,
     },
+    typescript: {
+        check: false,
+        checkOptions: {},
+        reactDocgen: 'react-docgen-typescript',
+        reactDocgenTypescriptOptions: {
+            shouldExtractLiteralValuesFromEnum: true,
+            propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
+        },
+    },
     webpackFinal: async config => {
         return {
             ...config,
