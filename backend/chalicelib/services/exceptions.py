@@ -6,7 +6,7 @@ class NotFoundServiceError(ServiceError):
     pass
 
 
-class NonExistantRoomServiceError(NotFoundServiceError):
+class RoomNotFoundServiceError(NotFoundServiceError):
     """Exception raised for errors in incorrect room guids
 
     Attributes:
@@ -14,13 +14,13 @@ class NonExistantRoomServiceError(NotFoundServiceError):
         message -- explanation of the error
     """
 
-    def __init__(self, room_guid: str, message: str = "Room does not exist") -> None:
+    def __init__(self, room_guid: str, message: str = "Room Not Found") -> None:
         self.room_guid = room_guid
         self.message = message + f": {room_guid}"
         super().__init__(self.message)
 
 
-class NonExistentLikeServiceError(NotFoundServiceError):
+class LikeNotFoundServiceError(NotFoundServiceError):
     """Exception raised for non existant likes
 
     Attributes:
@@ -28,13 +28,13 @@ class NonExistentLikeServiceError(NotFoundServiceError):
         message -- explanation of the error
     """
 
-    def __init__(self, room_song_guid: str, username: str, message: str = "Like does not exist") -> None:
+    def __init__(self, room_song_guid: str, username: str, message: str = "Like Not Found") -> None:
         self.room_song_guid = room_song_guid
         self.message = message + f" User: {username}, Room Song: {room_song_guid}"
         super().__init__(self.message)
 
 
-class NonExistentRoomSongServiceError(NotFoundServiceError):
+class RoomSongNotFoundServiceError(NotFoundServiceError):
     """Exception raised for non existant likes
 
     Attributes:
@@ -42,7 +42,7 @@ class NonExistentRoomSongServiceError(NotFoundServiceError):
         message -- explanation of the error
     """
 
-    def __init__(self, room_song_guid: str, message: str = "Like does not exist") -> None:
+    def __init__(self, room_song_guid: str, message: str = "Like Not Found") -> None:
         self.room_song_guid = room_song_guid
         self.message = message + f": {room_song_guid}"
         super().__init__(self.message)

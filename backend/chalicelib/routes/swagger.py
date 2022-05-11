@@ -1,4 +1,6 @@
+import os
 import json
+from typing import Optional
 
 from chalice import Blueprint, Response
 
@@ -6,9 +8,11 @@ swagger_routes = Blueprint(__name__)
 
 
 @swagger_routes.route("/model.json", methods=["GET"], cors=True)
-def get_swagger_model() -> str:
+def get_swagger_model() -> Optional[str]:
+    if os.getenv("ENVIRONMENT") != "local":
+        return None
 
-    with open("chalicelib/public/model.json", "r") as f:
+    with open("chalicelib/public/swagger_model.json", "r") as f:
         model = json.load(f)
 
     return model

@@ -6,7 +6,7 @@ from unittest.mock import patch, Mock
 from pytest import fixture
 from chalice.test import Client
 
-from chalicelib.services.exceptions import NonExistantRoomServiceError
+from chalicelib.services.exceptions import RoomNotFoundServiceError
 
 
 @fixture
@@ -26,7 +26,7 @@ def test_room_get(mock_get_room_guid: Mock, local_client: Client) -> None:
     assert response.json_body == expected
     assert response.status_code == 200
 
-    mock_get_room_guid.side_effect = NonExistantRoomServiceError(room_guid)
+    mock_get_room_guid.side_effect = RoomNotFoundServiceError(room_guid)
     response = local_client.http.get(f"/code/{room_code}")
     assert response.status_code == 404
 
@@ -42,6 +42,6 @@ def test_room_queue_get(mock_get_room_queue_from_room_guid: Mock, local_client: 
     assert response.json_body == expected
     assert response.status_code == 200
 
-    mock_get_room_queue_from_room_guid.side_effect = NonExistantRoomServiceError(room_guid)
+    mock_get_room_queue_from_room_guid.side_effect = RoomNotFoundServiceError(room_guid)
     response = local_client.http.get(f"/room/{room_guid}/queue")
     assert response.status_code == 404

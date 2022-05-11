@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import Session
 
-from chalicelib.data.error_handling import NonExistentSongDbError
+from chalicelib.data.error_handling import SongNotFoundDbError
 from chalicelib.models import Room, Song, User
 from chalicelib.services.auth.db import use_db_session
 
@@ -13,7 +13,7 @@ def get_song_from_song_uri(song_uri: str, db_session: Session) -> Optional[Song]
     try:
         return db_session.query(Song).filter(Song.song_uri == song_uri).one()
     except NoResultFound:
-        raise NonExistentSongDbError(song_uri)
+        raise SongNotFoundDbError(song_uri)
 
 
 @use_db_session(commit=True)

@@ -3,13 +3,13 @@ from dataclasses import asdict
 
 from chalicelib.data.create_room_song import create_room_song
 from chalicelib.data.create_song import create_song
-from chalicelib.data.error_handling import NonExistentSongDbError
+from chalicelib.data.error_handling import SongNotFoundDbError
 from chalicelib.data.read_one_queries import get_song_from_song_uri
 from chalicelib.data.read_scalar_queries import get_room_id_from_room_guid
 from chalicelib.data.update_song import update_song
 from chalicelib.models import Song
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
-from chalicelib.services.exceptions import NonExistantRoomServiceError
+from chalicelib.services.exceptions import RoomNotFoundServiceError
 
 
 def _compare_songs(song: SpotifyTrackFormatted, song_in_db: Song) -> None:
@@ -29,7 +29,7 @@ def _get_new_song(song: SpotifyTrackFormatted) -> Song:
         song_in_db = get_song_from_song_uri(song.song_uri)
         _compare_songs(song, song_in_db)
         return song_in_db
-    except NonExistentSongDbError:
+    except SongNotFoundDbError:
         create_song(song)
         return get_song_from_song_uri(song.song_uri)
 
@@ -37,6 +37,6 @@ def _get_new_song(song: SpotifyTrackFormatted) -> Song:
 def add_song_to_room_queue(song: SpotifyTrackFormatted, room_guid: str) -> None:
     room_id = get_room_id_from_room_guid(room_guid)
     if not room_id:
-        raise NonExistantRoomServiceError(room_guid)
+        raise RoomNotFoundServiceError(room_guid)
     new_song = _get_new_song(song)
     create_room_song(room_id, new_song)

@@ -7,7 +7,7 @@ from chalicelib.data.is_exists import is_room_exists
 from chalicelib.models.spotify_api.search_result import SpotifySearchResult
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted, SpotifyTrack
 from chalicelib.services.auth.spotify import use_spotify_session
-from chalicelib.services.exceptions import NonExistantRoomServiceError
+from chalicelib.services.exceptions import RoomNotFoundServiceError
 
 
 def format_songs(tracks: List[SpotifyTrack]) -> List[SpotifyTrackFormatted]:
@@ -29,6 +29,6 @@ def _spotify_api_search(spotify_session: spotipy.Spotify, song_query: str, room_
 
 def search_songs(song_query: str, room_guid: str) -> List[SpotifyTrackFormatted]:
     if not is_room_exists(room_guid):
-        raise NonExistantRoomServiceError(room_guid)
+        raise RoomNotFoundServiceError(room_guid)
     result = _spotify_api_search(song_query=song_query, room_guid=room_guid)
     return format_songs(result.tracks.items)

@@ -10,7 +10,7 @@ class NotFoundDbError(DbError):
     pass
 
 
-class NonExistentSongDbError(NotFoundDbError):
+class SongNotFoundDbError(NotFoundDbError):
     """Exception raised for errors when song not found in DB
 
     Attributes:
@@ -18,7 +18,7 @@ class NonExistentSongDbError(NotFoundDbError):
         message -- explanation of the error
     """
 
-    def __init__(self, song_uri: str, message: str = "Song does not exist") -> None:
+    def __init__(self, song_uri: str, message: str = "Song Not Found") -> None:
         self.song_uri = song_uri
         self.message = message + f": {song_uri}"
         super().__init__(self.message)
