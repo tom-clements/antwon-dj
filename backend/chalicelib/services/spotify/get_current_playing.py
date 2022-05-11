@@ -7,7 +7,7 @@ from dacite import from_dict
 from chalicelib.data.is_exists import is_room_exists
 from chalicelib.models.spotify_api.currently_playing_result import SpotifyCurrentlyPlaying
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
-from chalicelib.services.exceptions import NonExistantRoomServiceError
+from chalicelib.services.exceptions import RoomNotFoundServiceError
 from chalicelib.services.spotify.get_search_songs import format_songs
 from chalicelib.services.auth.spotify import use_spotify_session
 from chalicelib.utils.get_ttl_hash import get_ttl_hash
@@ -56,7 +56,7 @@ def _get_placeholder_empty_song() -> SpotifyTrackFormatted:
 
 def get_currently_playing(room_guid: str, use_cache: bool = True) -> SpotifyTrackFormatted:
     if not is_room_exists(room_guid):
-        raise NonExistantRoomServiceError(room_guid)
+        raise RoomNotFoundServiceError(room_guid)
     if use_cache:
         currently_playing = _spotify_currently_playing_cached(room_guid=room_guid, ttl_hash=get_ttl_hash())
     else:

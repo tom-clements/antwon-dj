@@ -5,11 +5,243 @@
         "title": "backend"
     },
     "schemes": [
-        "https"
+        "http"
     ],
     "paths": {
+        "/login": {
+            "get": {
+                "summary": "Login Users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "302": {
+                        "description": "302 response",
+                        "headers": {
+                            "url": {
+                                "type": "string",
+                                "description": "Redirect to Antwon Cognito Auth login page"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/callback": {
+            "get": {
+                "summary": "Callback from authenticating with Cognito",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "302": {
+                        "description": "302 response",
+                        "headers": {
+                            "url": {
+                                "type": "string",
+                                "description": "Redirect to Antwon client home page"
+                            },
+                            "Set-Cookie": {
+                                "type": "string",
+                                "description": "Sets the refresh token as a cookie with key: refresh-token"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/token": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in":  "body",
+                        "name":  "body",
+                        "description": "Refresh Token",
+                        "required":  true,
+                        "schema": {
+                            "$ref": "#/definitions/RefreshToken"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Tokens"
+                        }
+                    },
+                    "400": {
+                        "description": "Input Validation Error"
+                    }
+                },
+                "summary": "Retrieve User Tokens from refresh token",
+                "description": "Provide a refresh token stored as a cookie on the client and use to retrieve access tokens"
+            }
+        },
+        "/user/info": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "antwon_user_pool": [
+                            "email",
+                            "openid",
+                            "profile"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/Tokens"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "400": {
+                        "description": "Input Validation Error"
+                    }
+                },
+                "summary": "Retrieve User Information about current user",
+                "description": "Provides all user information, including name and email"
+            }
+        },
+        "/user/spotify/connect": {
+            "get": {
+                "summary": "Link Spotify to Users' accounts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "antwon_user_pool": [
+                            "email",
+                            "openid",
+                            "profile"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "302 response",
+                        "headers": {
+                            "url": {
+                                "type": "string",
+                                "description": "Redirect to Spotify OAuth2 page"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/spotify/callback": {
+            "get": {
+                "summary": "Callback after authenticating with Spotify OAuth2",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "302": {
+                        "description": "302 response",
+                        "headers": {
+                            "url": {
+                                "type": "string",
+                                "description": "Redirect to Antwon client home page"
+                            },
+                            "Set-Cookie": {
+                                "type": "string",
+                                "description": "Sets the refresh token as a cookie with key: refresh-token"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/spotify/playlist": {
+            "get": {
+                "summary": "Retrieve the user playlist",
+                "description": "Not Implemented",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Insufficient Permissions"
+                    }
+                }
+            }
+        },
+        "/user/spotify/playlist/{playlist_id}": {
+            "get": {
+                "summary": "Retrieve tracks from user playlist",
+                "description": "Not Implemented",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Insufficient Permissions"
+                    },
+                    "404": {
+                        "description": "Playlist Not Found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "playlist_id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/code/{room_code}": {
             "get": {
+                "summary": "Retrieve Room GUID from room code",
                 "consumes": [
                     "application/json"
                 ],
@@ -20,21 +252,12 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
+                            "$ref": "#/definitions/RoomGuid"
                         }
                     },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
+                    "404": {
+                        "description": "Room Not Found"
+                    }
                 },
                 "parameters": [
                     {
@@ -44,199 +267,48 @@
                         "type": "string"
                     }
                 ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
-            }
-        },
-        "/room/{room_guid}": {
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                },
-                "security": [
-                    {
-                        "antwon_user_pool": [
-                            "email",
-                            "openid",
-                            "profile"
-                        ]
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "room_guid",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'DELETE,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
             }
         },
         "/room": {
             "post": {
+                "summary": "Create a room",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Room object to be added",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Empty"
+                            "$ref": "#/definitions/Room"
                         }
                     }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response"
                     },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
+                    "400": {
+                        "description": "Input Validation Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Insufficient Permissions"
+                    },
+                    "404": {
+                        "description": "Room Not Found"
+                    },
+                    "409": {
+                        "description": "Room Already Exists"
+                    }
                 },
-                "summary": "Create a room",
-                "description": "Responses:\n    409: Room already exists\n    200:",
                 "security": [
                     {
                         "antwon_user_pool": [
@@ -246,67 +318,12 @@
                         ]
                     }
                 ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
             }
         },
-        "/room/{room_guid}/queue": {
+        "/room/{room_guid}": {
             "get": {
+                "summary": "Retrieve Room Info",
+                "description": "Not Implemented",
                 "consumes": [
                     "application/json"
                 ],
@@ -315,60 +332,27 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
+                        "description": "200 response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Insufficient Permissions"
+                    },
+                    "404": {
+                        "description": "Room Not Found"
                     }
                 },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                },
-                "parameters": [
+                "security": [
                     {
-                        "name": "room_guid",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
+                        "antwon_user_pool": [
+                            "email",
+                            "openid",
+                            "profile"
+                        ]
                     }
-                ]
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                },
                 "parameters": [
                     {
                         "name": "room_guid",
@@ -379,6 +363,7 @@
                 ]
             },
             "delete": {
+                "summary": "Delete a Room",
                 "consumes": [
                     "application/json"
                 ],
@@ -387,23 +372,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
+                        "description": "200 response"
                     },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Insufficient Permissions"
+                    },
+                    "404": {
+                        "description": "Room Not Found"
+                    }
                 },
                 "security": [
                     {
@@ -422,171 +401,11 @@
                         "type": "string"
                     }
                 ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,DELETE,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
             }
         },
-        "/room/{room_guid}/queue/like": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                },
-                "security": [
-                    {
-                        "antwon_user_pool": [
-                            "email",
-                            "openid",
-                            "profile"
-                        ]
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "room_guid",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
-            }
-        },
-        "/user/spotify/connect": {
+        "/room/{room_guid}/queue": {
             "get": {
+                "summary": "Retrieve the room queue",
                 "consumes": [
                     "application/json"
                 ],
@@ -597,24 +416,24 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
+                            "$ref": "#/definitions/RoomQueue"
                         }
                     },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                }
+                    "404": {
+                        "description": "Room Not Found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "room_guid",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
             },
-            "options": {
+            "post": {
+                "summary": "Add a song to the room queue",
                 "consumes": [
                     "application/json"
                 ],
@@ -623,57 +442,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
+                        "description": "200 response"
+                    },
+                    "400": {
+                        "description": "Input Validation Error"
+                    },
+                    "404":{
+                        "description": "Room not Found"
                     }
                 },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
+               "parameters": [
+                    {
+                        "name": "room_guid",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                   {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Song object to be added",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Song"
                         }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
+                    }
+                ]
             }
         },
         "/room/{room_guid}/search": {
             "get": {
+                "summary": "Search songs using query",
                 "consumes": [
                     "application/json"
                 ],
@@ -684,21 +483,15 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
+                            "$ref": "#/definitions/SearchSong"
                         }
                     },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
+                    "400": {
+                        "description": "Input Validation Error"
+                    },
+                    "404": {
+                        "description": "Room Not Found"
+                    }
                 },
                 "parameters": [
                     {
@@ -706,156 +499,18 @@
                         "in": "path",
                         "required": true,
                         "type": "string"
+                    },
+                    {
+                        "name": "query",
+                        "required": true,
+                        "type": "string"
                     }
                 ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
-            }
-        },
-        "/user/spotify/callback": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                }
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
             }
         },
         "/room/{room_guid}/playing": {
             "get": {
+                "summary": "Retrieve current playing song in room",
                 "consumes": [
                     "application/json"
                 ],
@@ -866,21 +521,12 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
+                            "$ref": "#/definitions/Song"
                         }
                     },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
+                    "404": {
+                        "description": "Room Not Found"
+                    }
                 },
                 "parameters": [
                     {
@@ -890,67 +536,11 @@
                         "type": "string"
                     }
                 ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
             }
         },
-        "/login": {
-            "get": {
+        "/room/{room_guid}/queue/like": {
+            "post": {
+                "summary": "Add like to room song",
                 "consumes": [
                     "application/json"
                 ],
@@ -959,26 +549,50 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
+                        "description": "200 response"
+                    },
+                    "400": {
+                        "description": "Input Validation Error"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Like Not Found"
+                    },
+                    "409": {
+                        "description": "Like Already Exists"
                     }
                 },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
+                "security": [
+                    {
+                        "antwon_user_pool": [
+                            "email",
+                            "openid",
+                            "profile"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "room_guid",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
                     },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                }
+                   {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Room Song to add like to",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RoomSong"
+                        }
+                    }
+                ]
             },
-            "options": {
+            "delete": {
+                "summary": "Remove like from room song",
                 "consumes": [
                     "application/json"
                 ],
@@ -987,170 +601,24 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
+                        "description": "200 response"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Like Not Found"
                     }
                 },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
-            }
-        },
-        "/login/callback": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
+                "security": [
+                    {
+                        "antwon_user_pool": [
+                            "email",
+                            "openid",
+                            "profile"
+                        ]
                     }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                }
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://www.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
-            }
-        },
-        "/room/{room_guid}/watch": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                },
                 "parameters": [
                     {
                         "name": "room_guid",
@@ -1159,197 +627,82 @@
                         "type": "string"
                     }
                 ]
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Expose-Headers": {
-                                "type": "string"
-                            },
-                            "Access-Control-Max-Age": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Credentials": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'https://api.djantwon.com'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key,X-Special-Header'",
-                                "method.response.header.Access-Control-Expose-Headers": "'X-Special-Header'",
-                                "method.response.header.Access-Control-Max-Age": "'600'",
-                                "method.response.header.Access-Control-Allow-Credentials": "'true'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
-            }
-        },
-        "/model.json": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                }
-            },
-            "options": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        },
-                        "headers": {
-                            "Access-Control-Allow-Methods": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Origin": {
-                                "type": "string"
-                            },
-                            "Access-Control-Allow-Headers": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200",
-                            "responseParameters": {
-                                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                                "method.response.header.Access-Control-Allow-Origin": "'*'",
-                                "method.response.header.Access-Control-Allow-Headers": "'Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'"
-                            }
-                        }
-                    },
-                    "requestTemplates": {
-                        "application/json": "{\"statusCode\": 200}"
-                    },
-                    "passthroughBehavior": "when_no_match",
-                    "type": "mock",
-                    "contentHandling": "CONVERT_TO_TEXT"
-                }
-            }
-        },
-        "/": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "200 response",
-                        "schema": {
-                            "$ref": "#/definitions/Empty"
-                        }
-                    }
-                },
-                "x-amazon-apigateway-integration": {
-                    "responses": {
-                        "default": {
-                            "statusCode": "200"
-                        }
-                    },
-                    "uri": "arn:{partition}:apigateway:{region_name}:lambda:path/2015-03-31/functions/{api_handler_lambda_arn}/invocations",
-                    "passthroughBehavior": "when_no_match",
-                    "httpMethod": "POST",
-                    "contentHandling": "CONVERT_TO_TEXT",
-                    "type": "aws_proxy"
-                },
-                "summary": "Get Swagger UI Main Page",
-                "description": "Returns:\n    str: text/html for Swagger UI page"
             }
         }
     },
     "definitions": {
-        "Empty": {
+        "Tokens": {
             "type": "object",
-            "title": "Empty Schema"
+            "title": "Tokens",
+            "properties": {
+                "id_token":  {"type":  "string"},
+                "access_token":  {"type":  "string"},
+                "token_type":  {"type":  "string"},
+                "expires_in":  {"type":  "integer"}
+            }
+        },
+        "RefreshToken": {
+            "type": "object",
+            "title": "Refresh Token",
+            "properties": {"refresh_token":  {"type":  "string"}}
+        },
+        "RoomGuid": {
+            "type": "object",
+            "title": "Room GUID",
+            "properties": {"room_guid":  {"type":  "string"}}
+        },
+        "RoomSong": {
+            "type": "object",
+            "title": "Room SOng",
+            "properties": {"room_song_guid":  {"type":  "string"}}
+        },
+        "Room": {
+            "type": "object",
+            "title": "Room",
+            "properties": {"room_code":  {"type":  "string"}}
+        },
+        "QueueSong": {
+            "type": "object",
+            "title": "Queue Song",
+            "properties": {
+                "room_song_guid": {"type":  "string"},
+                "song_uri":  {"type":  "string"},
+                "song_name":  {"type":  "string"},
+                "song_artist":  {"type":  "string"},
+                "song_album_url":  {"type":  "string"},
+                "is_inactive":  {"type":  "boolean"},
+                "insert_time":  {"type":  "string"},
+                "is_played":  {"type":  "boolean"},
+                "is_removed":  {"type":  "boolean"}
+            },
+            "example": "{\n\"room_song_guid\": \"f409f9cb-547a-47d6-9b02-fdedc9e3d79a\",\n\"song_uri\": \"spotify:track:3uUuGVFu1V7jTQL60S1r8z\",\n\"song_name\": \"Where Are You Now\",\n\"song_artist\": \"Lost Frequencies, Calum Scott\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2738d7a7f1855b04104ba59c18b\",\n\"is_inactive\": false,\n\"insert_time\": \"2022-04-11 08:59:49\",\n\"is_played\": false,\n\"is_removed\": false\n}"
+        },
+        "RoomQueue": {
+            "type":  "array",
+            "items": {
+                "type": "QueueSong",
+                "example": "{\n\"room_song_guid\": \"f409f9cb-547a-47d6-9b02-fdedc9e3d79a\",\n\"song_uri\": \"spotify:track:3uUuGVFu1V7jTQL60S1r8z\",\n\"song_name\": \"Where Are You Now\",\n\"song_artist\": \"Lost Frequencies, Calum Scott\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2738d7a7f1855b04104ba59c18b\",\n\"is_inactive\": false,\n\"insert_time\": \"2022-04-11 08:59:49\",\n\"is_played\": false,\n\"is_removed\": false\n}"
+            }
+        },
+        "Song": {
+            "type": "object",
+            "title": "Song",
+            "properties": {
+                "song_uri":  {"type":  "string"},
+                "song_artist":  {"type":  "string"},
+                "song_name":  {"type":  "string"},
+                "song_album_url":  {"type":  "string"}
+            },
+            "example": "{\n\"song_uri\": \"spotify:track:1E4xkXgqOCzAjVFnDqhGSx\",\n\"song_artist\": \"Wiz Khalifa\",\n\"song_name\": \"Taylor Gang\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2732a7e92288383175e256a3cb2\"\n}"
+        },
+        "SearchSong": {
+            "type": "array",
+            "items": {
+                "type": "Song",
+                "example": "{\n\"song_uri\": \"spotify:track:1E4xkXgqOCzAjVFnDqhGSx\",\n\"song_artist\": \"Wiz Khalifa\",\n\"song_name\": \"Taylor Gang\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2732a7e92288383175e256a3cb2\"\n}"
+            }
         }
     },
-    "x-amazon-apigateway-binary-media-types": [
-        "application/octet-stream",
-        "application/x-tar",
-        "application/zip",
-        "audio/basic",
-        "audio/ogg",
-        "audio/mp4",
-        "audio/mpeg",
-        "audio/wav",
-        "audio/webm",
-        "image/png",
-        "image/jpg",
-        "image/jpeg",
-        "image/gif",
-        "video/ogg",
-        "video/mpeg",
-        "video/webm"
-    ],
     "securityDefinitions": {
         "antwon_user_pool": {
             "in": "header",

@@ -7,7 +7,7 @@ from chalicelib.data.is_exists import is_room_exists
 from chalicelib.data.read_room_info import read_room_info
 from chalicelib.models.spotify_api.playlist import SpotifyPlaylist
 from chalicelib.services.auth.spotify import use_spotify_session
-from chalicelib.services.exceptions import NonExistantRoomServiceError
+from chalicelib.services.exceptions import RoomNotFoundServiceError
 
 
 @use_spotify_session
@@ -36,7 +36,7 @@ def _add_to_spotify_playlist(
 
 def add_to_playlist(room_guid: str, song_uri: str) -> None:
     if not is_room_exists(room_guid):
-        raise NonExistantRoomServiceError(room_guid)
+        raise RoomNotFoundServiceError(room_guid)
     room_info = read_room_info(room_guid)
     playlist = _get_playlist(f"ANTWON-{room_info.room_code}", room_guid=room_guid)
     if not playlist:

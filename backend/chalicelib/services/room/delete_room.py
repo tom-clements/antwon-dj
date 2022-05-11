@@ -1,7 +1,7 @@
 from chalicelib.data.delete_room import db_delete_room
 from chalicelib.data.is_exists import is_room_exists
 from chalicelib.data.read_one_queries import get_room_owner
-from chalicelib.services.exceptions import NonExistantRoomServiceError, ForbiddenServiceError
+from chalicelib.services.exceptions import RoomNotFoundServiceError, ForbiddenServiceError
 
 
 def owner_delete_room(room_guid: str, username: str) -> None:
@@ -12,4 +12,4 @@ def owner_delete_room(room_guid: str, username: str) -> None:
         else:
             db_delete_room(room_guid)
     else:
-        raise NonExistantRoomServiceError(room_guid)
+        raise RoomNotFoundServiceError(room_guid)
