@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { ErrorCode } from 'model/enums/ErrorCode';
 import { useErrorRedirect } from 'hooks/useErrorRedirect';
 

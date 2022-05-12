@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { styled, Avatar } from '@mui/material';
 import { UserModel } from 'user/model/UserModel';
 import { isValidHttpUrl } from 'common/predicates/isValidHttpUrl';

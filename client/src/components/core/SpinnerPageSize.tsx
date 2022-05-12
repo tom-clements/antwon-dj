@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import Grid from '@mui/material/Grid';
 import { Spinner } from 'components/core/Spinner';
 

@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { styled } from '@mui/material/styles';
 import { AccountLinkModel, AccountLinkModelType } from 'user/model/AccountLinkModel';
 import { UseAccountLinkActions, useAccountLinkActions as _useAccountLinkActions } from 'user/hooks/useAccountLinkActions';
