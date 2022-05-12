@@ -20,7 +20,8 @@ interface Props {
 }
 
 const LinkCard = styled(Card)`
-    flex-grow: 1;
+    width: 100%;
+    margin: ${props => props.theme.spacing(2, 0)};
 `;
 
 const CardColumns = styled(Box)`
