@@ -10,17 +10,17 @@ import { selectErrorCode, clearError } from 'model/slices/ErrorSlice';
 
 function getRoomErrorContent(errorCode?: ErrorCode | null) {
     switch (errorCode) {
-    case ErrorCode.RoomNotFound:
-        return {
-            title:
+        case ErrorCode.RoomNotFound:
+            return {
+                title:
                     <>I can&apos;t hear you, Clem Fandango!</>,
-            description:
+                description:
                     <>Oops, it looks like the room you were looking for does not exist.</>,
-            helpText:
+                helpText:
                     <>Please try again and check the code with the host.</>,
-        };
-    default:
-        return null;
+            };
+        default:
+            return null;
     }
 }
 

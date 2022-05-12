@@ -30,10 +30,10 @@ const CardColumns = styled(Box)`
 
 const getProviderColour = (type: AccountLinkModelType): keyof ButtonPropsColorOverrides => {
     switch (type) {
-    case AccountLinkModelType.Spotify:
-        return 'spotifyGreen';
-    default:
-        throw new Error(`${type} does not have a valid colour mapping.`);
+        case AccountLinkModelType.Spotify:
+            return 'spotifyGreen';
+        default:
+            throw new Error(`${type} does not have a valid colour mapping.`);
     }
 };
 
@@ -60,10 +60,10 @@ const ProviderIconContainer = styled(ProviderIconContainerImpl)`
 const ProviderIcon = (props: { type: AccountLinkModelType }) => {
     const { type } = props;
     switch (type) {
-    case AccountLinkModelType.Spotify:
-        return <SpotifyIcon fontSize='inherit' />;
-    default:
-        throw new Error(`${type} does not have a valid icon mapping.`);
+        case AccountLinkModelType.Spotify:
+            return <SpotifyIcon fontSize='inherit' />;
+        default:
+            throw new Error(`${type} does not have a valid icon mapping.`);
     }
 };
 
