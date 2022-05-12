@@ -47,9 +47,8 @@ def room_add(post_body: Dict[str, Any], username: str) -> None:
 
 @room_routes.route("/room/{room_guid}/queue", methods=["GET"], cors=get_cors_config())
 @error_handle
-def room_queue_get(room_guid: str) -> Dict[str, List[Dict[str, str]]]:
-    room_queue = get_room_queue_from_room_guid(room_guid)
-    return {"room_queue": room_queue}
+def room_queue_get(room_guid: str) -> List[Dict[str, str]]:
+    return get_room_queue_from_room_guid(room_guid)
 
 
 @room_routes.route("/room/{room_guid}/queue", methods=["POST"], cors=get_cors_config())
