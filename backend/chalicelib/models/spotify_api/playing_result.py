@@ -5,7 +5,7 @@ from chalicelib.models.spotify_api.track import SpotifyTrack
 
 
 @dataclass
-class SpotifyCurrentlyPlayingContext:
+class SpotifyPlayingContext:
     external_urls: Dict[str, str]
     href: str
     type: str
@@ -13,9 +13,9 @@ class SpotifyCurrentlyPlayingContext:
 
 
 @dataclass
-class SpotifyCurrentlyPlaying:
+class SpotifyPlaying:
     timestamp: int
-    context: Optional[SpotifyCurrentlyPlayingContext]
+    context: Optional[SpotifyPlayingContext]
     progress_ms: int
     item: Optional[SpotifyTrack]
     currently_playing_type: str

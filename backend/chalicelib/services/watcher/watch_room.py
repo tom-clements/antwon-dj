@@ -5,7 +5,7 @@ from chalicelib.data.read_next_song import read_next_song
 from chalicelib.data.update_room_song import update_added_to_playlist, update_played
 from chalicelib.models.data_queries.next_song import NextSong
 from chalicelib.services.spotify.add_to_playlist import add_to_playlist
-from chalicelib.services.spotify.get_current_playing import get_currently_playing
+from chalicelib.services.spotify.get_playing import get_playing
 from chalicelib.services.spotify.recommender import get_recommended_song
 
 
@@ -17,9 +17,9 @@ def check_next_song(next_song: NextSong, room_guid: str) -> Tuple[bool, bool]:
         update_added_to_playlist(next_song)
         added_to_playlist = True
 
-    current_playing = get_currently_playing(room_guid, use_cache=False)
+    playing = get_playing(room_guid, use_cache=False)
     # if the next song starts playing, set it as played
-    if current_playing.song_uri == next_song.song_uri:
+    if playing.song_uri == next_song.song_uri:
         update_played(next_song)
         removed_from_queue = True
     return added_to_playlist, removed_from_queue
