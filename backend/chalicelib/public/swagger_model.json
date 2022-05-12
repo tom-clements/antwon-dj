@@ -647,9 +647,9 @@
             "properties": {"refresh_token":  {"type":  "string"}}
         },
         "RoomGuid": {
-            "type": "object",
+            "type": "string",
             "title": "Room GUID",
-            "properties": {"room_guid":  {"type":  "string"}}
+            "example": "33f00768-764a-437e-a7a1-42c4aee76ea0"
         },
         "RoomSong": {
             "type": "object",

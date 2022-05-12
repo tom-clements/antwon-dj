@@ -25,9 +25,8 @@ room_routes = Blueprint(__name__)
 
 @room_routes.route("/code/{room_code}", methods=["GET"], cors=get_cors_config())
 @error_handle
-def room_get(room_code: str) -> Dict[str, str]:
-    room_guid = get_room_guid(room_code)
-    return {"room_guid": room_guid}
+def room_code_get(room_code: str) -> str:
+    return get_room_guid(room_code)
 
 
 @room_routes.route("/room/{room_guid}", methods=["DELETE"], cors=get_cors_config(), authorizer=get_authorizer())

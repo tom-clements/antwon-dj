@@ -2,9 +2,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getApiBaseUrl } from 'service/config/getApiBaseUrl';
 import { SongDto } from 'service/SpotifySearchApi';
 
-interface RoomIdByCodeResponseDto {
-    'room_guid': string;
-}
 
 export interface RoomSongDto extends SongDto {
     'in_active': boolean;
@@ -29,7 +26,6 @@ export const roomApi = createApi({
     endpoints: (builder) => ({
         getRoomIdByCode: builder.query<string, string>({
             query: code => ({ url: `code/${code}` }),
-            transformResponse: (response: RoomIdByCodeResponseDto) => response.room_guid,
             providesTags: ['Room'],
         }),
         getRoomQueue: builder.query<RoomSongDto[], string>({
