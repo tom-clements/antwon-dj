@@ -6,10 +6,6 @@ interface RoomIdByCodeResponseDto {
     'room_guid': string;
 }
 
-interface RoomQueueResponseDto {
-    'room_queue': RoomSongDto[];
-}
-
 export interface RoomSongDto extends SongDto {
     'in_active': boolean;
     'is_played': boolean;
@@ -38,7 +34,6 @@ export const roomApi = createApi({
         }),
         getRoomQueue: builder.query<RoomSongDto[], string>({
             query: roomId => ({ url: `room/${roomId}/queue` }),
-            transformResponse: (response: RoomQueueResponseDto) => response.room_queue,
             providesTags: ['RoomQueue'],
         }),
         addSongToQueue: builder.mutation<void, {roomId: string, song: SongDto}>({
