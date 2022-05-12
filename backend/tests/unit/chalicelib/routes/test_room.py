@@ -35,11 +35,10 @@ def test_room_get(mock_get_room_guid: Mock, local_client: Client) -> None:
 def test_room_queue_get(mock_get_room_queue_from_room_guid: Mock, local_client: Client) -> None:
     room_guid = "test_room_guid"
     queue = [{"song": "test"}]
-    expected = {"room_queue": queue}
     mock_get_room_queue_from_room_guid.return_value = queue
     response = local_client.http.get(f"/room/{room_guid}/queue")
     mock_get_room_queue_from_room_guid.assert_called_with(room_guid)
-    assert response.json_body == expected
+    assert response.json_body == queue
     assert response.status_code == 200
 
     mock_get_room_queue_from_room_guid.side_effect = RoomNotFoundServiceError(room_guid)
