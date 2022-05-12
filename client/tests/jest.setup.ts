@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
-import { matchers as styledMatchers } from '@emotion/jest'
+import { matchers as styledMatchers } from '@emotion/jest';
 
 expect.extend(styledMatchers);
 
