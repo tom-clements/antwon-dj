@@ -21,10 +21,6 @@ function testRender(props: ComponentProps<typeof SettingsView>) {
     return render(<SettingsView {...props} />);
 }
 
-beforeEach(() => {
-    jest.resetAllMocks();
-});
-
 describe('<SettingsView />', () => {
     it('renders hide-able app bar with a titled toolbar', () => {
         const { container } = testRender({
