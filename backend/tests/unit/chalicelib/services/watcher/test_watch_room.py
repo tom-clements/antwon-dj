@@ -13,7 +13,7 @@ from tests.unit.chalicelib.services.spotify.example_tracks import get_example_tr
 
 
 @pytest.mark.parametrize(
-    "next_song, current_playing, expected",
+    "next_song, playing, expected",
     [
         (
             NextSong(
@@ -67,19 +67,19 @@ from tests.unit.chalicelib.services.spotify.example_tracks import get_example_tr
 )
 @patch("chalicelib.services.watcher.watch_room.add_to_playlist")
 @patch("chalicelib.services.watcher.watch_room.update_added_to_playlist")
-@patch("chalicelib.services.watcher.watch_room.get_currently_playing")
+@patch("chalicelib.services.watcher.watch_room.get_playing")
 @patch("chalicelib.services.watcher.watch_room.update_played")
 def test_check_next_song(
     mock_update_played: Mock,
-    mock_get_currently_playing: Mock,
+    mock_get_playing: Mock,
     mock_update_added_to_playlist: Mock,
     mock_add_to_playlist: Mock,
     next_song: NextSong,
-    current_playing: SpotifyTrackFormatted,
+    playing: SpotifyTrackFormatted,
     expected: Tuple[bool],
 ) -> None:
     test_room_code = "TEST"
-    mock_get_currently_playing.return_value = current_playing
+    mock_get_playing.return_value = playing
 
     actual = check_next_song(next_song, test_room_code)
     assert actual == expected
@@ -88,9 +88,9 @@ def test_check_next_song(
         mock_add_to_playlist.assert_called_once_with(test_room_code, next_song.song_uri)
         mock_update_added_to_playlist.assert_called_once_with(next_song)
 
-    mock_get_currently_playing.assert_called_once_with(test_room_code, use_cache=False)
+    mock_get_playing.assert_called_once_with(test_room_code, use_cache=False)
 
-    if current_playing.song_uri == next_song.song_uri:
+    if playing.song_uri == next_song.song_uri:
         mock_update_played.assert_called_once_with(next_song)
 
 

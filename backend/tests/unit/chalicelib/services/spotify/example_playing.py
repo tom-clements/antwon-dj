@@ -1,13 +1,13 @@
 from typing import Dict, Any
 
-from chalicelib.models.spotify_api.currently_playing_result import (
-    SpotifyCurrentlyPlaying,
+from chalicelib.models.spotify_api.playing_result import (
+    SpotifyPlaying,
 )
 from tests.unit.chalicelib.services.spotify.example_tracks import get_example_track, get_example_api_track
 
 
-def get_example_current_playing_podcast() -> SpotifyCurrentlyPlaying:
-    return SpotifyCurrentlyPlaying(
+def get_example_playing_podcast() -> SpotifyPlaying:
+    return SpotifyPlaying(
         timestamp=1649682580058,
         context=None,
         progress_ms=5461000,
@@ -18,7 +18,7 @@ def get_example_current_playing_podcast() -> SpotifyCurrentlyPlaying:
     )
 
 
-def get_example_current_playing_podcast_api() -> Dict[str, Any]:
+def get_example_playing_podcast_api() -> Dict[str, Any]:
     return {
         "timestamp": 1649682580058,
         "context": None,
@@ -30,8 +30,8 @@ def get_example_current_playing_podcast_api() -> Dict[str, Any]:
     }
 
 
-def get_example_current_playing(uri: str = "spotify:track:6N1K5OVVCopBjGViHs2IvP") -> SpotifyCurrentlyPlaying:
-    return SpotifyCurrentlyPlaying(
+def get_example_playing(uri: str = "spotify:track:6N1K5OVVCopBjGViHs2IvP") -> SpotifyPlaying:
+    return SpotifyPlaying(
         timestamp=1649694500715,
         context=None,
         progress_ms=81155,
@@ -42,7 +42,7 @@ def get_example_current_playing(uri: str = "spotify:track:6N1K5OVVCopBjGViHs2IvP
     )
 
 
-def get_example_current_playing_api(uri: str = "spotify:track:6N1K5OVVCopBjGViHs2IvP") -> Dict[str, Any]:
+def get_example_playing_api(uri: str = "spotify:track:6N1K5OVVCopBjGViHs2IvP") -> Dict[str, Any]:
     return {
         "timestamp": 1649694500715,
         "context": None,

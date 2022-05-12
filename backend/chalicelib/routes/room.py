@@ -15,7 +15,7 @@ from chalicelib.services.room.delete_queue import delete_queue
 from chalicelib.services.room.delete_room import owner_delete_room
 from chalicelib.services.room.get_room_guid import get_room_guid
 from chalicelib.services.room.get_room_queue import get_room_queue_from_room_guid
-from chalicelib.services.spotify.get_current_playing import get_currently_playing
+from chalicelib.services.spotify.get_playing import get_playing
 from chalicelib.services.spotify.get_search_songs import search_songs
 from chalicelib.utils.endpoint_input_validation import verify_post_input, verify_parameter_inputs
 from chalicelib.utils.endpoint_parameter_injection import user_username
@@ -89,12 +89,12 @@ def room_songs_like_delete(room_guid: str, post_body: Dict[str, Any], username: 
 @room_routes.route("/room/{room_guid}/search", methods=["GET"], cors=get_cors_config())
 @error_handle
 @verify_parameter_inputs(room_routes, "query")
-def search_get(room_guid: str, query_params: Dict[str, str]) -> Dict[str, List[Dict[str, str]]]:
+def room_search_get(room_guid: str, query_params: Dict[str, str]) -> Dict[str, List[Dict[str, str]]]:
     songs = search_songs(song_query=query_params["query"], room_guid=room_guid)
     return {"songs": [asdict(song) for song in songs]}
 
 
 @room_routes.route("/room/{room_guid}/playing", methods=["GET"], cors=get_cors_config())
 @error_handle
-def spotify_currently_playing_get(room_guid: str) -> Dict[str, Dict[str, str]]:
-    return {"song": asdict(get_currently_playing(room_guid=room_guid))}
+def room_playing_get(room_guid: str) -> Dict[str, Dict[str, str]]:
+    return asdict(get_playing(room_guid=room_guid))
