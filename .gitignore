@@ -136,3 +136,6 @@ dmypy.json
 
 # Clone/symlink of ~/.aws/config
 .aws.config
+
+# Jest coverage
+client/coverage

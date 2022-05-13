@@ -11,6 +11,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest --maxWorkers=50%",
+    "test:coverage": "jest --maxWorkers=50% --collectCoverage --collectCoverageFrom='./src/**/*'",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "storybook": "start-storybook -p 3001",
