@@ -21,6 +21,12 @@ class PlaylistTrack:
 
 
 @dataclass
+class SimpleSpotifyPlaylist:
+    playlist_id: str
+    name: str
+
+
+@dataclass
 class SpotifyPlaylist:
     collaborative: bool
     description: str
@@ -36,3 +42,6 @@ class SpotifyPlaylist:
     tracks: PlaylistTrack
     type: str
     uri: str
+
+    def simplify(self) -> SimpleSpotifyPlaylist:
+        return SimpleSpotifyPlaylist(playlist_id=self.id, name=self.id)

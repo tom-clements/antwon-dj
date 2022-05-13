@@ -185,22 +185,30 @@
         "/user/spotify/playlist": {
             "get": {
                 "summary": "Retrieve the user playlist",
-                "description": "Not Implemented",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
+                "security": [
+                    {
+                        "antwon_user_pool": [
+                            "email",
+                            "openid",
+                            "profile"
+                        ]
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "200 response"
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/SpotifyPlaylists"
+                        }
                     },
                     "401": {
                         "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Insufficient Permissions"
                     }
                 }
             }
@@ -701,7 +709,23 @@
                 "type": "Song",
                 "example": "{\n\"song_uri\": \"spotify:track:1E4xkXgqOCzAjVFnDqhGSx\",\n\"song_artist\": \"Wiz Khalifa\",\n\"song_name\": \"Taylor Gang\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2732a7e92288383175e256a3cb2\"\n}"
             }
+        },
+        "SpotifyPlaylist": {
+            "type": "object",
+            "properties": {
+                "playlist_id":  {"type":  "string"},
+                "name":  {"type":  "string"}
+            },
+            "example": "{\n\"playlist_id\": \"playlist_id_1\",\n\"name\": \"Playlist Name\"\n}"
+        },
+        "SpotifyPlaylists": {
+            "type": "array",
+            "items": {
+                "type": "SpotifyPlaylist",
+                "example": "{\n\"id\": \"playlist_id_1\",\n\"name\": \"Playlist Name\"\n}"
+            }
         }
+
     },
     "securityDefinitions": {
         "antwon_user_pool": {
