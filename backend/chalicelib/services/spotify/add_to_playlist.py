@@ -1,13 +1,13 @@
 from typing import Optional, List
 
 import spotipy  # type: ignore
-from dacite import from_dict
 
 from chalicelib.data.is_exists import is_room_exists
 from chalicelib.data.read_room_info import read_room_info
 from chalicelib.models.spotify_api.playlist import SpotifyPlaylist
 from chalicelib.services.auth.spotify import use_spotify_session
 from chalicelib.services.exceptions import RoomNotFoundServiceError
+from chalicelib.services.spotify.get_playlists import retrieve_playlists_from_room_guid
 
 
 @use_spotify_session
@@ -19,12 +19,10 @@ def _create_playlist(
     )
 
 
-@use_spotify_session
-def _get_playlist(playlist_name: str, room_guid: str, spotify_session: spotipy.Spotify) -> Optional[SpotifyPlaylist]:
-    playlists = spotify_session.current_user_playlists()
-    playlist_list = [p for p in playlists["items"] if p["name"] == playlist_name]
-    playlist = from_dict(data_class=SpotifyPlaylist, data=playlist_list[0]) if playlist_list else None
-    return playlist
+def _get_playlist(playlist_name: str, room_guid: str) -> Optional[SpotifyPlaylist]:
+    playlists = retrieve_playlists_from_room_guid(room_guid)
+    playlist_list = [playlist for playlist in playlists if playlist.name == playlist_name]
+    return playlist_list[0] if playlist_list else None
 
 
 @use_spotify_session
@@ -41,4 +39,6 @@ def add_to_playlist(room_guid: str, song_uri: str) -> None:
     playlist = _get_playlist(f"ANTWON-{room_info.room_code}", room_guid=room_guid)
     if not playlist:
         _create_playlist(f"ANTWON-{room_info.room_code}", room_info.spotify_user_username, room_guid=room_guid)
-    _add_to_spotify_playlist(playlist.id, [song_uri], room_guid=room_guid)
+        add_to_playlist(room_guid, song_uri)
+    else:
+        _add_to_spotify_playlist(playlist.id, [song_uri], room_guid=room_guid)

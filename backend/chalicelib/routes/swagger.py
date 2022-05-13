@@ -19,7 +19,9 @@ def get_swagger_model() -> Optional[str]:
 
 
 @swagger_routes.route("/", methods=["GET"])
-def get_swagger_page() -> Response:
+def get_swagger_page() -> Optional[Response]:
+    if os.getenv("ENVIRONMENT") != "local":
+        return None
 
     with open("chalicelib/public/swagger_page.html", "r") as f:
         html = f.read()

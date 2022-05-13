@@ -17,6 +17,11 @@ def get_user_id_from_username(username: str, db_session: Session) -> Optional[in
 
 
 @use_db_session()
+def get_room_guid_from_username(username: str, db_session: Session) -> Optional[int]:
+    return db_session.query(Room.room_guid).join(User).filter(User.user_username == username).scalar()
+
+
+@use_db_session()
 def get_room_guid_from_room_code(room_code: str, db_session: Session) -> Optional[str]:
     return db_session.query(Room.room_guid).filter(Room.room_code == room_code).scalar()
 

@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from unittest.mock import patch, Mock
 
 import pytest
@@ -28,14 +27,24 @@ def test_create_playlist(mock_spotify_session: Mock) -> None:
 @pytest.mark.parametrize(
     "playlist_name,playlist",
     [
-        ("test_playlist_name", get_example_playlist(name="test_playlist_name")),
-        ("test_playlist_name", get_example_playlist(name="diff_test_playlist_name")),
+        (
+            "test_playlist_name",
+            get_example_playlist(name="test_playlist_name"),
+        ),
+        (
+            "test_playlist_name",
+            get_example_playlist(name="diff_test_playlist_name"),
+        ),
     ],
 )
-@patch("spotipy.Spotify")
-def test_get_playlist(mock_spotify_session: Mock, playlist_name: str, playlist: SpotifyPlaylist) -> None:
-    mock_spotify_session.current_user_playlists.return_value = {"items": [asdict(playlist)]}
-    actual_playlist = _get_playlist(playlist_name, room_guid="test_room_guid", spotify_session=mock_spotify_session)
+@patch("chalicelib.services.spotify.add_to_playlist.retrieve_playlists_from_room_guid")
+def test_get_playlist(
+    mock_retrieve_playlists_from_room_guid: Mock,
+    playlist_name: str,
+    playlist: SpotifyPlaylist,
+) -> None:
+    mock_retrieve_playlists_from_room_guid.return_value = [playlist]
+    actual_playlist = _get_playlist(playlist_name, room_guid="test_room_guid")
     if playlist_name == playlist.name:
         assert actual_playlist == playlist
     if playlist_name != playlist.name:
