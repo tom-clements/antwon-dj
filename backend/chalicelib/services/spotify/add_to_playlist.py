@@ -20,7 +20,7 @@ def _create_playlist(
 
 
 def _get_playlist(playlist_name: str, room_guid: str) -> Optional[SpotifyPlaylist]:
-    playlists = retrieve_playlists_from_room_guid(room_guid)
+    playlists = retrieve_playlists_from_room_guid(room_guid=room_guid)
     playlist_list = [playlist for playlist in playlists if playlist.name == playlist_name]
     return playlist_list[0] if playlist_list else None
 

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
 class SpotifyImage:
-    height: int
-    width: int
+    height: Optional[int]
+    width: Optional[int]
     url: str
