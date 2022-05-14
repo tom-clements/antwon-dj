@@ -32,10 +32,6 @@ const onMenuClicks = {
 
 const useUserMenuClickActions = () => onMenuClicks;
 
-beforeEach(() => {
-    jest.resetAllMocks();
-});
-
 describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({

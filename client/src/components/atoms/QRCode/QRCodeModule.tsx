@@ -27,15 +27,15 @@ function getModulePath(
     variant: QRCodeModuleVariant
 ): QRCodeModulePath {
     switch (variant) {
-    case QRCodeModuleVariant.Diamond:
-        return getDiamondModulePath(i, j, moduleSize);
-    case QRCodeModuleVariant.DiamondWithSquareFinder:
-        return isFinderPatternModule(i, j, moduleCount)
-            ? getSquareModulePath(i, j, moduleSize)
-            : getDiamondModulePath(i, j, moduleSize);
-    case QRCodeModuleVariant.Square:
-    default:
-        return getSquareModulePath(i, j, moduleSize);
+        case QRCodeModuleVariant.Diamond:
+            return getDiamondModulePath(i, j, moduleSize);
+        case QRCodeModuleVariant.DiamondWithSquareFinder:
+            return isFinderPatternModule(i, j, moduleCount)
+                ? getSquareModulePath(i, j, moduleSize)
+                : getDiamondModulePath(i, j, moduleSize);
+        case QRCodeModuleVariant.Square:
+        default:
+            return getSquareModulePath(i, j, moduleSize);
     }
 }
 

@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { styled } from '@mui/material/styles';
 import { AccountLinkModel, AccountLinkModelType } from 'user/model/AccountLinkModel';
 import { UseAccountLinkActions, useAccountLinkActions as _useAccountLinkActions } from 'user/hooks/useAccountLinkActions';
@@ -20,7 +20,8 @@ interface Props {
 }
 
 const LinkCard = styled(Card)`
-    flex-grow: 1;
+    width: 100%;
+    margin: ${props => props.theme.spacing(2, 0)};
 `;
 
 const CardColumns = styled(Box)`
@@ -30,10 +31,10 @@ const CardColumns = styled(Box)`
 
 const getProviderColour = (type: AccountLinkModelType): keyof ButtonPropsColorOverrides => {
     switch (type) {
-    case AccountLinkModelType.Spotify:
-        return 'spotifyGreen';
-    default:
-        throw new Error(`${type} does not have a valid colour mapping.`);
+        case AccountLinkModelType.Spotify:
+            return 'spotifyGreen';
+        default:
+            throw new Error(`${type} does not have a valid colour mapping.`);
     }
 };
 
@@ -60,10 +61,10 @@ const ProviderIconContainer = styled(ProviderIconContainerImpl)`
 const ProviderIcon = (props: { type: AccountLinkModelType }) => {
     const { type } = props;
     switch (type) {
-    case AccountLinkModelType.Spotify:
-        return <SpotifyIcon fontSize='inherit' />;
-    default:
-        throw new Error(`${type} does not have a valid icon mapping.`);
+        case AccountLinkModelType.Spotify:
+            return <SpotifyIcon fontSize='inherit' />;
+        default:
+            throw new Error(`${type} does not have a valid icon mapping.`);
     }
 };
 

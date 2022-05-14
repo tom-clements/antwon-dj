@@ -1,12 +1,14 @@
 import { isValidHttpUrl } from 'common/predicates/isValidHttpUrl';
 
-global.URL = jest.fn((value: string) => ({
-    protocol: value.startsWith('http:')
-        ? 'http:'
-        : value.startsWith('https:')
-            ? 'https:'
-            : null
-})) as any;
+beforeEach(() => {
+    global.URL = jest.fn((value: string) => ({
+        protocol: value.startsWith('http:')
+            ? 'http:'
+            : value.startsWith('https:')
+                ? 'https:'
+                : null
+    })) as any;
+});
 
 describe('isValidHttpUrl()', () => {
     type TestCase = [input: string | undefined | null, expectation: boolean];

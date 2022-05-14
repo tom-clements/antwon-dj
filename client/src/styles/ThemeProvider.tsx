@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { ThemeProvider as ThemeProviderInternal } from '@mui/material/styles';
 import { twonDark } from 'styles/TwonTheme';
 

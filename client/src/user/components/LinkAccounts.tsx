@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { SettingsView } from 'common/components/SettingsView';
 import { LinkAccountsMenu } from 'user/components/LinkAccountsMenu';
 import { UseAccountLinks, useAccountLinks as _useAccountLinks } from 'user/hooks/useAccountLinks';

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { styled, Box } from '@mui/material';
 import { NextSong } from 'components/room/NextSong';
 import { SongSearch } from 'components/room/SongSearch';

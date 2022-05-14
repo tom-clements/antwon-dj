@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { BottomSheet } from 'components/core/BottomSheet';
 import { NowPlaying } from 'components/room/NowPlaying';
 import { SongQueue } from 'components/room/SongQueue';

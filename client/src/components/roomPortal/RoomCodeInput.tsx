@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { FC } from 'react';
+import type { FC } from 'react';
 import TextField from '@mui/material/TextField';
 
 interface Props {

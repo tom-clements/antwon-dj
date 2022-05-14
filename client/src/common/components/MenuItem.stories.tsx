@@ -1,8 +1,10 @@
 import { ComponentStory } from '@storybook/react';
 import { MenuItem as MenuItemComponent } from 'common/components/MenuItem';
 import { Login, Logout, Share, ArrowBack, Settings, Chair } from '@mui/icons-material';
+import { MenuItemPadding } from 'common/model/MenuItemPadding';
+import { getEnumKeyValueMap } from 'common/helpers/getEnumKeyMap';
 
-const optionMapping = {
+const iconOptionMapping = {
     default: undefined,
     login: Login,
     logout: Logout,
@@ -12,23 +14,36 @@ const optionMapping = {
     chair: Chair,
 };
 
+const paddingOptionMapping = getEnumKeyValueMap(MenuItemPadding);
+
 export default {
     title: 'common/MenuItem',
     component: MenuItemComponent,
     args: {
         text: 'Menu item',
-        icon: Object.keys(optionMapping)[0],
+        icon: Object.keys(iconOptionMapping)[0],
+        padding: Object.keys(paddingOptionMapping)[0],
     },
     argTypes: {
+        onClick: { control: false },
         icon: {
-            options: Object.keys(optionMapping),
-            mapping: optionMapping,
+            options: Object.keys(iconOptionMapping),
+            mapping: iconOptionMapping,
             control: {
                 type: 'select',
-                labels: { ...Object.keys(optionMapping) }
+                labels: { ...Object.keys(iconOptionMapping) }
             },
         },
-        onClick: { control: false },
+        padding: {
+            options: Object.keys(paddingOptionMapping),
+            mapping: paddingOptionMapping,
+            control: {
+                type: 'select',
+                labels: { ...Object.keys(paddingOptionMapping) }
+            },
+        },
+        className: { control: false },
+        style: { control: false },
     },
 };
 
