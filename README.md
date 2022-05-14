@@ -69,35 +69,55 @@ UI written in Go.
 
 ### Running package manger and other CLI commands
 
-There are essentially three options here.
+There are essentially two options here.
 
 1. Shell into the container and run `yarn` / `pip` as required
 
-2. Use VS Code to remote into the container and use its terminal
+   ```sh
+   ./shell.sh client
+   ```
 
-3. Run one of the convenience compositions in the next few sub-sections
-   for testing, linting, and running Storybook.
+   or
+
+   ```sh
+   ./shell.sh backend
+   ```
+
+2. Use VS Code to remote into the container and use its terminal
 
 #### Tests
 
 ```sh
-./dev.sh backend-test client-test
+./shell.sh backend
+pytest --mypy
 ```
 
-You can selectively omit `backend-test` or `client-test` as appropriate.
+and/or
+
+```sh
+./shell.sh client
+yarn test
+```
 
 #### Linting
 
 ```sh
-./dev.sh backend-lint client-lint
+./shell.sh backend
+black -l 120 .
 ```
 
-You can selectively omit `backend-lint` or `client-lint` as appropriate.
+and/or
+
+```sh
+./shell.sh client
+yarn lint
+```
 
 #### Storybook
 
 ```sh
-./dev.sh client-storybook
+./shell.sh client
+yarn storybook
 ```
 
 This is useful for developing and showcasing client components independently.

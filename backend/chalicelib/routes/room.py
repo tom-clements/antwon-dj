@@ -1,3 +1,4 @@
+import json
 from dataclasses import asdict
 from typing import Dict, List, Any
 
@@ -26,7 +27,7 @@ room_routes = Blueprint(__name__)
 @room_routes.route("/code/{room_code}", methods=["GET"], cors=get_cors_config())
 @error_handle
 def room_code_get(room_code: str) -> str:
-    return get_room_guid(room_code)
+    return json.dumps(get_room_guid(room_code))
 
 
 @room_routes.route("/room/{room_guid}", methods=["DELETE"], cors=get_cors_config(), authorizer=get_authorizer())
