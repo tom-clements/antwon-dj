@@ -89,7 +89,7 @@ There are essentially two options here.
 
 ```sh
 ./shell.sh backend
-python -m pytest tests
+pytest --mypy
 ```
 
 and/or
