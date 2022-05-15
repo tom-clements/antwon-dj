@@ -3,7 +3,7 @@ from typing import List, Optional
 import spotipy  # type: ignore
 from dacite import from_dict
 
-from chalicelib.data.read_room_queue import read_last_five_played_tracked
+from chalicelib.data.queue.read_room_queue import read_last_five_played_tracked
 from chalicelib.data.read_next_song import read_next_song
 from chalicelib.models.data_queries.next_song import NextSong
 from chalicelib.models.spotify_api.recommender import SpotifyRecommenderResult

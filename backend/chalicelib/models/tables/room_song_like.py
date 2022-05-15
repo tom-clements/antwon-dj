@@ -22,7 +22,10 @@ class RoomSongLike(Base):
 
     def __repr__(self):
         return (
-            f"<RoomSongLikes(room_song_likes_id='{self.room_song_likes_id}', room_song_id='{self.room_song_id}',"
-            f"user_id='{self.user_id}', \
-        value='{self.value}', create_time='{self.create_time}')>"
+            f"<RoomSongLikes(room_song_like_id='{self.room_song_like_id}',"
+            f"room_song_like_guid='{self.room_song_like_guid}',"
+            f"room_song_id='{self.room_song_id}',"
+            f"user_id='{self.user_id}',"
+            f"like_value='{self.like_value}',"
+            f"create_time='{self.create_time}')>"
         )

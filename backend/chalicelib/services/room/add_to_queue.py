@@ -1,8 +1,8 @@
 import datetime
 from dataclasses import asdict
 
-from chalicelib.data.create_room_song import create_room_song
-from chalicelib.data.create_song import create_song
+from chalicelib.data.queue.create_room_song import create_room_song
+from chalicelib.data.queue.create_song import create_song
 from chalicelib.data.error_handling import SongNotFoundDbError
 from chalicelib.data.read_one_queries import get_song_from_song_uri
 from chalicelib.data.read_scalar_queries import get_room_id_from_room_guid

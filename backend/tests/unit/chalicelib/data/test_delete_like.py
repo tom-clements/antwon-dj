@@ -1,6 +1,6 @@
 from unittest.mock import patch, Mock
 
-from chalicelib.data.delete_like import delete_like
+from chalicelib.data.queue.delete_like import delete_like
 
 
 @patch("sqlalchemy.orm.session.Session")

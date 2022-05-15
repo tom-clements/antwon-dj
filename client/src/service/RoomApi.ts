@@ -8,6 +8,7 @@ export interface RoomSongDto extends SongDto {
     'is_played': boolean;
     'is_removed': boolean;
     'insert_time': Date;
+    'like_count': number;
 }
 
 function mapRoomSongPostDto(dto: SongDto) {
@@ -29,7 +30,7 @@ export const roomApi = createApi({
             providesTags: ['Room'],
         }),
         getRoomQueue: builder.query<RoomSongDto[], string>({
-            query: roomId => ({ url: `room/${roomId}/queue` }),
+            query: roomId => ({ url: `room/${roomId}/queue/guest` }),
             providesTags: ['RoomQueue'],
         }),
         addSongToQueue: builder.mutation<void, {roomId: string, song: SongDto}>({

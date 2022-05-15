@@ -16,7 +16,7 @@ jobs:
       run: |
         cd backend
         python -m pip install --upgrade pip
-        pip install black flake8 pytest pytest-mypy
+        pip install black flake8 pytest pytest-mypy pytest-lazy-fixture
         pip install -r requirements.txt
     - name: Lint with black
       run: |

@@ -1,4 +1,4 @@
-from chalicelib.data.delete_room_songs import delete_room_songs
+from chalicelib.data.queue.delete_room_songs import delete_room_songs
 from chalicelib.data.is_exists import is_room_exists
 from chalicelib.data.read_one_queries import get_room_owner
 from chalicelib.services.exceptions import ForbiddenServiceError, RoomNotFoundServiceError

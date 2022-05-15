@@ -1,4 +1,4 @@
-from chalicelib.data.delete_like import delete_like
+from chalicelib.data.queue.delete_like import delete_like
 from chalicelib.data.is_exists import is_like_exists
 from chalicelib.data.read_scalar_queries import get_room_song_id_from_room_song_guid, get_user_id_from_username
 from chalicelib.services.exceptions import LikeNotFoundServiceError, RoomSongNotFoundServiceError
