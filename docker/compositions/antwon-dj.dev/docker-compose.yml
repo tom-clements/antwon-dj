@@ -30,7 +30,6 @@ services:
             - internal-network
         ports:
             - 3000:3000
-            - 3001:3001
         volumes:
             - ../../../client/__mocks__:/client/__mocks__
             - ../../../client/.storybook:/client/.storybook
