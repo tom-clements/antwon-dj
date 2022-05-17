@@ -24,7 +24,7 @@ def test_read_room_queue_guest(
 ) -> None:
     room_guid = "room_guid"
     mock_is_room_exists.return_value = is_room_exist
-    mock_read_room_queue_guest.return_value = [q.result for q in queue.songs]
+    mock_read_room_queue_guest.return_value = [q.result for q in queue.sorted_songs]
 
     try:
         actual_queue = get_room_queue_guest_from_room_guid(room_guid)
@@ -58,7 +58,7 @@ def test_read_room_queue_user(
     user_id = 1
     mock_get_user_id_from_username.return_value = user_id
     mock_is_room_exists.return_value = is_room_exist
-    mock_read_room_queue_user.return_value = [q.result for q in queue.songs]
+    mock_read_room_queue_user.return_value = [q.result for q in queue.sorted_songs]
 
     try:
         actual_queue = get_room_queue_user_from_room_guid(username, room_guid)

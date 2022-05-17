@@ -17,7 +17,7 @@ from tests.unit.chalicelib.services.spotify.example_tracks import get_example_tr
     [
         (
             NextSong(
-                room_song_id=1,
+                room_song_guid="room_song_guid",
                 song_uri="example_uri1",
                 is_added_to_playlist=False,
                 song_name="song_name1",
@@ -29,7 +29,7 @@ from tests.unit.chalicelib.services.spotify.example_tracks import get_example_tr
         ),
         (
             NextSong(
-                room_song_id=1,
+                room_song_guid="room_song_guid",
                 song_uri="example_uri1",
                 is_added_to_playlist=False,
                 song_name="song_name1",
@@ -41,7 +41,7 @@ from tests.unit.chalicelib.services.spotify.example_tracks import get_example_tr
         ),
         (
             NextSong(
-                room_song_id=1,
+                room_song_guid="room_song_guid",
                 song_uri="example_uri1",
                 is_added_to_playlist=True,
                 song_name="song_name1",
@@ -53,7 +53,7 @@ from tests.unit.chalicelib.services.spotify.example_tracks import get_example_tr
         ),
         (
             NextSong(
-                room_song_id=1,
+                room_song_guid="room_song_guid",
                 song_uri="example_uri1",
                 is_added_to_playlist=True,
                 song_name="song_name1",
@@ -98,18 +98,18 @@ def test_check_next_song(
     "next_song, removed_from_queue, expected",
     [
         (
-            get_example_next_song(room_song_id=1, song_uri="example_song_uri"),
+            get_example_next_song(room_song_guid="room_song_guid", song_uri="example_song_uri"),
             False,
             (
-                asdict(get_example_next_song(room_song_id=1, song_uri="example_song_uri")),
+                asdict(get_example_next_song(room_song_guid="room_song_guid", song_uri="example_song_uri")),
                 True,
             ),
         ),
         (
-            get_example_next_song(room_song_id=1, song_uri="example_song_uri"),
+            get_example_next_song(room_song_guid="room_song_guid", song_uri="example_song_uri"),
             True,
             (
-                asdict(get_example_next_song(room_song_id=2, song_uri="example_song_uri2")),
+                asdict(get_example_next_song(room_song_guid="room_song_guid2", song_uri="example_song_uri2")),
                 True,
             ),
         ),
@@ -144,9 +144,9 @@ def test_process_next_song(
 @pytest.mark.parametrize(
     "next_song, recommended_song, expected",
     [
-        (None, None, (None, False)),
-        (None, get_example_next_song(), (get_example_next_song(), False)),
-        (get_example_next_song(), None, (get_example_next_song(), False)),
+        (None, None, (None, False)),  # type: ignore
+        (None, pytest.lazy_fixture("next_song1"), (pytest.lazy_fixture("next_song1"), True)),  # type: ignore
+        (pytest.lazy_fixture("next_song1"), None, (pytest.lazy_fixture("next_song1"), False)),  # type: ignore
     ],
 )
 @patch("chalicelib.services.watcher.watch_room.read_next_song")
@@ -160,20 +160,20 @@ def test_watch_room(
     recommended_song: Optional[NextSong],
     expected: Tuple[NextSong, bool],
 ) -> None:
-    test_room_code = "TEST"
+    room_guid = "room_guid"
     mock_read_next_song.return_value = next_song
     mock_get_recommended_song.return_value = recommended_song
     mock_process_next_song.return_value = expected
 
-    actual = watch_room(test_room_code)
+    actual = watch_room(room_guid)
     assert actual == expected
 
-    mock_read_next_song.assert_called_once_with(test_room_code)
+    mock_read_next_song.assert_called_once_with(room_guid)
     if next_song:
-        mock_process_next_song.assert_called_once_with(next_song, test_room_code)
+        mock_process_next_song.assert_called_once_with(next_song, room_guid)
     else:
-        mock_get_recommended_song.assert_called_once_with(test_room_code)
+        mock_get_recommended_song.assert_called_once_with(room_guid)
         if recommended_song:
-            mock_process_next_song.assert_called_once_with(recommended_song, test_room_code)
+            mock_process_next_song.assert_called_once_with(recommended_song, room_guid)
         else:
             mock_process_next_song.assert_not_called()
