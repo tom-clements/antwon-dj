@@ -21,4 +21,4 @@ class QueueSongGuest(QueueSong):
 
 @dataclass
 class QueueSongUser(QueueSongGuest):
-    is_user_liked: bool
+    is_user_liked: bool = False

@@ -1,5 +1,5 @@
 from collections import namedtuple
-from unittest.mock import patch, Mock, call
+from unittest.mock import patch, Mock
 
 import pytest
 
@@ -52,50 +52,22 @@ def test_read_is_user_liked_query(mock_query: Mock, mock_db_session: Mock) -> No
 @patch("chalicelib.data.queue.read_room_queue.read_song_likes_query")
 @patch("sqlalchemy.orm.session.Session")
 @patch("chalicelib.data.queue.read_room_queue.Query")
-@patch("chalicelib.data.queue.read_room_queue.column")
-@patch("chalicelib.data.queue.read_room_queue.false")
 def test_read_queue_column_query(
-    mock_false: Mock,
-    mock_column: Mock,
-    mock_sql_query: Mock,
+    mock_query: Mock,
     mock_db_session: Mock,
     mock_read_song_likes_query: Mock,
     mock_read_room_queue_query: Mock,
 ) -> None:
     room_guid = "room_guid"
-    mock_read_room_queue_query.return_value = mock_sql_query()
-    mock_read_song_likes_query.return_value = mock_sql_query()
-    mock_db_session.query.return_value.select_from.return_value.join.return_value = mock_sql_query()
+    mock_read_room_queue_query.return_value = mock_query
+    mock_read_song_likes_query.return_value = mock_query
+    mock_db_session.query.return_value.select_from.return_value.join.return_value.order_by.return_value = mock_query
 
     actual = read_queue_column_query(room_guid=room_guid, db_session=mock_db_session)
-    assert actual == mock_sql_query()
+    assert actual == mock_query
     mock_read_room_queue_query.assert_called_once_with(room_guid=room_guid)
     mock_read_song_likes_query.assert_called_once_with(room_guid=room_guid)
-    columns = [
-        "room_song_guid",
-        "song_uri",
-        "song_name",
-        "song_artist",
-        "song_album_url",
-        "is_inactive",
-        "insert_time",
-        "is_played",
-        "is_removed",
-        "like_count",
-    ]
-    mock_column.assert_has_calls([call(col) for col in columns], any_order=True)
-    mock_db_session.query.assert_called_once_with(
-        mock_column(),
-        mock_column(),
-        mock_column(),
-        mock_column(),
-        mock_column(),
-        mock_column(),
-        mock_column(),
-        mock_column(),
-        mock_column(),
-        mock_column(),
-    )
+    mock_db_session.query.assert_called_once()
 
 
 @pytest.mark.parametrize(
@@ -105,7 +77,9 @@ def test_read_queue_column_query(
     ],
 )
 @patch("chalicelib.data.queue.read_room_queue.read_queue_column_query")
+@patch("chalicelib.data.queue.read_room_queue.QUEUE_COLS_GUEST")
 def test_read_room_queue_guest(
+    mock_queue_cols_guest: Mock,
     mock_read_queue_column_query: Mock,
     queue: QueueResult,
 ) -> None:
@@ -113,7 +87,7 @@ def test_read_room_queue_guest(
     mock_read_queue_column_query.return_value.all.return_value = [q.db_result for q in queue.songs]
 
     actual_queue = read_room_queue_guest(room_guid=room_guid)
-    mock_read_queue_column_query.assert_called_with(room_guid=room_guid)
+    mock_read_queue_column_query.assert_called_with(room_guid=room_guid, cols=mock_queue_cols_guest)
     mock_read_queue_column_query.return_value.all.assert_called_once()
 
     assert actual_queue == [q.result for q in queue.songs]
@@ -128,9 +102,9 @@ def test_read_room_queue_guest(
 @patch("chalicelib.data.queue.read_room_queue.read_is_user_liked_query")
 @patch("chalicelib.data.queue.read_room_queue.read_queue_column_query")
 @patch("chalicelib.data.queue.read_room_queue.Query")
-@patch("chalicelib.data.queue.read_room_queue.func")
+@patch("chalicelib.data.queue.read_room_queue.QUEUE_COLS_USER")
 def test_read_room_queue_user(
-    mock_func: Mock,
+    mock_queue_cols_user: Mock,
     mock_sql_query: Mock,
     mock_read_queue_column_query: Mock,
     mock_read_is_user_liked_query: Mock,
@@ -139,12 +113,11 @@ def test_read_room_queue_user(
     room_guid = "room_guid"
     user_id = 1
     mock_read_is_user_liked_query.return_value = mock_sql_query()
-    mock_extra_cols = mock_func.coalesce().label()
     mock_read_queue_column_query.return_value.join.return_value.all.return_value = [q.db_result for q in queue.songs]
 
     actual_queue = read_room_queue_user(room_guid=room_guid, user_id=user_id)
     mock_read_is_user_liked_query.assert_called_with(user_id, room_guid=room_guid)
-    mock_read_queue_column_query.assert_called_with(room_guid=room_guid, extra_cols=[mock_extra_cols])
+    mock_read_queue_column_query.assert_called_with(room_guid=room_guid, cols=mock_queue_cols_user)
     mock_read_queue_column_query.return_value.join.assert_called_with(mock_sql_query(), isouter=True)
     mock_read_queue_column_query.return_value.join.return_value.all.assert_called_once()
 
@@ -154,7 +127,7 @@ def test_read_room_queue_user(
 @patch("sqlalchemy.orm.session.Session")
 def test_read_last_five_played_tracked(mock_db_session: Mock) -> None:
     row = namedtuple("row", "song_uri")
-    song_uris = ["songuri1", "songuri2", "songuri3", "songuri4", "songuri5"]
+    song_uris = ["song_uri1", "song_uri2", "song_uri3", "song_uri4", "song_uri5"]
     last_five_tracks = [row(song_uri) for song_uri in song_uris]
     room_guid = "room_guid"
     filter_query = mock_db_session.query.return_value.join.return_value.join.return_value.filter.return_value

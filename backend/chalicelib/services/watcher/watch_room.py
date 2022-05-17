@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from typing import Dict, Tuple, Any
 
-from chalicelib.data.read_next_song import read_next_song
+from chalicelib.data.queue.read_next_song import read_next_song
 from chalicelib.data.update_room_song import update_added_to_playlist, update_played
 from chalicelib.models.data_queries.next_song import NextSong
 from chalicelib.services.spotify.add_to_playlist import add_to_playlist

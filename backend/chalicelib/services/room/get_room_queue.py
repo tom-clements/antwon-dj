@@ -11,7 +11,7 @@ def get_room_queue_guest_from_room_guid(room_guid: str) -> List[Dict[str, str]]:
     if not is_room_exists(room_guid=room_guid):
         raise RoomNotFoundServiceError(room_guid)
     room_queue = read_room_queue_guest(room_guid)
-    return [asdict(r) for r in sorted(room_queue, key=lambda x: (x.like_count, x.insert_time))]
+    return [asdict(r) for r in room_queue]
 
 
 def get_room_queue_user_from_room_guid(username: str, room_guid: str) -> List[Dict[str, str]]:
@@ -19,4 +19,4 @@ def get_room_queue_user_from_room_guid(username: str, room_guid: str) -> List[Di
     if not is_room_exists(room_guid=room_guid):
         raise RoomNotFoundServiceError(room_guid)
     room_queue = read_room_queue_user(user_id, room_guid)
-    return [asdict(r) for r in sorted(room_queue, key=lambda x: (x.like_count, x.insert_time))]
+    return [asdict(r) for r in room_queue]
