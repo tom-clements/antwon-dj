@@ -5,7 +5,7 @@ from chalicelib.models import User, SpotifyUser, RoomSongLike, Room
 from chalicelib.services.auth.db import use_db_session
 
 
-@use_db_session(commit=True)
+@use_db_session()
 def is_like_exists(room_song_id: int, user_id: int, db_session: Session) -> bool:
     try:
         db_session.query(RoomSongLike).filter(
@@ -16,7 +16,7 @@ def is_like_exists(room_song_id: int, user_id: int, db_session: Session) -> bool
         return False
 
 
-@use_db_session(commit=True)
+@use_db_session()
 def is_spotify_user_exists(user_id: int, db_session: Session) -> bool:
     try:
         db_session.query(SpotifyUser).filter(SpotifyUser.user_id == user_id).one()
@@ -25,12 +25,12 @@ def is_spotify_user_exists(user_id: int, db_session: Session) -> bool:
         return False
 
 
-@use_db_session(commit=True)
+@use_db_session()
 def is_username_exist(user_username: str, db_session: Session) -> bool:
     return bool(db_session.query(User).filter(User.user_username == user_username).scalar())
 
 
-@use_db_session(commit=True)
+@use_db_session()
 def is_room_exists(room_guid: str, db_session: Session) -> bool:
     try:
         db_session.query(Room).filter(Room.room_guid == room_guid).one()

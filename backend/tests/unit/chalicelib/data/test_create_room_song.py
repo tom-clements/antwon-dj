@@ -2,7 +2,7 @@ from unittest.mock import patch, Mock
 
 from freezegun import freeze_time
 
-from chalicelib.data.create_room_song import create_room_song
+from chalicelib.data.queue.create_room_song import create_room_song
 from chalicelib.models import Song
 
 

@@ -12,3 +12,13 @@ class QueueSong:
     insert_time: str
     is_played: bool
     is_removed: bool
+
+
+@dataclass
+class QueueSongGuest(QueueSong):
+    like_count: int
+
+
+@dataclass
+class QueueSongUser(QueueSongGuest):
+    is_user_liked: bool

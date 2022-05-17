@@ -53,7 +53,7 @@ CREATE TABLE antwon.RoomSongs (
 CREATE TABLE antwon.RoomSongLikes (
     room_song_like_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     room_song_like_guid varchar(500) NOT NULL,
-    room_songs_id int NOT NULL,
+    room_song_id int NOT NULL,
     user_id int NOT NULL,
     like_value int NOT NULL,
     create_time datetime NOT NULL

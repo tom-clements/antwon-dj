@@ -1,6 +1,6 @@
 from unittest.mock import patch, Mock
 
-from chalicelib.data.create_like import create_like
+from chalicelib.data.queue.create_like import create_like
 
 
 @patch("sqlalchemy.orm.session.Session")
