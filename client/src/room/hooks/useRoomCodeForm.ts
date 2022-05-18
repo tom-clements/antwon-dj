@@ -9,14 +9,14 @@ function isValidRoomCode(roomCode: string | null): roomCode is string {
 
 interface Props {
     initialRoomCode: string | null,
-    onChange: (roomCode: string | null) => void,
+    onChange?: (roomCode: string | null) => void, // TODO remove this option
     onSubmit: (roomCode: string) => void
 }
 
 interface Return {
     roomCode: string | null,
     isValid: boolean,
-    onChange: (roomCode: string | null) => void,
+    setRoomCode: (roomCode: string | null) => void,
     onSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
 
@@ -30,10 +30,10 @@ export const useRoomCodeForm: UseRoomCodeForm = props => {
     return {
         roomCode,
         isValid,
-        onChange: useCallback(
+        setRoomCode: useCallback(
             (roomCode: string | null) => {
                 setRoomCode(roomCode);
-                onChange(roomCode);
+                onChange && onChange(roomCode);
             },
             [onChange]),
         onSubmit: useCallback(

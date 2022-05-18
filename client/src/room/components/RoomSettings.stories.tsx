@@ -6,7 +6,7 @@ export default {
     component: RoomSettingsComponent,
     args: {
         useGoBackAction: () => () => undefined,
-        useRoomSettingActions: () => () => ({
+        useRoomSettingActions: () => ({
             clearQueue: () => undefined,
             deleteRoom: () => undefined,
         }),

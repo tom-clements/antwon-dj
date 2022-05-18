@@ -34,7 +34,7 @@ jest.mock('room/hooks/useRoomCodeForm', () => ({
     useRoomCodeForm: (props: HookProps<typeof useRoomCodeForm>) => ({
         roomCode: props.initialRoomCode,
         isValid: true,
-        onChange: props.onChange,
+        setRoomCode: props.onChange,
         onSubmit: props.onSubmit,
     }),
 }));

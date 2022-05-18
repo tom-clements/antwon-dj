@@ -7,7 +7,7 @@ import { useRoomCodeForm } from 'room/hooks/useRoomCodeForm';
 interface Props {
     initialRoomCode: string | null;
     submitText: string;
-    onChange: (roomCode: string | null) => void;
+    onChange?: (roomCode: string | null) => void; // TODO remove this option
     onSubmit: (roomCode: string) => void;
 }
 
@@ -15,7 +15,7 @@ export const RoomCodeForm: FC<Props> = props => {
     const {
         roomCode,
         isValid,
-        onChange,
+        setRoomCode,
         onSubmit,
     } = useRoomCodeForm(props);
 
@@ -25,7 +25,7 @@ export const RoomCodeForm: FC<Props> = props => {
                 <Grid item>
                     <RoomCodeInput
                         roomCode={roomCode}
-                        onChange={onChange}
+                        onChange={setRoomCode}
                     /></Grid>
                 <Grid item alignItems="stretch" sx={{ display: 'flex' }}>
                     <Button type="submit" variant="contained" disabled={!isValid}>

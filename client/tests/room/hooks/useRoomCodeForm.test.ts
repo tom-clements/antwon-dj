@@ -41,7 +41,7 @@ describe('useRoomCodeForm()', () => {
                 onSubmit,
             });
 
-            const { onChange: onChangeWrapped } = result;
+            const { setRoomCode: onChangeWrapped } = result;
             expect(onChangeWrapped).not.toBe(onChange);
             expect(jest.mocked(useCallback)).toHaveBeenCalledTimes(2);
         });
@@ -55,7 +55,7 @@ describe('useRoomCodeForm()', () => {
                 onSubmit,
             });
 
-            const { onChange: onChangeWrapped } = result;
+            const { setRoomCode: onChangeWrapped } = result;
             onChangeWrapped('SOIREE');
 
             expect(setValue).toHaveBeenCalledWith('SOIREE');
