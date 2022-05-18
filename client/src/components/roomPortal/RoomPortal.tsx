@@ -1,26 +1,29 @@
-import { FC, useMemo } from 'react';
-import { useRouter } from 'next/router';
+import { FC } from 'react';
 import Grid from '@mui/material/Grid';
-import { useAppSelector, useAppDispatch } from 'model/Store';
-import { selectRoomPortalCode, setRoomPortalCode } from 'model/slices/RoomPortalSlice';
-import { getRelativeRoomUrl } from 'service/room/getRoomUrl';
 import { RoomCodeForm } from 'room/components/RoomCodeForm';
+import { UseRoomPortal, useRoomPortal as _useRoomPortal } from 'room/hooks/useRoomPortal';
 
-export const RoomPortal: FC = () => {
-    const router = useRouter();
-    const dispatch = useAppDispatch();
-    const roomCode = useAppSelector(selectRoomPortalCode);
+interface Props {
+    /**
+     * Injected `useRoomPortal` hook or default implementation
+     */
+    useRoomPortal?: UseRoomPortal;
+}
 
-    const onSubmit = useMemo(() => (roomCode: string) => {
-        router.push({ pathname: getRelativeRoomUrl(roomCode) });
-    }, [router]);
+export const RoomPortal: FC<Props> = props => {
+    const useRoomPortal = props.useRoomPortal ?? _useRoomPortal;
+    const {
+        currentRoomCode,
+        setCurrentRoom,
+        goToCurrentRoom,
+    } = useRoomPortal();
 
     return (
         <Grid container alignItems="center" justifyContent="center">
             <RoomCodeForm
-                initialRoomCode={roomCode}
-                onChange={roomCode => dispatch(setRoomPortalCode(roomCode))}
-                onSubmit={onSubmit}
+                initialRoomCode={currentRoomCode}
+                onChange={setCurrentRoom}
+                onSubmit={goToCurrentRoom}
                 submitText="Go"
             />
         </Grid>
