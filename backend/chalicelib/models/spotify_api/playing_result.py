@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import Dict, Optional
 
+from chalicelib.models.base_dto import BaseDto
 from chalicelib.models.spotify_api.track import SpotifyTrack
 
 
 @dataclass
-class SpotifyPlayingContext:
+class SpotifyPlayingContext(BaseDto):
     external_urls: Dict[str, str]
     href: str
     type: str
@@ -13,7 +14,7 @@ class SpotifyPlayingContext:
 
 
 @dataclass
-class SpotifyPlaying:
+class SpotifyPlaying(BaseDto):
     timestamp: int
     context: Optional[SpotifyPlayingContext]
     progress_ms: int

@@ -77,9 +77,7 @@ def test_read_queue_column_query(
     ],
 )
 @patch("chalicelib.data.queue.read_room_queue.read_queue_column_query")
-@patch("chalicelib.data.queue.read_room_queue.QUEUE_COLS_GUEST")
 def test_read_room_queue_guest(
-    mock_queue_cols_guest: Mock,
     mock_read_queue_column_query: Mock,
     queue: QueueResult,
 ) -> None:
@@ -87,7 +85,7 @@ def test_read_room_queue_guest(
     mock_read_queue_column_query.return_value.all.return_value = [q.db_result for q in queue.songs]
 
     actual_queue = read_room_queue_guest(room_guid=room_guid)
-    mock_read_queue_column_query.assert_called_with(room_guid=room_guid, cols=mock_queue_cols_guest)
+    mock_read_queue_column_query.assert_called()
     mock_read_queue_column_query.return_value.all.assert_called_once()
 
     assert actual_queue == [q.result for q in queue.songs]
@@ -102,9 +100,7 @@ def test_read_room_queue_guest(
 @patch("chalicelib.data.queue.read_room_queue.read_is_user_liked_query")
 @patch("chalicelib.data.queue.read_room_queue.read_queue_column_query")
 @patch("chalicelib.data.queue.read_room_queue.Query")
-@patch("chalicelib.data.queue.read_room_queue.QUEUE_COLS_USER")
 def test_read_room_queue_user(
-    mock_queue_cols_user: Mock,
     mock_sql_query: Mock,
     mock_read_queue_column_query: Mock,
     mock_read_is_user_liked_query: Mock,
@@ -117,7 +113,7 @@ def test_read_room_queue_user(
 
     actual_queue = read_room_queue_user(room_guid=room_guid, user_id=user_id)
     mock_read_is_user_liked_query.assert_called_with(user_id, room_guid=room_guid)
-    mock_read_queue_column_query.assert_called_with(room_guid=room_guid, cols=mock_queue_cols_user)
+    mock_read_queue_column_query.assert_called()
     mock_read_queue_column_query.return_value.join.assert_called_with(mock_sql_query(), isouter=True)
     mock_read_queue_column_query.return_value.join.return_value.all.assert_called_once()
 

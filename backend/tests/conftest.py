@@ -10,3 +10,5 @@ from tests.unit.fixtures.songs import (  # noqa: F401
     user_song3,
     next_song1,
 )
+from tests.unit.fixtures.user_info import cognito_user_info, user_info  # noqa: F401
+from tests.unit.fixtures.cognito import code_token  # noqa: F401
