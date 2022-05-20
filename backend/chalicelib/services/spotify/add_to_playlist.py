@@ -2,12 +2,11 @@ from typing import Optional, List
 
 import spotipy  # type: ignore
 
-from chalicelib.data.is_exists import is_room_exists
-from chalicelib.data.read_room_info import read_room_info
+from chalicelib.data.read_room_info import read_spotify_room_info
 from chalicelib.models.spotify_api.playlist import SpotifyPlaylist
 from chalicelib.services.auth.spotify import use_spotify_session
-from chalicelib.services.exceptions import RoomNotFoundServiceError
 from chalicelib.services.spotify.get_playlists import retrieve_playlists_from_room_guid
+from chalicelib.services.utils.verify_room import verify_room_exists
 
 
 @use_spotify_session
@@ -32,10 +31,9 @@ def _add_to_spotify_playlist(
     spotify_session.playlist_add_items(playlist_id=playlist_id, items=items)
 
 
+@verify_room_exists
 def add_to_playlist(room_guid: str, song_uri: str) -> None:
-    if not is_room_exists(room_guid):
-        raise RoomNotFoundServiceError(room_guid)
-    room_info = read_room_info(room_guid)
+    room_info = read_spotify_room_info(room_guid)
     playlist = _get_playlist(f"ANTWON-{room_info.room_code}", room_guid=room_guid)
     if not playlist:
         _create_playlist(f"ANTWON-{room_info.room_code}", room_info.spotify_user_username, room_guid=room_guid)

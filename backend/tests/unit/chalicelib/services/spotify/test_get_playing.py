@@ -64,16 +64,13 @@ def test_get_placeholder_empty_song() -> None:
     ],
 )
 @patch("chalicelib.services.spotify.get_playing._spotify_playing_cached")
-@patch("chalicelib.services.spotify.get_playing.is_room_exists", return_value=True)
 def test_get_playing(
-    mock_is_room_exists: Mock,
     mock_spotify_playing_cached: Mock,
     playing_result: Optional[SpotifyPlaying],
     expected_output: SpotifyTrackFormatted,
 ) -> None:
     room_guid = "test_room_guid"
     mock_spotify_playing_cached.return_value = playing_result
-    actual_output = get_playing(room_guid=room_guid)
-    mock_is_room_exists.assert_called_with(room_guid)
+    actual_output = get_playing.__wrapped__(room_guid=room_guid)  # type: ignore
     mock_spotify_playing_cached.assert_called()
     assert actual_output == expected_output

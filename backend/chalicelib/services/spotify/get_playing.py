@@ -4,12 +4,11 @@ from typing import Optional
 import spotipy  # type: ignore
 from dacite import from_dict
 
-from chalicelib.data.is_exists import is_room_exists
 from chalicelib.models.spotify_api.playing_result import SpotifyPlaying
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
-from chalicelib.services.exceptions import RoomNotFoundServiceError
 from chalicelib.services.spotify.get_search_songs import format_songs
 from chalicelib.services.auth.spotify import use_spotify_session
+from chalicelib.services.utils.verify_room import verify_room_exists
 from chalicelib.utils.get_ttl_hash import get_ttl_hash
 
 
@@ -52,9 +51,8 @@ def _get_placeholder_empty_song() -> SpotifyTrackFormatted:
     )
 
 
+@verify_room_exists
 def get_playing(room_guid: str, use_cache: bool = True) -> SpotifyTrackFormatted:
-    if not is_room_exists(room_guid):
-        raise RoomNotFoundServiceError(room_guid)
     if use_cache:
         playing = _spotify_playing_cached(room_guid=room_guid, ttl_hash=get_ttl_hash())
     else:
