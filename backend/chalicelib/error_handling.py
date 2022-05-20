@@ -1,13 +1,23 @@
+import json
 from functools import wraps
 from typing import Callable, Any, Dict
 
 from chalice import Response
 
-from chalicelib.services.exceptions import NotFoundServiceError, ForbiddenServiceError, ConflictServiceError
+from chalicelib.services.exceptions import (
+    NotFoundServiceError,
+    ForbiddenServiceError,
+    ConflictServiceError,
+    ServiceError,
+)
 
 
-def error_response(status_code: int, error_string: str) -> Response:
-    return Response(status_code=status_code, body=error_string, headers={"Content-Type": "text/plain"})
+def error_response(status_code: int, error: ServiceError) -> Response:
+    return Response(
+        status_code=status_code,
+        body=json.dumps({"Code": error.__class__.__name__, "Message": str(error)}),
+        headers={"Content-Type": "application/json"},
+    )
 
 
 def error_handle(f: Callable) -> Callable:
@@ -16,12 +26,10 @@ def error_handle(f: Callable) -> Callable:
         try:
             return f(*args, **kwargs)
         except ForbiddenServiceError as e:
-            return error_response(status_code=403, error_string=str(e))
+            return error_response(status_code=403, error=e)
         except NotFoundServiceError as e:
-            return error_response(status_code=404, error_string=str(e))
+            return error_response(status_code=404, error=e)
         except ConflictServiceError as e:
-            return error_response(status_code=409, error_string=str(e))
-        except Exception:
-            raise
+            return error_response(status_code=409, error=e)
 
     return decorated

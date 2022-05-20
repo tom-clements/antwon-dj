@@ -104,3 +104,17 @@ class RoomAlreadyExistsServiceError(ConflictServiceError):
         self.room_code = room_code
         self.message = message + f": {room_code}"
         super().__init__(self.message)
+
+
+class UserRoomExistsServiceError(ConflictServiceError):
+    """Exception raised for attempts to add a room that already exists
+
+    Attributes:
+        room_song_guid -- room song guid that exists
+        message -- explanation of the error
+    """
+
+    def __init__(self, room_guid: str, message: str = "User room already exists") -> None:
+        self.room_code = room_guid
+        self.message = message + f": {room_guid}"
+        super().__init__(self.message)
