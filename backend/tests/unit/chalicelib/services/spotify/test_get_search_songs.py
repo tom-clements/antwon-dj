@@ -54,9 +54,7 @@ def test_spotify_api_search(
     [(get_example_search_result(), get_example_search_result_formatted()), (get_example_search_no_result(), [])],
 )
 @patch("chalicelib.services.spotify.get_search_songs._spotify_api_search")
-@patch("chalicelib.services.spotify.get_search_songs.is_room_exists", return_value=True)
 def test_search_songs(
-    mock_is_room_exists: Mock,
     mock_spotify_api_search: Mock,
     spotify_search_result: SpotifySearchResult,
     expected: List[SpotifyTrackFormatted],
@@ -64,7 +62,6 @@ def test_search_songs(
     example_song_query = "example_song_query"
     example_room_guid = "example_room_guid"
     mock_spotify_api_search.return_value = spotify_search_result
-    actual = search_songs(song_query=example_song_query, room_guid=example_room_guid)
-    mock_is_room_exists.assert_called_once_with(example_room_guid)
+    actual = search_songs.__wrapped__(song_query=example_song_query, room_guid=example_room_guid)  # type: ignore
     mock_spotify_api_search.assert_called_once_with(song_query=example_song_query, room_guid=example_room_guid)
     assert actual == expected
