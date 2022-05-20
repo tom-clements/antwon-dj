@@ -1,18 +1,12 @@
-from dataclasses import fields
-from typing import List, Final
+from typing import List
 
 from sqlalchemy import String, cast, false, func, column, Boolean, Integer
 from sqlalchemy.orm import Session, Query
 from sqlalchemy.sql import Alias
 
 from chalicelib.models import RoomSong, Song, Room, RoomSongLike
-from chalicelib.models.data_queries.queue_song import QueueSongGuest, QueueSongUser, QueueSong
+from chalicelib.models.data_queries.queue_song import QueueSongGuest, QueueSongUser
 from chalicelib.services.auth.db import use_db_session
-
-
-QUEUE_COLS: Final[List[column]] = [column(col.name) for col in fields(QueueSong)]
-QUEUE_COLS_GUEST: Final[List[column]] = [column(col.name) for col in fields(QueueSongGuest)]
-QUEUE_COLS_USER: Final[List[column]] = [column(col.name) for col in fields(QueueSongUser)]
 
 
 @use_db_session()
@@ -73,14 +67,17 @@ def read_queue_column_query(room_guid: str, db_session: Session, cols: List[colu
 
 
 def read_room_queue_guest(room_guid: str) -> List[QueueSongGuest]:
-    room_queue = read_queue_column_query(room_guid=room_guid, cols=QUEUE_COLS_GUEST).all()
+    room_queue = read_queue_column_query(room_guid=room_guid, cols=QueueSongGuest.sqlalchemy_columns()).all()
+
     return [QueueSongGuest(**r) for r in room_queue]
 
 
 def read_room_queue_user(user_id: int, room_guid: str) -> List[QueueSongGuest]:
     is_user_liked_query = read_is_user_liked_query(user_id, room_guid=room_guid)
     room_queue = (
-        read_queue_column_query(room_guid=room_guid, cols=QUEUE_COLS_USER).join(is_user_liked_query, isouter=True).all()
+        read_queue_column_query(room_guid=room_guid, cols=QueueSongUser.sqlalchemy_columns())
+        .join(is_user_liked_query, isouter=True)
+        .all()
     )
     return [QueueSongUser(**r) for r in room_queue]
 

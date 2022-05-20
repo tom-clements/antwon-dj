@@ -1,15 +1,19 @@
+import json
+
 import requests
 
+from chalicelib.models.cognito.user_info import CognitoUserInfoDto
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
-from chalicelib.services.auth.cognito.responses import TokenDto, CodeTokenDto, UserInfoDto
+from chalicelib.models.cognito.tokens import TokenDto, CodeTokenDto
 from chalicelib.utils.env import AUTH_URL, LOGIN_REDIRECT_ENDPOINT, API_STAGE, API_URL
 
 
-def get_cognito_user_info(access_token: str, token_type: str) -> UserInfoDto:
+def get_cognito_user_info(access_token: str, token_type: str) -> CognitoUserInfoDto:
     url = f"{AUTH_URL}/oauth2/userInfo"
     headers = {"Authorization": f"{token_type} {access_token}"}
-    response = requests.get(url, headers=headers)
-    return UserInfoDto(**response.json())
+    user_info = requests.get(url, headers=headers).json()
+    user_info["email_verified"] = json.loads(user_info["email_verified"])
+    return CognitoUserInfoDto(**user_info)
 
 
 @AwsSecretRetrieval("cognito_client_credentials", client_id="client_id", client_secret="client_secret")

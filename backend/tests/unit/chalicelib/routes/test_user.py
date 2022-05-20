@@ -8,7 +8,7 @@ from unittest.mock import patch, Mock
 from pytest import fixture
 from chalice.test import Client
 
-from chalicelib.services.auth.cognito.responses import TokenDto
+from chalicelib.models.cognito.tokens import TokenDto
 
 
 @fixture

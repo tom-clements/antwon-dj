@@ -649,6 +649,16 @@
                 "expires_in":  {"type":  "integer"}
             }
         },
+        "UserInfo": {
+            "type": "object",
+            "title": "Tokens",
+            "properties": {
+                "sub":  {"type":  "string", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
+                "access_token":  {"type":  "string"},
+                "token_type":  {"type":  "string"},
+                "expires_in":  {"type":  "integer"}
+            }
+        },
         "RefreshToken": {
             "type": "object",
             "title": "Refresh Token",

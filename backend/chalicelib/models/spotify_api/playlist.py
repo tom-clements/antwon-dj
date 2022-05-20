@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
+from chalicelib.models.base_dto import BaseDto
 from chalicelib.models.spotify_api.image import SpotifyImage
 
 
 @dataclass
-class PlaylistOwner:
+class PlaylistOwner(BaseDto):
     display_name: str
     external_urls: Dict[str, str]
     href: str
@@ -15,19 +16,19 @@ class PlaylistOwner:
 
 
 @dataclass
-class PlaylistTrack:
+class PlaylistTrack(BaseDto):
     href: str
     total: int
 
 
 @dataclass
-class SimpleSpotifyPlaylist:
+class SimpleSpotifyPlaylist(BaseDto):
     playlist_id: str
     name: str
 
 
 @dataclass
-class SpotifyPlaylist:
+class SpotifyPlaylist(BaseDto):
     collaborative: bool
     description: str
     external_urls: Dict[str, str]

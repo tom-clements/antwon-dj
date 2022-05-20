@@ -1,6 +1,7 @@
 from unittest.mock import patch, Mock
 
-from chalicelib.services.auth.cognito.responses import CodeTokenDto, UserInfoDto
+from chalicelib.models.cognito.tokens import CodeTokenDto
+from chalicelib.models.cognito.user_info import CognitoUserInfoDto
 from chalicelib.services.user.get_login import (
     user_login,
     redirect_to_spotify_connect,
@@ -37,23 +38,17 @@ def test_user_signup_callback(
     mock_add_user_if_not_exists: Mock,
     mock_get_cognito_user_info: Mock,
     mock_get_tokens_from_code: Mock,
+    cognito_user_info: CognitoUserInfoDto,
+    code_token: CodeTokenDto,
 ) -> None:
-    tokens = CodeTokenDto(
-        access_token="access_token",
-        token_type="token_type",
-        id_token="id_token",
-        refresh_token="refresh_token",
-        expires_in=0,
-    )
-    user_info = UserInfoDto(sub="sub", email_verified="true", name="name", email="email", username="username")
     code = "code"
-    expected = tokens.refresh_token
+    expected = code_token.refresh_token
 
-    mock_get_tokens_from_code.return_value = tokens
-    mock_get_cognito_user_info.return_value = user_info
+    mock_get_tokens_from_code.return_value = code_token
+    mock_get_cognito_user_info.return_value = cognito_user_info
     actual = user_signup_callback(code=code)
 
     mock_get_tokens_from_code.assert_called_with(code=code)
-    mock_get_cognito_user_info.assert_called_once_with(tokens.access_token, tokens.token_type)
-    mock_add_user_if_not_exists.assert_called_once_with(user_info.username)
+    mock_get_cognito_user_info.assert_called_once_with(code_token.access_token, code_token.token_type)
+    mock_add_user_if_not_exists.assert_called_once_with(cognito_user_info.username)
     assert actual == expected

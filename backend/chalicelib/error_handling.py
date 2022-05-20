@@ -1,4 +1,3 @@
-import json
 from functools import wraps
 from typing import Callable, Any, Dict
 
@@ -15,7 +14,7 @@ from chalicelib.services.exceptions import (
 def error_response(status_code: int, error: ServiceError) -> Response:
     return Response(
         status_code=status_code,
-        body=json.dumps({"Code": error.__class__.__name__, "Message": str(error)}),
+        body={"Code": error.__class__.__name__, "Message": str(error)},
         headers={"Content-Type": "application/json"},
     )
 

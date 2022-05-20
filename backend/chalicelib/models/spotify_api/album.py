@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from typing import List, Dict, Optional
 
+from chalicelib.models.base_dto import BaseDto
 from chalicelib.models.spotify_api.artist import SpotifyArtist
 from chalicelib.models.spotify_api.image import SpotifyImage
 
 
 @dataclass
-class SpotifyAlbum:
+class SpotifyAlbum(BaseDto):
     album_type: str
     artists: List[SpotifyArtist]
     type: str

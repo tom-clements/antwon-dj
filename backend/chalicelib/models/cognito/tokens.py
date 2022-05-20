@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 
+from chalicelib.models.base_dto import BaseDto
+
 
 @dataclass
-class CognitoDto:
+class CognitoDto(BaseDto):
     pass
 
 
@@ -17,12 +19,3 @@ class TokenDto(CognitoDto):
 @dataclass
 class CodeTokenDto(TokenDto):
     refresh_token: str
-
-
-@dataclass
-class UserInfoDto(CognitoDto):
-    sub: str
-    email_verified: str
-    name: str
-    email: str
-    username: str

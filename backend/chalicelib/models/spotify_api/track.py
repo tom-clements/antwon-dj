@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from typing import List, Dict, Optional
 
+from chalicelib.models.base_dto import BaseDto
 from chalicelib.models.spotify_api.album import SpotifyAlbum
 from chalicelib.models.spotify_api.artist import SpotifyArtist
 
 
 @dataclass
-class SpotifyTrack:
+class SpotifyTrack(BaseDto):
     album: SpotifyAlbum
     artists: List[SpotifyArtist]
     available_markets: Optional[List[str]]
@@ -27,7 +28,7 @@ class SpotifyTrack:
 
 
 @dataclass
-class SpotifyTrackFormatted:
+class SpotifyTrackFormatted(BaseDto):
     song_uri: str
     song_artist: str
     song_name: str
