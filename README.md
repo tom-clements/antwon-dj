@@ -21,21 +21,21 @@ compatible with PowerShell and or any other CLI.
 - Install `docker` and `docker-compose`
   - Follow <https://docs.docker.com/get-docker/> for your OS/env of choice
 
-- Clone or symlink your `~/.aws/config` to `.aws.config`
-
-  E.g.,
-
-  ```sh
-  cp ~/.aws/config aws.config
-  ```
-
-  or
+- Symlink your `~/.aws/config` to `.aws.config` at the root of the repository so that
+  the API has access to AWS
 
   ```sh
-  ln -s ~/.aws/config aws.config
+  ln -s ~/.aws/config .aws.config
   ```
 
-  > **NOTE** naming is important and of course **DO NO COMMIT TO THE REPOSITORY!**.
+  or on Windows or if this is problematic you can copy
+
+  ```sh
+  cp ~/.aws/config .aws.config
+  ```
+
+  > **NOTE** the naming of `.aws.config` is important and of course
+  > **DO NO COMMIT TO THE REPOSITORY!**. It should be gitignored.
   >
   > Follow <https://aws.github.io/chalice/quickstart.html#credentials> and
   > <https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html>
