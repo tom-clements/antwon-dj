@@ -1,9 +1,6 @@
-import { createTheme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
 
-const { palette } = createTheme();
-const { augmentColor } = palette;
-
-export const createColour = (colour: string) => augmentColor({ color: { main: colour } });
+export { Theme };
 
 declare module '@mui/material/styles' {
     // remove when expanding default theme shape

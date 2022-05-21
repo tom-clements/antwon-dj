@@ -1,20 +1,24 @@
 import { ComponentProps } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import { UserPopoverMenu } from 'user/components/UserPopoverMenu';
+import { UseUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
+import { UseDarkMode } from 'styles/hooks/useDarkMode';
+import { DarkModeMenuItem } from 'styles/components/DarkModeMenuItem';
 
 jest.mock('user/components/UserAvatar', () => ({
     __esModule: true,
     UserAvatar: () => null,
 }));
 
-jest.mock('@mui/icons-material', () => ({
+jest.mock('styles/components/DarkModeMenuItem', () => ({
     __esModule: true,
-    Login: () => null,
-    Logout: () => null,
-    Share: () => null,
-    ArrowBack: () => null,
-    Settings: () => null,
-    Chair: () => null,
+    DarkModeMenuItem: (props: ComponentProps<typeof DarkModeMenuItem>) => {
+        if (!props.useDarkMode) return null;
+        const { toggle } = props.useDarkMode();
+        return (
+            <div onClick={toggle}>Dark Mode</div>
+        );
+    },
 }));
 
 function testRender(props: ComponentProps<typeof UserPopoverMenu>) {
@@ -28,15 +32,22 @@ const onMenuClicks = {
     back: jest.fn(),
     login: jest.fn(),
     logout: jest.fn(),
+    darkMode: jest.fn(),
 };
 
-const useUserMenuClickActions = () => onMenuClicks;
+const useUserMenuClickActions: UseUserMenuClickActions = () => onMenuClicks;
+
+const useDarkMode: UseDarkMode = () => ({
+    mode: 'dark',
+    toggle: onMenuClicks.darkMode,
+});
 
 describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
             user: { name: 'Name' },
             useUserMenuClickActions,
+            useDarkMode,
         });
 
         const button = container.querySelector('button.MuiIconButton-root');
@@ -48,6 +59,7 @@ describe('<UserPopoverMenu />', () => {
         const { container } = testRender({
             user: { name: 'Name' },
             useUserMenuClickActions,
+            useDarkMode,
         });
 
         const button = container.querySelector('button.MuiIconButton-root');
@@ -63,6 +75,7 @@ describe('<UserPopoverMenu />', () => {
         const cases: TestCase[] = [
             ['My Room', 'myRoom'],
             ['Room Settings', 'roomSettings'],
+            ['Dark Mode', 'darkMode'],
             ['Share Room', 'shareRoom'],
             ['Back', 'back'],
             ['Logout', 'logout'],
@@ -72,6 +85,7 @@ describe('<UserPopoverMenu />', () => {
             const { container, getByText } = testRender({
                 user: { name: 'Name' },
                 useUserMenuClickActions,
+                useDarkMode,
             });
             const button = container.querySelector('button.MuiIconButton-root');
             fireEvent.click(button!);
@@ -90,6 +104,7 @@ describe('<UserPopoverMenu />', () => {
         type TestCase = [menuText: string, expectedMockCallbackKey: keyof typeof onMenuClicks];
 
         const cases: TestCase[] = [
+            ['Dark Mode', 'darkMode'],
             ['Share Room', 'shareRoom'],
             ['Back', 'back'],
             ['Login', 'login'],
@@ -99,6 +114,7 @@ describe('<UserPopoverMenu />', () => {
             const { container, getByText } = testRender({
                 user: null,
                 useUserMenuClickActions,
+                useDarkMode,
             });
             const button = container.querySelector('button.MuiIconButton-root');
             fireEvent.click(button!);

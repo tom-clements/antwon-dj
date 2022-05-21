@@ -1,13 +1,17 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from 'src/styles/ThemeProvider';
+import { createStore } from 'model/Store';
+import { ThemeProvider } from 'styles/components/ThemeProvider';
 
 export const decorators = [
     Story => (
-        <ThemeProvider>
-            <CssBaseline />
-            <Story />
-        </ThemeProvider>
+        <Provider store={createStore()}>
+            <ThemeProvider>
+                <CssBaseline />
+                <Story />
+            </ThemeProvider>
+        </Provider>
     ),
 ];
 

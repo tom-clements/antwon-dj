@@ -11,6 +11,8 @@ import Fade from '@mui/material/Fade';
 import { Login, Logout, Share, ArrowBack, Settings, Chair } from '@mui/icons-material';
 import { UseUserMenuClickActions, useUserMenuClickActions as _useUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
 import { MenuItem } from 'common/components/MenuItem';
+import { UseDarkMode } from 'styles/hooks/useDarkMode';
+import { DarkModeMenuItem } from 'styles/components/DarkModeMenuItem';
 
 const MenuContainer = styled(Menu)`
     max-width: 256px;
@@ -23,6 +25,11 @@ interface Props {
      * Injected `useUserMenuClickActions` hook or default implementation
      */
     useUserMenuClickActions?: UseUserMenuClickActions;
+
+    /**
+     * Injected `useDarkMode` hook or default implementation
+     */
+    useDarkMode?: UseDarkMode;
 }
 
 interface OpenProps {
@@ -73,6 +80,7 @@ const LoggedInMenuItems: FC<Props> = props => {
             <MenuItem icon={Settings} text="Room Settings" onClick={onMenuClicks.roomSettings} />
             <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
             <Divider sx={{ mt: 1, mb: 1 }} />
+            <DarkModeMenuItem useDarkMode={props.useDarkMode} />
             <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
             <MenuItem icon={Logout} text="Logout" onClick={onMenuClicks.logout} />
         </>
@@ -87,6 +95,7 @@ const LoggedOutMenuItems: FC<Props> = props => {
             <Spacer />
             <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
             <Divider sx={{ mt: 1, mb: 1 }} />
+            <DarkModeMenuItem useDarkMode={props.useDarkMode} />
             <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
             <MenuItem icon={Login} text="Login" onClick={onMenuClicks.login} />
         </>
