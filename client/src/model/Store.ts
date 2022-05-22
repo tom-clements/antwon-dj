@@ -6,11 +6,13 @@ import { UserSlice } from 'model/User';
 import { spotifyCurrentlyPlayingApi } from 'service/SpotifyCurrentlyPlaying';
 import { spotifySearchApi } from 'service/SpotifySearchApi';
 import { roomApi } from 'service/RoomApi';
+import { themeSlice } from 'styles/services/themeSlice';
 
 export function createStore(preloadedState: any) {
     return configureStore({
         reducer: {
             error: errorSlice.reducer,
+            theme: themeSlice.reducer,
             roomPortal: RoomPortalSlice.reducer,
             user: UserSlice.reducer,
             [spotifyCurrentlyPlayingApi.reducerPath]: spotifyCurrentlyPlayingApi.reducer,

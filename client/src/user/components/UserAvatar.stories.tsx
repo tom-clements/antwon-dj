@@ -1,5 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 import { UserAvatar as UserAvatarComponent } from 'user/components/UserAvatar';
+import { createMockUserModels } from 'tests/user/helpers/createMockUserModels';
 
 export default {
     title: 'user/UserAvatar',
@@ -20,15 +21,7 @@ export const LoggedOut = {
     }
 };
 
-const optionMapping = {
-    withImage: {
-        name: 'Ablert Clements',
-        imageUrl: 'https://mui.com/static/images/avatar/1.jpg'
-    },
-    withoutImage: {
-        name: 'Ablert Clements',
-    },
-};
+const optionMapping = createMockUserModels();
 
 export const LoggedIn = {
     ...Template.bind({}),

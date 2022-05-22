@@ -4,10 +4,10 @@ import { MenuItemPadding } from 'common/model/MenuItemPadding';
 import { MenuItem } from 'common/components/MenuItem';
 import { MenuContainer } from 'common/components/MenuContainer';
 import { Clear, ClearAll } from '@mui/icons-material';
-import { RoomSettingActions } from 'room/hooks/useRoomSettingActions';
+import { UseRoomSettingActions } from 'room/hooks/useRoomSettingActions';
 
 interface Props {
-    actions: RoomSettingActions;
+    actions: ReturnType<UseRoomSettingActions>;
 }
 
 const RoomSettingItem: FC<{ icon: IconType; text: string; onClick: () => void; }> = props => {

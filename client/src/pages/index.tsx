@@ -1,5 +1,5 @@
 import { RootContainer } from 'components/core/RootContainer';
-import { RoomPortal } from 'components/roomPortal/RoomPortal';
+import { RoomPortal } from 'room/components/RoomPortal';
 
 export default function Home() {
     return (

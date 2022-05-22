@@ -3,10 +3,12 @@ import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache, Global } from '@emotion/react';
-import { ThemeProvider, defaultTheme } from 'styles/ThemeProvider';
+import { ThemeProvider } from 'styles/components/ThemeProvider';
+import { getDefaultTheme } from 'styles/services/getTheme';
 import { useAppStore, createEmotionCache } from 'AppSetup';
 import { ErrorToast } from 'components/core/ErrorToast';
 
+const defaultTheme = getDefaultTheme();
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
@@ -16,6 +18,7 @@ interface MyAppProps extends AppProps {
 export default function App(props: MyAppProps) {
     const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
     const store = useAppStore(pageProps.initialReduxState);
+
     return (
         <Provider store={store}>
             <CacheProvider value={emotionCache}>
