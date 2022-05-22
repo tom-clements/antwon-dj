@@ -16,10 +16,7 @@ from chalicelib.services.room.delete_queue import delete_queue
 from chalicelib.services.room.delete_room import owner_delete_room
 from chalicelib.services.room.get_room_guid import get_room_guid
 from chalicelib.services.room.get_room_info import owner_get_room
-from chalicelib.services.room.get_room_queue import (
-    get_room_queue_guest_from_room_guid,
-    get_room_queue_user_from_room_guid,
-)
+from chalicelib.services.room.get_room_queue import get_room_queue_guest, get_room_queue_user
 from chalicelib.services.spotify.get_playing import get_playing
 from chalicelib.services.spotify.get_search_songs import search_songs
 from chalicelib.utils.endpoint_input_validation import verify_post_input, verify_parameter_inputs
@@ -37,8 +34,8 @@ def room_code_get(room_code: str) -> str:
 @room_routes.route("/room/{room_guid}", methods=["GET"], cors=get_cors_config(), authorizer=get_authorizer())
 @error_handle
 @user_username(room_routes)
-def room_get(room_guid: str, username: str) -> None:
-    owner_get_room(room_guid=room_guid, username=username)
+def room_get(room_guid: str, username: str) -> Dict[str, Any]:
+    return asdict(owner_get_room(room_guid=room_guid, username=username))
 
 
 @room_routes.route("/room/{room_guid}", methods=["DELETE"], cors=get_cors_config(), authorizer=get_authorizer())
@@ -59,14 +56,16 @@ def room_add(post_body: Dict[str, Any], username: str) -> None:
 @room_routes.route("/room/{room_guid}/queue/guest", methods=["GET"], cors=get_cors_config())
 @error_handle
 def room_queue_guest_get(room_guid: str) -> List[Dict[str, str]]:
-    return get_room_queue_guest_from_room_guid(room_guid)
+    room_queue = get_room_queue_guest(room_guid)
+    return [asdict(r) for r in room_queue]
 
 
 @room_routes.route("/room/{room_guid}/queue/user", methods=["GET"], cors=get_cors_config(), authorizer=get_authorizer())
 @error_handle
 @user_username(room_routes)
 def room_queue_user_get(room_guid: str, username: str) -> List[Dict[str, str]]:
-    return get_room_queue_user_from_room_guid(username, room_guid)
+    room_queue = get_room_queue_user(username, room_guid)
+    return [asdict(r) for r in room_queue]
 
 
 @room_routes.route("/room/{room_guid}/queue", methods=["POST"], cors=get_cors_config())
@@ -87,7 +86,7 @@ def room_songs_purge_post(room_guid: str, username: str) -> None:
 @room_routes.route(
     "/room/{room_guid}/queue/like", methods=["POST"], cors=get_cors_config(), authorizer=get_authorizer()
 )
-@verify_post_input(room_routes, "room_code")
+@verify_post_input(room_routes, "room_song_guid")
 @error_handle
 @user_username(room_routes)
 def room_songs_like_post(room_guid: str, post_body: Dict[str, Any], username: str) -> None:
@@ -98,7 +97,7 @@ def room_songs_like_post(room_guid: str, post_body: Dict[str, Any], username: st
     "/room/{room_guid}/queue/like", methods=["DELETE"], cors=get_cors_config(), authorizer=get_authorizer()
 )
 @error_handle
-@verify_post_input(room_routes, "room_code")
+@verify_post_input(room_routes, "room_song_guid")
 @user_username(room_routes)
 def room_songs_like_delete(room_guid: str, post_body: Dict[str, Any], username: str) -> None:
     delete_like_from_song(post_body["room_song_guid"], username=username)

@@ -72,7 +72,7 @@ def read_room_queue_guest(room_guid: str) -> List[QueueSongGuest]:
     return [QueueSongGuest(**r) for r in room_queue]
 
 
-def read_room_queue_user(user_id: int, room_guid: str) -> List[QueueSongGuest]:
+def read_room_queue_user(user_id: int, room_guid: str) -> List[QueueSongUser]:
     is_user_liked_query = read_is_user_liked_query(user_id, room_guid=room_guid)
     room_queue = (
         read_queue_column_query(room_guid=room_guid, cols=QueueSongUser.sqlalchemy_columns())

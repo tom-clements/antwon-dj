@@ -16,8 +16,18 @@ class QueueResult:
 
 
 @fixture()
+def guest_queue_no_params(guest_song_no_params: QueueSongResult) -> QueueResult:
+    return QueueResult(songs=[guest_song_no_params, guest_song_no_params, guest_song_no_params])
+
+
+@fixture()
 def guest_queue(guest_song: QueueSongResult, guest_song2: QueueSongResult, guest_song3: QueueSongResult) -> QueueResult:
     return QueueResult(songs=[guest_song, guest_song2, guest_song3])
+
+
+@fixture()
+def user_queue_no_params(user_song_no_params: QueueSongResult) -> QueueResult:
+    return QueueResult(songs=[user_song_no_params, user_song_no_params, user_song_no_params])
 
 
 @fixture()
