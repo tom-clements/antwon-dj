@@ -45,7 +45,7 @@ const useDarkMode: UseDarkMode = () => ({
 describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
-            user: { name: 'Name' },
+            useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
         });
@@ -57,7 +57,7 @@ describe('<UserPopoverMenu />', () => {
 
     it('renders menu when icon button receives onClick', () => {
         const { container } = testRender({
-            user: { name: 'Name' },
+            useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
         });
@@ -83,7 +83,7 @@ describe('<UserPopoverMenu />', () => {
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
-                user: { name: 'Name' },
+                useUser: () => ({ name: 'Name' }),
                 useUserMenuClickActions,
                 useDarkMode,
             });
@@ -112,7 +112,7 @@ describe('<UserPopoverMenu />', () => {
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
-                user: null,
+                useUser: () => null,
                 useUserMenuClickActions,
                 useDarkMode,
             });

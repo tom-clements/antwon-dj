@@ -18,6 +18,7 @@ interface Props {
 }
 
 export const NewRoom: FC<Props> = props => {
+    // TODO Convert this and all injected hooks to { name = _default } syntax for brevity
     const useGoBackAction = props.useGoBackAction ?? _useGoBackAction;
     const goBack = useGoBackAction();
 

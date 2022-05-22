@@ -1,21 +1,20 @@
 import { ComponentStory } from '@storybook/react';
+import { RoomPortalButtons as RoomPortalButtonsComponent } from 'room/components/RoomPortalButtons';
 import { createMockUserModels } from 'tests/user/helpers/createMockUserModels';
 import { mapMockUsersToUseUsers } from 'tests/user/helpers/mapMockUsersToUseUsers';
-import { UserPopoverMenu as UserPopoverMenuComponent } from 'user/components/UserPopoverMenu';
 
 const users = createMockUserModels();
 const useUserOptionMapping = mapMockUsersToUseUsers(users);
 
 export default {
-    title: 'user/UserPopoverMenu',
-    component: UserPopoverMenuComponent,
+    title: 'room/RoomPortalButtons',
+    component: RoomPortalButtonsComponent,
     args: {
-        useUser: Object.keys(useUserOptionMapping)[1],
-        useUserMenuClickActions: () => ({
+        useUser: Object.keys(useUserOptionMapping)[0],
+        useRoomPortalButtons: () => ({
+            newRoom: () => undefined,
             myRoom: () => undefined,
-            roomSettings: () => undefined,
-            shareRoom: () => undefined,
-            back: () => undefined,
+            linkAccounts: () => undefined,
             login: () => undefined,
             logout: () => undefined,
         }),
@@ -29,13 +28,14 @@ export default {
                 labels: { ...Object.keys(useUserOptionMapping) }
             },
         },
-        useUserMenuClickActions: { control: false },
-        useDarkMode: { control: false },
+        useRoomPortalButtons: { control: false },
     },
 };
 
-const Template: ComponentStory<typeof UserPopoverMenuComponent> = args => (
-    <UserPopoverMenuComponent {...args} />
+const Template: ComponentStory<typeof RoomPortalButtonsComponent> = args => (
+    <RoomPortalButtonsComponent {...args} />
 );
 
-export const Default = Template.bind({});
+export const Default = {
+    ...Template.bind({}),
+};

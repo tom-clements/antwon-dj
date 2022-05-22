@@ -1,5 +1,4 @@
 import { FC, forwardRef, ForwardRefRenderFunction, RefObject, useRef, useState } from 'react';
-import { UserModel } from 'user/model/UserModel';
 import { UserAvatar } from 'user/components/UserAvatar';
 import { styled } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
@@ -10,16 +9,22 @@ import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
 import { Login, Logout, Share, ArrowBack, Settings, Chair } from '@mui/icons-material';
 import { UseUserMenuClickActions, useUserMenuClickActions as _useUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
+import { UseUser, useUser as _useUser } from 'user/hooks/useUser';
 import { MenuItem } from 'common/components/MenuItem';
 import { UseDarkMode } from 'styles/hooks/useDarkMode';
 import { DarkModeMenuItem } from 'styles/components/DarkModeMenuItem';
+import { isLoggedIn } from 'user/predicates/isLoggedIn';
+import { hasRoom } from 'user/predicates/hasRoom';
 
 const MenuContainer = styled(Menu)`
     max-width: 256px;
 `;
 
 interface Props {
-    user: UserModel | null;
+    /**
+     * Injected `useUser` hook or default implementation
+     */
+    useUser?: UseUser;
 
     /**
      * Injected `useUserMenuClickActions` hook or default implementation
@@ -38,6 +43,9 @@ interface OpenProps {
 }
 
 const UserIconButton: ForwardRefRenderFunction<HTMLButtonElement, Props & OpenProps> = (props, ref) => {
+    const { useUser = _useUser } = props;
+    const user = useUser();
+
     return (
         <Tooltip title="User menu">
             <IconButton
@@ -48,7 +56,7 @@ const UserIconButton: ForwardRefRenderFunction<HTMLButtonElement, Props & OpenPr
                 aria-haspopup="true"
                 aria-expanded={props.isOpen ? 'true' : undefined}
             >
-                <UserAvatar user={props.user} />
+                <UserAvatar user={user} />
             </IconButton>
         </Tooltip>
     );
@@ -63,22 +71,32 @@ const UserText = styled(Typography)`
 `;
 
 const Spacer = styled('div')`
-    margin-top: ${props => props.theme.spacing(1)};
+    margin-top: ${props => props.theme.spacing(0.5)};
 `;
 
 const LoggedInMenuItems: FC<Props> = props => {
+    const { useUser = _useUser } = props;
+    const user = useUser();
+
     const { useUserMenuClickActions = _useUserMenuClickActions } = props;
     const onMenuClicks = useUserMenuClickActions();
+
     return (
         <>
             <Spacer />
             <UserText variant="inherit" noWrap>
-                {props.user?.name ? props.user?.name : '?'}
+                {user?.name ? user?.name : '?'}
             </UserText>
-            <Divider sx={{ mt: 1, mb: 1 }} />
-            <MenuItem icon={Chair} text="My Room" onClick={onMenuClicks.myRoom} />
-            <MenuItem icon={Settings} text="Room Settings" onClick={onMenuClicks.roomSettings} />
-            <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
+            {
+                !hasRoom(user)
+                    ? null
+                    : <>
+                        <Divider sx={{ mt: 1, mb: 1 }} />
+                        <MenuItem icon={Chair} text="My Room" onClick={onMenuClicks.myRoom} />
+                        <MenuItem icon={Settings} text="Room Settings" onClick={onMenuClicks.roomSettings} />
+                        <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
+                    </>
+            }
             <Divider sx={{ mt: 1, mb: 1 }} />
             <DarkModeMenuItem useDarkMode={props.useDarkMode} />
             <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
@@ -92,9 +110,6 @@ const LoggedOutMenuItems: FC<Props> = props => {
     const onMenuClicks = useUserMenuClickActions();
     return (
         <>
-            <Spacer />
-            <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
-            <Divider sx={{ mt: 1, mb: 1 }} />
             <DarkModeMenuItem useDarkMode={props.useDarkMode} />
             <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
             <MenuItem icon={Login} text="Login" onClick={onMenuClicks.login} />
@@ -103,6 +118,9 @@ const LoggedOutMenuItems: FC<Props> = props => {
 };
 
 const UserMenu: FC<Props & OpenProps & { buttonRef: RefObject<HTMLButtonElement> }> = props => {
+    const { useUser = _useUser } = props;
+    const user = useUser();
+
     if (!props.buttonRef) return null;
 
     return (
@@ -137,7 +155,7 @@ const UserMenu: FC<Props & OpenProps & { buttonRef: RefObject<HTMLButtonElement>
             anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
         >
             {
-                props.user
+                isLoggedIn(user)
                     ? <LoggedInMenuItems {...props} />
                     : <LoggedOutMenuItems {...props} />
             }

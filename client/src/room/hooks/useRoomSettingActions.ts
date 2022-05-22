@@ -1,15 +1,20 @@
-import { useMemo } from 'react';
+import type { HF } from 'common/model/HookFunction';
+import { useCallback } from 'react';
 
-export interface RoomSettingActions {
+export interface Return {
     clearQueue: () => void;
     deleteRoom: () => void;
 }
 
-export type UseRoomSettingActions = () => RoomSettingActions;
+export type UseRoomSettingActions = HF<void, Return>;
 
 export const useRoomSettingActions: UseRoomSettingActions = () => {
-    return useMemo(() => ({
-        clearQueue: () => undefined,
-        deleteRoom: () => undefined,
-    }), []);
+    return {
+        clearQueue: useCallback(
+            () => undefined,
+            []),
+        deleteRoom: useCallback(
+            () => undefined,
+            []),
+    };
 };
