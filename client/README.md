@@ -27,6 +27,8 @@ State management and data access is built with Redux Toolkit and RTK Query.
   - `yarn lint:fix`
 - Testing
   - `yarn test`
+- Type checking
+  - `yarn types:check`
 - Upgrading
   - `yarn upgrade-interactive`
 

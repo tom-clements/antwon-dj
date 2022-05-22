@@ -139,3 +139,6 @@ dmypy.json
 
 # Jest coverage
 client/coverage
+
+# TSC type checking
+tsconfig.tsbuildinfo
