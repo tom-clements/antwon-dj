@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import { RoomPortalButton } from 'room/components/RoomPortalButton';
-import { UseUser, useUser as _useUser } from 'user/hooks/useUser';
 import { Add, Chair, Link, Login, Logout } from '@mui/icons-material';
 import { isLoggedIn } from 'user/predicates/isLoggedIn';
 import { hasRoom } from 'user/predicates/hasRoom';
+import { UseUser, useUser as _useUser } from 'user/hooks/useUser';
 import { UseRoomPortalButtons, useRoomPortalButtons as _useRoomPortalButtons } from 'room/hooks/useRoomPortalButtons';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';

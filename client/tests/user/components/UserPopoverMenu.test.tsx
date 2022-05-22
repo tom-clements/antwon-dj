@@ -83,7 +83,7 @@ describe('<UserPopoverMenu />', () => {
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
-                useUser: () => ({ name: 'Name' }),
+                useUser: () => ({ name: 'Name', roomId: '0' }),
                 useUserMenuClickActions,
                 useDarkMode,
             });
@@ -105,7 +105,6 @@ describe('<UserPopoverMenu />', () => {
 
         const cases: TestCase[] = [
             ['Dark Mode', 'darkMode'],
-            ['Share Room', 'shareRoom'],
             ['Back', 'back'],
             ['Login', 'login'],
         ];
