@@ -14,7 +14,7 @@ from chalicelib.services.exceptions import (
 def error_response(status_code: int, error: ServiceError) -> Response:
     return Response(
         status_code=status_code,
-        body={"Code": error.__class__.__name__, "Message": str(error)},
+        body={"Code": error.__class__.__name__.replace("Service", "API"), "Message": str(error)},
         headers={"Content-Type": "application/json"},
     )
 

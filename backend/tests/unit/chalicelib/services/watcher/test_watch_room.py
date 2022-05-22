@@ -1,9 +1,7 @@
-from dataclasses import asdict
 from typing import Any, Tuple, Dict, Optional
 from unittest.mock import patch, Mock
 
 import pytest
-from dacite import from_dict
 
 from chalicelib.models.data_queries.next_song import NextSong
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
@@ -101,7 +99,7 @@ def test_check_next_song(
             get_example_next_song(room_song_guid="room_song_guid", song_uri="example_song_uri"),
             False,
             (
-                asdict(get_example_next_song(room_song_guid="room_song_guid", song_uri="example_song_uri")),
+                get_example_next_song(room_song_guid="room_song_guid", song_uri="example_song_uri"),
                 True,
             ),
         ),
@@ -109,7 +107,7 @@ def test_check_next_song(
             get_example_next_song(room_song_guid="room_song_guid", song_uri="example_song_uri"),
             True,
             (
-                asdict(get_example_next_song(room_song_guid="room_song_guid2", song_uri="example_song_uri2")),
+                get_example_next_song(room_song_guid="room_song_guid2", song_uri="example_song_uri2"),
                 True,
             ),
         ),
@@ -127,7 +125,7 @@ def test_process_next_song(
     test_room_code = "TEST"
     mock_check_next_song.return_value = True, removed_from_queue
     if removed_from_queue:
-        mock_watch_room.return_value = from_dict(data_class=NextSong, data=expected[0]), expected[1]
+        mock_watch_room.return_value = expected[0], expected[1]
     else:
         mock_watch_room.return_value = next_song, True
 
@@ -165,7 +163,7 @@ def test_watch_room(
     mock_get_recommended_song.return_value = recommended_song
     mock_process_next_song.return_value = expected
 
-    actual = watch_room(room_guid)
+    actual = watch_room.__wrapped__(room_guid)  # type: ignore
     assert actual == expected
 
     mock_read_next_song.assert_called_once_with(room_guid)
