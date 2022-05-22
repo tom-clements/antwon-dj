@@ -1,34 +1,36 @@
 import { FC } from 'react';
 import Grid from '@mui/material/Grid';
 import { RoomCodeForm } from 'room/components/RoomCodeForm';
-import { UseRoomPortal, useRoomPortal as _useRoomPortal } from 'room/hooks/useRoomPortal';
-
-interface Props {
-    /**
-     * Injected `useRoomPortal` hook or default implementation
-     */
-    useRoomPortal?: UseRoomPortal;
-}
+import { RoomPortalButtons } from 'room/components/RoomPortalButtons';
+import { UserFab } from 'user/components/UserFab';
+import { useDependencies } from 'common/hooks/useDependencies';
 
 // TODO clarify what RoomPortal is. It is the contents of the index page, that can
 // take you to a room. The "RoomPortal" state slice is, regrettably, different. It
 // is 'sort-of' the current room. I should make this clearer.
-export const RoomPortal: FC<Props> = props => {
-    const useRoomPortal = props.useRoomPortal ?? _useRoomPortal;
+export const RoomPortal: FC = () => {
     const {
         currentRoomCode,
         setCurrentRoom,
         goToCurrentRoom,
-    } = useRoomPortal();
+    } = useDependencies(d => d.useRoomPortal)();
 
     return (
-        <Grid container alignItems="center" justifyContent="center">
-            <RoomCodeForm
-                initialRoomCode={currentRoomCode}
-                onChange={setCurrentRoom}
-                onSubmit={goToCurrentRoom}
-                submitText="Go"
-            />
-        </Grid>
+        <>
+            <Grid container spacing={6}>
+                <Grid container justifyContent="center" alignItems="end" item xs={12}>
+                    <RoomCodeForm
+                        initialRoomCode={currentRoomCode}
+                        onChange={setCurrentRoom}
+                        onSubmit={goToCurrentRoom}
+                        submitText="Go"
+                    />
+                </Grid>
+                <Grid container item justifyContent="center" alignItems="start" xs={12}>
+                    <RoomPortalButtons />
+                </Grid>
+            </Grid>
+            <UserFab />
+        </>
     );
 };

@@ -2,6 +2,7 @@ import React, { CSSProperties, FC, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
+import { UserFab } from 'user/components/UserFab';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { ArrowDropUp, ArrowDropDown } from '@mui/icons-material';
@@ -65,6 +66,9 @@ const expandableStyle: CSSProperties = {
     position: 'relative',
 };
 
+// TODO ideally, UserFab shouldn't be here, but "absolutes"; dom ordering.
+// The root container here should be pulled out to resolve.
+
 export const BottomSheet: FC<Props> = props => {
     const [open, setOpen] = useState(false);
     const handlers = useSwipeable({
@@ -74,6 +78,7 @@ export const BottomSheet: FC<Props> = props => {
 
     return (
         <Root>
+            <UserFab />
             <FauxAnimateHeight in={open} startHeight={'50%'} endHeight={'100%'} style={expandableStyle}>
                 <SheetBox>
                     <PullBox
