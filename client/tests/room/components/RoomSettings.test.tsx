@@ -1,5 +1,7 @@
-import { ComponentProps } from 'react';
+import type { Dependencies } from 'common/services/DependencyContext';
+import type { ComponentProps } from 'react';
 import { render } from '@testing-library/react';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 import { RoomSettings } from 'room/components/RoomSettings';
 import { SettingsView } from 'common/components/SettingsView';
 import { RoomSettingsMenu } from 'room/components/RoomSettingsMenu';
@@ -21,8 +23,15 @@ jest.mock('room/components/RoomSettingsMenu', () => ({
     ),
 }));
 
-function testRender(props: ComponentProps<typeof RoomSettings>) {
-    return render(<RoomSettings {...props} />);
+function testRender(
+    deps: Partial<Dependencies>,
+    props?: ComponentProps<typeof RoomSettings>
+) {
+    return render(
+        <DependencyProvider {...deps}>
+            <RoomSettings {...props} />
+        </DependencyProvider>
+    );
 }
 
 const actions: ReturnType<UseRoomSettingActions> = {
@@ -32,12 +41,11 @@ const actions: ReturnType<UseRoomSettingActions> = {
 const useRoomSettingActions: UseRoomSettingActions = () => actions;
 
 const goBackAction = jest.fn();
-const useGoBackAction = () => goBackAction;
 
 describe('<RoomSettings />', () => {
     it('renders <SettingsView /> with <RoomSettingsMenu />', () => {
         const { getByText } = testRender({
-            useGoBackAction,
+            useBreadcrumbs: () => ({ isRoot: false, goBack: goBackAction }),
             useRoomSettingActions,
         });
 

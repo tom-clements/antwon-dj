@@ -1,5 +1,7 @@
-import { ComponentProps } from 'react';
+import type { Dependencies } from 'common/services/DependencyContext';
+import type { ComponentProps } from 'react';
 import { render } from '@testing-library/react';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 import { LinkAccounts } from 'user/components/LinkAccounts';
 import { mockAccountLinksFactory } from 'tests/user/helpers/mockAccountLinksFactory';
 import { SettingsView } from 'common/components/SettingsView';
@@ -22,21 +24,27 @@ jest.mock('user/components/LinkAccountsMenu', () => ({
     ),
 }));
 
-function testRender(props: ComponentProps<typeof LinkAccounts>) {
-    return render(<LinkAccounts {...props} />);
+function testRender(
+    deps: Partial<Dependencies>,
+    props?: ComponentProps<typeof LinkAccounts>
+) {
+    return render(
+        <DependencyProvider {...deps}>
+            <LinkAccounts {...props} />
+        </DependencyProvider>
+    );
 }
 
 const accountLinks = mockAccountLinksFactory(false)();
 const useAccountLinks = () => accountLinks;
 
 const goBackAction = jest.fn();
-const useGoBackAction = () => goBackAction;
 
 describe('<LinkAccounts />', () => {
     it('renders <SettingsView /> with <LinkAccountsMenu />', () => {
         const { container } = testRender({
             useAccountLinks,
-            useGoBackAction,
+            useBreadcrumbs: () => ({ isRoot: false, goBack: goBackAction }),
         });
 
         const settingsView = container.querySelector('#settingsView');

@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react';
 import type { Story } from '@storybook/react';
 import type { Dependencies } from 'common/services/DependencyContext';
+import { DependencyProvider } from 'common/components/DependencyProvider';
+import { UserPopoverMenu as UserPopoverMenuComponent } from 'user/components/UserPopoverMenu';
 import { createMockUserModels } from 'tests/user/helpers/createMockUserModels';
 import { mapMockUsersToUseUsers } from 'tests/user/helpers/mapMockUsersToUseUsers';
-import { UserPopoverMenu as UserPopoverMenuComponent } from 'user/components/UserPopoverMenu';
-import { DependencyProvider } from 'common/components/DependencyProvider';
 
 const users = createMockUserModels();
 const useUserOptionMapping = mapMockUsersToUseUsers(users);
@@ -13,6 +13,10 @@ export default {
     title: 'user/UserPopoverMenu',
     component: UserPopoverMenuComponent,
     args: {
+        useBreadcrumbs: () => ({
+            isRoot: false,
+            goBack: () => undefined
+        }),
         useUser: Object.keys(useUserOptionMapping)[1],
         useUserMenuClickActions: () => ({
             myRoom: () => undefined,

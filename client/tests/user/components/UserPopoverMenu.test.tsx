@@ -38,7 +38,7 @@ const onMenuClicks = {
     myRoom: jest.fn(),
     roomSettings: jest.fn(),
     shareRoom: jest.fn(),
-    back: jest.fn(),
+    goBack: jest.fn(),
     login: jest.fn(),
     logout: jest.fn(),
     darkMode: jest.fn(),
@@ -54,6 +54,7 @@ const useDarkMode: UseDarkMode = () => ({
 describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
+            useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
@@ -66,6 +67,7 @@ describe('<UserPopoverMenu />', () => {
 
     it('renders menu when icon button receives onClick', () => {
         const { container } = testRender({
+            useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
@@ -86,12 +88,13 @@ describe('<UserPopoverMenu />', () => {
             ['Room Settings', 'roomSettings'],
             ['Dark Mode', 'darkMode'],
             ['Share Room', 'shareRoom'],
-            ['Back', 'back'],
+            ['Back', 'goBack'],
             ['Logout', 'logout'],
         ];
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
+                useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
                 useUser: () => ({ name: 'Name', roomId: '0' }),
                 useUserMenuClickActions,
                 useDarkMode,
@@ -114,12 +117,13 @@ describe('<UserPopoverMenu />', () => {
 
         const cases: TestCase[] = [
             ['Dark Mode', 'darkMode'],
-            ['Back', 'back'],
+            ['Back', 'goBack'],
             ['Login', 'login'],
         ];
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
+                useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
                 useUser: () => null,
                 useUserMenuClickActions,
                 useDarkMode,

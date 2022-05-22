@@ -10,7 +10,6 @@ type BaseReturn = LoginActions & RoomIdentityActions;
 interface Return extends BaseReturn {
     roomSettings: () => void;
     shareRoom: () => void;
-    back: () => void;
 }
 
 export type UseUserMenuClickActions = HF<void, Return>;
@@ -25,9 +24,6 @@ export const useUserMenuClickActions: UseUserMenuClickActions = () => {
             () => undefined,
             []),
         shareRoom: useCallback(
-            () => undefined,
-            []),
-        back: useCallback(
             () => undefined,
             []),
         login,

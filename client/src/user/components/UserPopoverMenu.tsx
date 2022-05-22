@@ -58,6 +58,17 @@ const Spacer = styled('div')`
     margin-top: ${props => props.theme.spacing(0.5)};
 `;
 
+const BackItem: FC = () => {
+    const useBreadcrumbs = useDependencies(d => d.useBreadcrumbs);
+    const { isRoot, goBack } = useBreadcrumbs();
+
+    if (isRoot) return null;
+
+    return (
+        <MenuItem icon={ArrowBack} text="Back" onClick={goBack} />
+    );
+};
+
 const LoggedInMenuItems: FC = () => {
     const deps = useDependencies(d => ({
         useUser: d.useUser,
@@ -85,7 +96,7 @@ const LoggedInMenuItems: FC = () => {
             }
             <Divider sx={{ mt: 1, mb: 1 }} />
             <DarkModeMenuItem useDarkMode={deps.useDarkMode} />
-            <MenuItem icon={ArrowBack} text="Back" onClick={actions.back} />
+            <BackItem />
             <MenuItem icon={Logout} text="Logout" onClick={actions.logout} />
         </>
     );
@@ -101,7 +112,7 @@ const LoggedOutMenuItems: FC = () => {
     return (
         <>
             <DarkModeMenuItem useDarkMode={deps.useDarkMode} />
-            <MenuItem icon={ArrowBack} text="Back" onClick={actions.back} />
+            <BackItem />
             <MenuItem icon={Login} text="Login" onClick={actions.login} />
         </>
     );

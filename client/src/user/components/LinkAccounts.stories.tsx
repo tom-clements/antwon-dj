@@ -1,4 +1,7 @@
-import { ComponentStory } from '@storybook/react';
+import type { ComponentProps } from 'react';
+import type { Story } from '@storybook/react';
+import type { Dependencies } from 'common/services/DependencyContext';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 import { LinkAccounts as LinkAccountsComponent } from 'user/components/LinkAccounts';
 import { LinkAccountsMenu } from 'user/components/LinkAccountsMenu';
 import { LinkAccountItem } from 'user/components/LinkAccountItem';
@@ -14,7 +17,10 @@ export default {
     component: LinkAccountsComponent,
     subcomponents: { LinkAccountsMenu, LinkAccountItem },
     args: {
-        useGoBackAction: () => () => undefined,
+        useBreadcrumbs: () => ({
+            isRoot: false,
+            goBack: () => undefined
+        }),
     },
     argTypes: {
         useAccountLinks: {
@@ -25,27 +31,17 @@ export default {
                 labels: { ...Object.keys(optionMapping) }
             },
         },
-        useGoBackAction: { control: false },
+        useBreadcrumbs: { control: false },
     },
     parameters: {
         layout: 'fullscreen',
     },
 };
 
-const Template: ComponentStory<typeof LinkAccountsComponent> = args => (
-    <LinkAccountsComponent {...args} />
+const Template: Story<ComponentProps<typeof LinkAccountsComponent> & Partial<Dependencies>> = args => (
+    <DependencyProvider {...args}>
+        <LinkAccountsComponent {...args} />
+    </DependencyProvider>
 );
 
-export const Linked = {
-    ...Template.bind({}),
-    args: {
-        useAccountLinks: Object.keys(optionMapping)[0],
-    },
-};
-
-export const Unlinked = {
-    ...Template.bind({}),
-    args: {
-        useAccountLinks: Object.keys(optionMapping)[1],
-    },
-};
+export const Default = Template.bind({});

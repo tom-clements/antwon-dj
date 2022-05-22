@@ -1,17 +1,23 @@
-import { ComponentStory } from '@storybook/react';
+import type { ComponentProps } from 'react';
+import type { Story } from '@storybook/react';
+import type { Dependencies } from 'common/services/DependencyContext';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 import { NewRoom as NewRoomComponent } from 'room/components/NewRoom';
 
 export default {
     title: 'room/NewRoom',
     component: NewRoomComponent,
     args: {
-        useGoBackAction: () => () => undefined,
+        useBreadcrumbs: () => ({
+            isRoot: false,
+            goBack: () => undefined
+        }),
         useNewRoom: () => ({
             createAndGoToNewRoom: () => undefined,
         }),
     },
     argTypes: {
-        useGoBackAction: { control: false },
+        useBreadcrumbs: { control: false },
         useNewRoom: { control: false },
     },
     parameters: {
@@ -19,10 +25,10 @@ export default {
     },
 };
 
-const Template: ComponentStory<typeof NewRoomComponent> = args => (
-    <NewRoomComponent {...args} />
+const Template: Story<ComponentProps<typeof NewRoomComponent> & Partial<Dependencies>> = args => (
+    <DependencyProvider {...args}>
+        <NewRoomComponent {...args} />
+    </DependencyProvider>
 );
 
-export const Default = {
-    ...Template.bind({}),
-};
+export const Default = Template.bind({});
