@@ -111,7 +111,7 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/Tokens"
+                            "$ref": "#/definitions/UserInfo"
                         }
                     },
                     "401": {
@@ -340,7 +340,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "200 response"
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/RoomInfo"
+                        }
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -411,9 +414,9 @@
                 ]
             }
         },
-        "/room/{room_guid}/queue": {
+        "/room/{room_guid}/queue/guest": {
             "get": {
-                "summary": "Retrieve the room queue",
+                "summary": "Retrieve the room queue for an unauthenticated user",
                 "consumes": [
                     "application/json"
                 ],
@@ -424,7 +427,7 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/RoomQueue"
+                            "$ref": "#/definitions/RoomQueueGuest"
                         }
                     },
                     "404": {
@@ -439,7 +442,48 @@
                         "type": "string"
                     }
                 ]
-            },
+            }
+        },
+        "/room/{room_guid}/queue/user": {
+            "get": {
+                "summary": "Retrieve the room queue for an authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "antwon_user_pool": [
+                            "email",
+                            "openid",
+                            "profile"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "200 response",
+                        "schema": {
+                            "$ref": "#/definitions/RoomQueueUser"
+                        }
+                    },
+                    "404": {
+                        "description": "Room Not Found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "room_guid",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/room/{room_guid}/queue": {
             "post": {
                 "summary": "Add a song to the room queue",
                 "consumes": [
@@ -641,7 +685,6 @@
     "definitions": {
         "Tokens": {
             "type": "object",
-            "title": "Tokens",
             "properties": {
                 "id_token":  {"type":  "string"},
                 "access_token":  {"type":  "string"},
@@ -651,91 +694,112 @@
         },
         "UserInfo": {
             "type": "object",
-            "title": "Tokens",
             "properties": {
-                "sub":  {"type":  "string", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
-                "access_token":  {"type":  "string"},
-                "token_type":  {"type":  "string"},
-                "expires_in":  {"type":  "integer"}
+                "room_code":  {"type":  "string", "example": "SOIREE"},
+                "room_guid":  {"type":  "string", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
+                "user_username":  {"type":  "string", "example": "google_115636318877645090402"},
+                "is_inactive":  {"type":  "boolean", "example": "false"},
+                "create_time":  {"type":  "string", "example":  "2022-04-11 08:59:49"}
+            }
+        },
+        "RoomInfo": {
+            "type": "object",
+            "properties": {
+                "room_code":  {"type":  "string", "example": "SOIREE"},
+                "room_guid":  {"type":  "boolean", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
+                "user_username":  {"type":  "string", "example":  "google_115636318877645090402"},
+                "is_inactive":  {"type":  "boolean", "example":  "false"},
+                "create_time":  {"type":  "string", "example":  "2022-04-11 08:59:49"}
             }
         },
         "RefreshToken": {
             "type": "object",
-            "title": "Refresh Token",
             "properties": {"refresh_token":  {"type":  "string"}}
         },
         "RoomGuid": {
             "type": "string",
-            "title": "Room GUID",
             "example": "33f00768-764a-437e-a7a1-42c4aee76ea0"
         },
         "RoomSong": {
             "type": "object",
-            "title": "Room SOng",
             "properties": {"room_song_guid":  {"type":  "string"}}
         },
         "Room": {
             "type": "object",
-            "title": "Room",
             "properties": {"room_code":  {"type":  "string"}}
         },
-        "QueueSong": {
+        "QueueSongGuest": {
             "type": "object",
-            "title": "Queue Song",
             "properties": {
-                "room_song_guid": {"type":  "string"},
-                "song_uri":  {"type":  "string"},
-                "song_name":  {"type":  "string"},
-                "song_artist":  {"type":  "string"},
-                "song_album_url":  {"type":  "string"},
-                "is_inactive":  {"type":  "boolean"},
-                "insert_time":  {"type":  "string"},
-                "is_played":  {"type":  "boolean"},
-                "is_removed":  {"type":  "boolean"}
-            },
-            "example": "{\n\"room_song_guid\": \"f409f9cb-547a-47d6-9b02-fdedc9e3d79a\",\n\"song_uri\": \"spotify:track:3uUuGVFu1V7jTQL60S1r8z\",\n\"song_name\": \"Where Are You Now\",\n\"song_artist\": \"Lost Frequencies, Calum Scott\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2738d7a7f1855b04104ba59c18b\",\n\"is_inactive\": false,\n\"insert_time\": \"2022-04-11 08:59:49\",\n\"is_played\": false,\n\"is_removed\": false\n}"
+                "room_song_guid": {"type":  "string", "example":  "f409f9cb-547a-47d6-9b02-fdedc9e3d79a"},
+                "song_uri":  {"type":  "string", "example":  "spotify:track:3uUuGVFu1V7jTQL60S1r8z"},
+                "song_name":  {"type":  "string", "example":  "Where Are You Now"},
+                "song_artist":  {"type":  "string", "example":  "Lost Frequencies, Calum Scott"},
+                "song_album_url":  {"type":  "string", "example":  "https://i.scdn.co/image/ab67616d0000b2738d7a7f1855b04104ba59c18b"},
+                "is_inactive":  {"type":  "boolean", "example":  "false"},
+                "insert_time":  {"type":  "string", "example":  "2022-04-11 08:59:49"},
+                "is_played":  {"type":  "boolean", "example":  "false"},
+                "is_removed":  {"type":  "boolean", "example":  "false"},
+                "like_count": {"type":  "integer", "example":  1}
+            }
         },
-        "RoomQueue": {
+        "QueueSongUser": {
+            "type": "object",
+            "properties": {
+                "room_song_guid": {"type":  "string", "example":  "f409f9cb-547a-47d6-9b02-fdedc9e3d79a"},
+                "song_uri":  {"type":  "string", "example":  "spotify:track:3uUuGVFu1V7jTQL60S1r8z"},
+                "song_name":  {"type":  "string", "example":  "Where Are You Now"},
+                "song_artist":  {"type":  "string", "example":  "Lost Frequencies, Calum Scott"},
+                "song_album_url":  {"type":  "string", "example":  "https://i.scdn.co/image/ab67616d0000b2738d7a7f1855b04104ba59c18b"},
+                "is_inactive":  {"type":  "boolean", "example":  "false"},
+                "insert_time":  {"type":  "string", "example":  "2022-04-11 08:59:49"},
+                "is_played":  {"type":  "boolean", "example":  "false"},
+                "is_removed":  {"type":  "boolean", "example":  "false"},
+                "like_count": {"type":  "integer", "example":  1},
+                "is_user_liked":  {"type":  "boolean", "example":  "true"}
+            }
+        },
+        "RoomQueueGuest": {
             "type":  "array",
             "items": {
-                "type": "QueueSong",
-                "example": "{\n\"room_song_guid\": \"f409f9cb-547a-47d6-9b02-fdedc9e3d79a\",\n\"song_uri\": \"spotify:track:3uUuGVFu1V7jTQL60S1r8z\",\n\"song_name\": \"Where Are You Now\",\n\"song_artist\": \"Lost Frequencies, Calum Scott\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2738d7a7f1855b04104ba59c18b\",\n\"is_inactive\": false,\n\"insert_time\": \"2022-04-11 08:59:49\",\n\"is_played\": false,\n\"is_removed\": false\n}"
+                "$ref": "#/definitions/QueueSongGuest"
+            }
+        },
+        "RoomQueueUser": {
+            "type":  "array",
+            "items": {
+                "$ref": "#/definitions/QueueSongUser"
             }
         },
         "Song": {
             "type": "object",
             "title": "Song",
             "properties": {
-                "song_uri":  {"type":  "string"},
-                "song_artist":  {"type":  "string"},
-                "song_name":  {"type":  "string"},
-                "song_album_url":  {"type":  "string"}
-            },
-            "example": "{\n\"song_uri\": \"spotify:track:1E4xkXgqOCzAjVFnDqhGSx\",\n\"song_artist\": \"Wiz Khalifa\",\n\"song_name\": \"Taylor Gang\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2732a7e92288383175e256a3cb2\"\n}"
+                "song_uri":  {"type":  "string", "example":  "spotify:track:1E4xkXgqOCzAjVFnDqhGSx"},
+                "song_artist":  {"type":  "string", "example":  "Wiz Khalifa"},
+                "song_name":  {"type":  "string", "example":  "Taylor Gang"},
+                "song_album_url":  {"type":  "string", "example":  "https://i.scdn.co/image/ab67616d0000b2732a7e92288383175e256a3cb2"}
+            }
         },
         "SearchSong": {
             "type": "array",
             "items": {
-                "type": "Song",
-                "example": "{\n\"song_uri\": \"spotify:track:1E4xkXgqOCzAjVFnDqhGSx\",\n\"song_artist\": \"Wiz Khalifa\",\n\"song_name\": \"Taylor Gang\",\n\"song_album_url\": \"https://i.scdn.co/image/ab67616d0000b2732a7e92288383175e256a3cb2\"\n}"
+                "$ref": "#/definitions/Song"
             }
         },
         "SpotifyPlaylist": {
             "type": "object",
             "properties": {
-                "playlist_id":  {"type":  "string"},
-                "name":  {"type":  "string"}
-            },
-            "example": "{\n\"playlist_id\": \"playlist_id_1\",\n\"name\": \"Playlist Name\"\n}"
+                "playlist_id":  {"type":  "string", "example":  "playlist_id_1"},
+                "name":  {"type":  "string", "example":  "Playlist Name"}
+            }
         },
         "SpotifyPlaylists": {
             "type": "array",
             "items": {
-                "type": "SpotifyPlaylist",
-                "example": "{\n\"id\": \"playlist_id_1\",\n\"name\": \"Playlist Name\"\n}"
+                "$ref": "#/definitions/SpotifyPlaylist"
             }
         }
-
     },
     "securityDefinitions": {
         "antwon_user_pool": {
