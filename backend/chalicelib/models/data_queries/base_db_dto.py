@@ -1,4 +1,5 @@
 from dataclasses import dataclass, Field, fields, _MISSING_TYPE
+from typing import List
 
 from sqlalchemy import column, cast, func
 from sqlalchemy.sql.elements import Label
@@ -10,7 +11,7 @@ from chalicelib.models.base_dto import BaseDto
 @dataclass
 class BaseDbDto(BaseDto):
     @classmethod
-    def sqlalchemy_columns(cls) -> list[Label]:
+    def sqlalchemy_columns(cls) -> List[Label]:
         return [
             (
                 cls._get_sql_column(field)
