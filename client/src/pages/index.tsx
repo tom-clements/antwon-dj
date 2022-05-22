@@ -1,4 +1,4 @@
-import { RootContainer } from 'components/core/RootContainer';
+import { RootContainer } from 'common/components/RootContainer';
 import { RoomPortal } from 'room/components/RoomPortal';
 
 export default function Home() {

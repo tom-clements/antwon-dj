@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { RootContainer } from 'components/core/RootContainer';
+import { RootContainer } from 'common/components/RootContainer';
 import { Room } from 'components/room/Room';
 import { RoomProvider } from 'components/room/RoomProvider';
 import { SpinnerPageSize } from 'components/core/SpinnerPageSize';

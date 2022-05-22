@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { RootContainer } from 'components/core/RootContainer';
+import { RootContainer } from 'common/components/RootContainer';
 import { QRCodeModuleVariant, SpinnerQRCode } from 'components/atoms/QRCode';
 import { Box, Link, styled, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
