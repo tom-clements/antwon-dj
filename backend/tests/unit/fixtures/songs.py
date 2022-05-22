@@ -85,6 +85,13 @@ def next_song1() -> NextSongResult:
     return NextSongResult(db_result=db_result, result=result)
 
 
+@fixture
+def guest_song_no_params() -> QueueSongResult:
+    db_result = get_queue_song_guest_db(insert_time="", like_count=0)
+    result = QueueSongGuest(**db_result)
+    return QueueSongResult(db_result=db_result, result=result)
+
+
 @fixture(params=GUEST_SONGS[0:2])
 def guest_song(request: SubRequest) -> QueueSongResult:
     db_result = get_queue_song_guest_db(insert_time=request.param.insert_time, like_count=request.param.like_count)
@@ -103,6 +110,13 @@ def guest_song2(request: SubRequest) -> QueueSongResult:
 def guest_song3(request: SubRequest) -> QueueSongResult:
     db_result = get_queue_song_guest_db(insert_time=request.param.insert_time, like_count=request.param.like_count)
     result = QueueSongGuest(**db_result)
+    return QueueSongResult(db_result=db_result, result=result)
+
+
+@fixture
+def user_song_no_params() -> QueueSongResult:
+    db_result = get_queue_song_user_db(insert_time="", like_count=1, is_user_liked=True)
+    result = QueueSongUser(**db_result)
     return QueueSongResult(db_result=db_result, result=result)
 
 
