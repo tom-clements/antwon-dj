@@ -2,7 +2,7 @@ import { ComponentProps } from 'react';
 import { render } from '@testing-library/react';
 import { RoomSettingsMenu } from 'room/components/RoomSettingsMenu';
 import { MenuItem } from 'common/components/MenuItem';
-import { RoomSettingActions } from 'room/hooks/useRoomSettingActions';
+import { UseRoomSettingActions } from 'room/hooks/useRoomSettingActions';
 
 jest.mock('common/components/MenuItem', () => ({
     __esModule: true,
@@ -13,7 +13,7 @@ jest.mock('common/components/MenuItem', () => ({
     ),
 }));
 
-const actions: RoomSettingActions = {
+const actions: ReturnType<UseRoomSettingActions> = {
     clearQueue: jest.fn(),
     deleteRoom: jest.fn(),
 };

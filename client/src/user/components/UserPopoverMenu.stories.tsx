@@ -1,7 +1,10 @@
-import { ComponentStory } from '@storybook/react';
+import type { ComponentProps } from 'react';
+import type { Story } from '@storybook/react';
+import type { Dependencies } from 'common/services/DependencyContext';
 import { createMockUserModels } from 'tests/user/helpers/createMockUserModels';
 import { mapMockUsersToUseUsers } from 'tests/user/helpers/mapMockUsersToUseUsers';
 import { UserPopoverMenu as UserPopoverMenuComponent } from 'user/components/UserPopoverMenu';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 
 const users = createMockUserModels();
 const useUserOptionMapping = mapMockUsersToUseUsers(users);
@@ -34,8 +37,10 @@ export default {
     },
 };
 
-const Template: ComponentStory<typeof UserPopoverMenuComponent> = args => (
-    <UserPopoverMenuComponent {...args} />
+const Template: Story<ComponentProps<typeof UserPopoverMenuComponent> & Partial<Dependencies>> = args => (
+    <DependencyProvider {...args}>
+        <UserPopoverMenuComponent {...args} />
+    </DependencyProvider>
 );
 
 export const Default = Template.bind({});

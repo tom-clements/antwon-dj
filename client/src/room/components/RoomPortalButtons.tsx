@@ -3,26 +3,17 @@ import { RoomPortalButton } from 'room/components/RoomPortalButton';
 import { Add, Chair, Link, Login, Logout } from '@mui/icons-material';
 import { isLoggedIn } from 'user/predicates/isLoggedIn';
 import { hasRoom } from 'user/predicates/hasRoom';
-import { UseUser, useUser as _useUser } from 'user/hooks/useUser';
-import { UseRoomPortalButtons, useRoomPortalButtons as _useRoomPortalButtons } from 'room/hooks/useRoomPortalButtons';
-import { styled } from '@mui/material/styles';
+import { useDependencies } from 'common/hooks/useDependencies';
 import Stack from '@mui/material/Stack';
 
-interface Props {
-    /**
-     * Injected `useUser` hook or default implementation
-     */
-    useUser?: UseUser;
+const RoomButton: FC = () => {
+    const deps = useDependencies(d => ({
+        useUser: d.useUser,
+        useRoomPortalButtons: d.useRoomPortalButtons,
+    }));
 
-    /**
-     * Injected `useRoomPortalButtons` hook or default implementation
-     */
-    useRoomPortalButtons?: UseRoomPortalButtons;
-}
-
-const RoomButton: FC<Required<Props>> = props => {
-    const user = props.useUser();
-    const actions = props.useRoomPortalButtons();
+    const user = deps.useUser();
+    const actions = deps.useRoomPortalButtons();
 
     if (!isLoggedIn(user)) return null;
 
@@ -37,9 +28,14 @@ const RoomButton: FC<Required<Props>> = props => {
     );
 };
 
-const LinkButton: FC<Required<Props>> = props => {
-    const user = props.useUser();
-    const actions = props.useRoomPortalButtons();
+const LinkButton: FC = () => {
+    const deps = useDependencies(d => ({
+        useUser: d.useUser,
+        useRoomPortalButtons: d.useRoomPortalButtons,
+    }));
+
+    const user = deps.useUser();
+    const actions = deps.useRoomPortalButtons();
 
     if (!isLoggedIn(user)) return null;
 
@@ -48,9 +44,14 @@ const LinkButton: FC<Required<Props>> = props => {
     );
 };
 
-const LoginButton: FC<Required<Props>> = props => {
-    const user = props.useUser();
-    const actions = props.useRoomPortalButtons();
+const LoginButton: FC = () => {
+    const deps = useDependencies(d => ({
+        useUser: d.useUser,
+        useRoomPortalButtons: d.useRoomPortalButtons,
+    }));
+
+    const user = deps.useUser();
+    const actions = deps.useRoomPortalButtons();
 
     return (
         <>
@@ -63,19 +64,12 @@ const LoginButton: FC<Required<Props>> = props => {
     );
 };
 
-const ButtonStack = styled(Stack)`
-    margin-top: ${props => props.theme.spacing(3)};
-`;
-
-export const RoomPortalButtons: FC<Props> = props => {
-    const { useUser = _useUser } = props;
-    const { useRoomPortalButtons = _useRoomPortalButtons } = props;
-
+export const RoomPortalButtons: FC = () => {
     return (
-        <ButtonStack spacing={1} direction={'column'}>
-            <RoomButton useUser={useUser} useRoomPortalButtons={useRoomPortalButtons} />
-            <LinkButton useUser={useUser} useRoomPortalButtons={useRoomPortalButtons} />
-            <LoginButton useUser={useUser} useRoomPortalButtons={useRoomPortalButtons} />
-        </ButtonStack>
+        <Stack spacing={1} direction={'column'}>
+            <RoomButton />
+            <LinkButton />
+            <LoginButton />
+        </Stack>
     );
 };

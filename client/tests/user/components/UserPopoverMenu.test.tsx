@@ -1,9 +1,11 @@
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
+import type { Dependencies } from 'common/services/DependencyContext';
 import { fireEvent, render } from '@testing-library/react';
 import { UserPopoverMenu } from 'user/components/UserPopoverMenu';
 import { UseUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
 import { UseDarkMode } from 'styles/hooks/useDarkMode';
 import { DarkModeMenuItem } from 'styles/components/DarkModeMenuItem';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 
 jest.mock('user/components/UserAvatar', () => ({
     __esModule: true,
@@ -21,8 +23,15 @@ jest.mock('styles/components/DarkModeMenuItem', () => ({
     },
 }));
 
-function testRender(props: ComponentProps<typeof UserPopoverMenu>) {
-    return render(<UserPopoverMenu {...props} />);
+function testRender(
+    deps: Partial<Dependencies>,
+    props?: ComponentProps<typeof UserPopoverMenu>
+) {
+    return render(
+        <DependencyProvider {...deps}>
+            <UserPopoverMenu {...props} />
+        </DependencyProvider>
+    );
 }
 
 const onMenuClicks = {

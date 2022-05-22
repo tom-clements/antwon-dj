@@ -8,43 +8,27 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
 import { Login, Logout, Share, ArrowBack, Settings, Chair } from '@mui/icons-material';
-import { UseUserMenuClickActions, useUserMenuClickActions as _useUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
-import { UseUser, useUser as _useUser } from 'user/hooks/useUser';
 import { MenuItem } from 'common/components/MenuItem';
-import { UseDarkMode } from 'styles/hooks/useDarkMode';
 import { DarkModeMenuItem } from 'styles/components/DarkModeMenuItem';
 import { isLoggedIn } from 'user/predicates/isLoggedIn';
 import { hasRoom } from 'user/predicates/hasRoom';
+import { useDependencies } from 'common/hooks/useDependencies';
 
 const MenuContainer = styled(Menu)`
     max-width: 256px;
 `;
-
-interface Props {
-    /**
-     * Injected `useUser` hook or default implementation
-     */
-    useUser?: UseUser;
-
-    /**
-     * Injected `useUserMenuClickActions` hook or default implementation
-     */
-    useUserMenuClickActions?: UseUserMenuClickActions;
-
-    /**
-     * Injected `useDarkMode` hook or default implementation
-     */
-    useDarkMode?: UseDarkMode;
-}
 
 interface OpenProps {
     isOpen: boolean;
     setOpen: (isOpen: boolean) => void;
 }
 
-const UserIconButton: ForwardRefRenderFunction<HTMLButtonElement, Props & OpenProps> = (props, ref) => {
-    const { useUser = _useUser } = props;
-    const user = useUser();
+const UserIconButton: ForwardRefRenderFunction<HTMLButtonElement, OpenProps> = (props, ref) => {
+    const deps = useDependencies(d => ({
+        useUser: d.useUser,
+    }));
+
+    const user = deps.useUser();
 
     return (
         <Tooltip title="User menu">
@@ -74,12 +58,14 @@ const Spacer = styled('div')`
     margin-top: ${props => props.theme.spacing(0.5)};
 `;
 
-const LoggedInMenuItems: FC<Props> = props => {
-    const { useUser = _useUser } = props;
-    const user = useUser();
-
-    const { useUserMenuClickActions = _useUserMenuClickActions } = props;
-    const onMenuClicks = useUserMenuClickActions();
+const LoggedInMenuItems: FC = () => {
+    const deps = useDependencies(d => ({
+        useUser: d.useUser,
+        useUserMenuClickActions: d.useUserMenuClickActions,
+        useDarkMode: d.useDarkMode,
+    }));
+    const user = deps.useUser();
+    const actions = deps.useUserMenuClickActions();
 
     return (
         <>
@@ -92,34 +78,41 @@ const LoggedInMenuItems: FC<Props> = props => {
                     ? null
                     : <>
                         <Divider sx={{ mt: 1, mb: 1 }} />
-                        <MenuItem icon={Chair} text="My Room" onClick={onMenuClicks.myRoom} />
-                        <MenuItem icon={Settings} text="Room Settings" onClick={onMenuClicks.roomSettings} />
-                        <MenuItem icon={Share} text="Share Room" onClick={onMenuClicks.shareRoom} />
+                        <MenuItem icon={Chair} text="My Room" onClick={actions.myRoom} />
+                        <MenuItem icon={Settings} text="Room Settings" onClick={actions.roomSettings} />
+                        <MenuItem icon={Share} text="Share Room" onClick={actions.shareRoom} />
                     </>
             }
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <DarkModeMenuItem useDarkMode={props.useDarkMode} />
-            <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
-            <MenuItem icon={Logout} text="Logout" onClick={onMenuClicks.logout} />
+            <DarkModeMenuItem useDarkMode={deps.useDarkMode} />
+            <MenuItem icon={ArrowBack} text="Back" onClick={actions.back} />
+            <MenuItem icon={Logout} text="Logout" onClick={actions.logout} />
         </>
     );
 };
 
-const LoggedOutMenuItems: FC<Props> = props => {
-    const { useUserMenuClickActions = _useUserMenuClickActions } = props;
-    const onMenuClicks = useUserMenuClickActions();
+const LoggedOutMenuItems: FC = () => {
+    const deps = useDependencies(d => ({
+        useUserMenuClickActions: d.useUserMenuClickActions,
+        useDarkMode: d.useDarkMode,
+    }));
+    const actions = deps.useUserMenuClickActions();
+
     return (
         <>
-            <DarkModeMenuItem useDarkMode={props.useDarkMode} />
-            <MenuItem icon={ArrowBack} text="Back" onClick={onMenuClicks.back} />
-            <MenuItem icon={Login} text="Login" onClick={onMenuClicks.login} />
+            <DarkModeMenuItem useDarkMode={deps.useDarkMode} />
+            <MenuItem icon={ArrowBack} text="Back" onClick={actions.back} />
+            <MenuItem icon={Login} text="Login" onClick={actions.login} />
         </>
     );
 };
 
-const UserMenu: FC<Props & OpenProps & { buttonRef: RefObject<HTMLButtonElement> }> = props => {
-    const { useUser = _useUser } = props;
-    const user = useUser();
+const UserMenu: FC<OpenProps & { buttonRef: RefObject<HTMLButtonElement> }> = props => {
+    const deps = useDependencies(d => ({
+        useUser: d.useUser,
+    }));
+
+    const user = deps.useUser();
 
     if (!props.buttonRef) return null;
 
@@ -163,14 +156,14 @@ const UserMenu: FC<Props & OpenProps & { buttonRef: RefObject<HTMLButtonElement>
     );
 };
 
-export const UserPopoverMenu: FC<Props> = props => {
+export const UserPopoverMenu: FC = () => {
     const ref = useRef<HTMLButtonElement>(null);
     const [isOpen, setOpen] = useState<boolean>(false);
 
     return (
         <>
-            <UserIconButtonWithRef {...props} ref={ref} isOpen={isOpen} setOpen={setOpen} />
-            <UserMenu {...props} buttonRef={ref} isOpen={isOpen} setOpen={setOpen} />
+            <UserIconButtonWithRef ref={ref} isOpen={isOpen} setOpen={setOpen} />
+            <UserMenu buttonRef={ref} isOpen={isOpen} setOpen={setOpen} />
         </>
     );
 };
