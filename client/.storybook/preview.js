@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createStore } from 'model/Store';
+import { createStore } from 'common/services/createStore';
 import { ThemeProvider } from 'styles/components/ThemeProvider';
 
 export const decorators = [

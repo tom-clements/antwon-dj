@@ -37,7 +37,10 @@ def test_get_signup_callback(mock_user_signup_callback: Mock, local_client: Clie
     refresh_token = "refresh_token"
     code = "code"
     mock_user_signup_callback.return_value = refresh_token
-    expected_headers = {"Location": "base_url.com", "Set-Cookie": f"refresh-token={refresh_token};Path=/;HttpOnly"}
+    expected_headers = {
+        "Location": "base_url.com/login",
+        "Set-Cookie": f"refresh-token={refresh_token};Path=/;HttpOnly",
+    }
     expected_body = None
     expected_status_code = 302
     actual = local_client.http.get(f"/login/callback?code={code}")

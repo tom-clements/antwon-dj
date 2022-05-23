@@ -1,9 +1,11 @@
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
+import type { Dependencies } from 'common/services/DependencyContext';
 import { fireEvent, render } from '@testing-library/react';
 import { UserPopoverMenu } from 'user/components/UserPopoverMenu';
 import { UseUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
 import { UseDarkMode } from 'styles/hooks/useDarkMode';
 import { DarkModeMenuItem } from 'styles/components/DarkModeMenuItem';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 
 jest.mock('user/components/UserAvatar', () => ({
     __esModule: true,
@@ -21,15 +23,22 @@ jest.mock('styles/components/DarkModeMenuItem', () => ({
     },
 }));
 
-function testRender(props: ComponentProps<typeof UserPopoverMenu>) {
-    return render(<UserPopoverMenu {...props} />);
+function testRender(
+    deps: Partial<Dependencies>,
+    props?: ComponentProps<typeof UserPopoverMenu>
+) {
+    return render(
+        <DependencyProvider {...deps}>
+            <UserPopoverMenu {...props} />
+        </DependencyProvider>
+    );
 }
 
 const onMenuClicks = {
     myRoom: jest.fn(),
     roomSettings: jest.fn(),
     shareRoom: jest.fn(),
-    back: jest.fn(),
+    goBack: jest.fn(),
     login: jest.fn(),
     logout: jest.fn(),
     darkMode: jest.fn(),
@@ -45,6 +54,7 @@ const useDarkMode: UseDarkMode = () => ({
 describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
+            useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
@@ -57,6 +67,7 @@ describe('<UserPopoverMenu />', () => {
 
     it('renders menu when icon button receives onClick', () => {
         const { container } = testRender({
+            useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
@@ -77,12 +88,13 @@ describe('<UserPopoverMenu />', () => {
             ['Room Settings', 'roomSettings'],
             ['Dark Mode', 'darkMode'],
             ['Share Room', 'shareRoom'],
-            ['Back', 'back'],
+            ['Back', 'goBack'],
             ['Logout', 'logout'],
         ];
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
+                useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
                 useUser: () => ({ name: 'Name', roomId: '0' }),
                 useUserMenuClickActions,
                 useDarkMode,
@@ -105,12 +117,13 @@ describe('<UserPopoverMenu />', () => {
 
         const cases: TestCase[] = [
             ['Dark Mode', 'darkMode'],
-            ['Back', 'back'],
+            ['Back', 'goBack'],
             ['Login', 'login'],
         ];
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
+                useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
                 useUser: () => null,
                 useUserMenuClickActions,
                 useDarkMode,

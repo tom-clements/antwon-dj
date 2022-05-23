@@ -1,4 +1,4 @@
-import type { RootState } from 'model/Store';
+import type { State } from 'common/services/createStore';
 import type { ThemeMode } from 'styles/model/ThemeMode';
 import { Themes } from 'styles/model/Themes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -32,4 +32,4 @@ export const themeSlice = createSlice({
 
 export const themeActions = themeSlice.actions;
 
-export const selectThemeState = (state: RootState) => state.theme;
+export const selectThemeState = (state: State) => state.theme;

@@ -29,7 +29,7 @@ def signup_callback_get(query_params: Dict[str, str]) -> Response:
     refresh_token = user_signup_callback(code=query_params["code"])
     return Response(
         body="",
-        headers={"Location": BASE_URL, "Set-Cookie": f"refresh-token={refresh_token};Path=/;HttpOnly"},
+        headers={"Location": f"{BASE_URL}/login", "Set-Cookie": f"refresh-token={refresh_token};Path=/;HttpOnly"},
         status_code=302,
     )
 
