@@ -65,7 +65,7 @@ def use_db_session(
                     if close:
                         db_session.close()
                         engine.dispose()
-                except:  # noqa: E722
+                except Exception:
                     db_session.close()
                     engine.dispose()
                     raise

@@ -77,7 +77,7 @@ Secrets:
 4. Install python dependencies
 
     ```sh
-    pip install black flake8 pytest pytest-mypy
+    pip install black flake8 pytest pytest-mypy pytest-lazy-fixture pytest-mock
     pip install -r requirements.txt
     ```
 

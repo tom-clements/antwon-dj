@@ -18,18 +18,18 @@ def test_retrieve_playlists_from_room_guid(mock_spotify_session: Mock) -> None:
     assert actual == expected
 
 
-@patch("chalicelib.services.spotify.get_playlists.get_room_guid_from_username")
+@patch("chalicelib.services.spotify.get_playlists.read_room_guid_from_username")
 @patch("chalicelib.services.spotify.get_playlists.retrieve_playlists_from_room_guid")
-def test_rget_playlists_from_username(
-    mock_retrieve_playlists_from_room_guid: Mock, mock_get_room_guid_from_username: Mock
+def test_get_playlists_from_username(
+    mock_retrieve_playlists_from_room_guid: Mock, mock_read_room_guid_from_username: Mock
 ) -> None:
     expected = [get_example_playlist(), get_example_playlist()]
     username = "username"
     room_guid = "room_guid"
-    mock_get_room_guid_from_username.return_value = room_guid
+    mock_read_room_guid_from_username.return_value = room_guid
     mock_retrieve_playlists_from_room_guid.return_value = expected
 
     actual = get_playlists_from_username(username)
-    mock_get_room_guid_from_username.assert_called_once_with(username)
+    mock_read_room_guid_from_username.assert_called_once_with(username)
     mock_retrieve_playlists_from_room_guid.assert_called_once_with(room_guid=room_guid)
     assert actual == expected

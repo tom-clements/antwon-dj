@@ -5,7 +5,7 @@ from chalicelib.data.queries.queue.create_room_song import create_room_song
 from chalicelib.data.queries.queue.create_song import create_song
 from chalicelib.data.error_handling import SongNotFoundDbError
 from chalicelib.data.queries.read_one_queries import get_song_from_song_uri
-from chalicelib.data.queries.read_scalar_queries import get_room_id_from_room_guid
+from chalicelib.data.queries.read_scalar_queries import read_room_id_from_room_guid
 from chalicelib.data.queries.update_song import update_song
 from chalicelib.models import Song
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
@@ -35,7 +35,7 @@ def _get_new_song(song: SpotifyTrackFormatted) -> Song:
 
 
 def add_song_to_room_queue(song: SpotifyTrackFormatted, room_guid: str) -> None:
-    room_id = get_room_id_from_room_guid(room_guid)
+    room_id = read_room_id_from_room_guid(room_guid)
     if not room_id:
         raise RoomNotFoundServiceError(room_guid)
     new_song = _get_new_song(song)
