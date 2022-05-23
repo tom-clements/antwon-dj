@@ -5,7 +5,7 @@ import { fadeIn, fillTransition } from 'styles/keyframes';
 
 interface Props {
     /**
-     * Relative to 30px 
+     * Relative to 30px
      */
     scale?: number;
 }

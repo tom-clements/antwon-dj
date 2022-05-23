@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { RootContainer } from 'common/components/RootContainer';
 import { Room } from 'components/room/Room';
 import { RoomProvider } from 'components/room/RoomProvider';
-import { SpinnerPageSize } from 'components/core/SpinnerPageSize';
+import { FullPageSpinner } from 'common/components/FullPageSpinner';
 import { getSingleFromUrlQuery } from 'service/GetFromUrlQuery';
 import { ErrorCode } from 'model/enums/ErrorCode';
 import { ErrorRedirect } from 'components/error/ErrorRedirect';
@@ -20,7 +20,7 @@ export default function RoomPage() {
             <RoomProvider
                 roomCodeFromPage={code}
                 render={roomId => <Room roomId={roomId} />}
-                renderLoading={() => <SpinnerPageSize />}
+                renderLoading={() => <FullPageSpinner />}
             />
         </RootContainer>
     );

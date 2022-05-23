@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import { SongDto } from 'service/SpotifySearchApi';
-import { Spinner } from 'components/core/Spinner';
+import { Spinner } from 'common/components/Spinner';
 import { QueryResult, QueryResultStatus } from 'components/core/QueryResult';
 import { Typography } from '@mui/material';
 import { useAppSelector } from 'model/Store';
