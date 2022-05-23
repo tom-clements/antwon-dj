@@ -4,12 +4,14 @@ from typing import Dict
 from chalice import Blueprint, Response
 
 from chalicelib.cors import get_cors_config
+from chalicelib.models.cognito.user_info import CognitoUserInfoDto
+from chalicelib.models.endpoints.user_info import UserInfoDto
 from chalicelib.services.auth.cognito.authorizer import get_authorizer
 from chalicelib.services.auth.cognito.endpoints import get_tokens_from_refresh
 from chalicelib.services.user.get_login import user_login, user_signup_callback
-from chalicelib.services.user.get_user_info import get_user_info
+from chalicelib.services.user.get_user_info import get_room_code_from_username
 from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs, verify_post_input
-from chalicelib.utils.endpoint_parameter_injection import user_auth_token, user_username
+from chalicelib.utils.endpoint_parameter_injection import inject_cognito_user_info
 from chalicelib.utils.env import BASE_URL
 
 user_routes = Blueprint(__name__)
@@ -40,8 +42,7 @@ def user_token_get(post_body: Dict[str, str]) -> Dict[str, str]:
 
 
 @user_routes.route("/user/info", methods=["GET"], cors=get_cors_config(), authorizer=get_authorizer())
-@user_auth_token(user_routes)
-@user_username(user_routes)
-def user_info_get(token: str, token_type: str, username: str) -> Dict[str, str]:
-    user_info = get_user_info(username, token, token_type)
-    return asdict(user_info)
+@inject_cognito_user_info(user_routes)
+def user_info_get(user_info: CognitoUserInfoDto) -> Dict[str, str]:
+    room_code = get_room_code_from_username(user_info.username)
+    return asdict(UserInfoDto(room_code=room_code, **asdict(user_info)))
