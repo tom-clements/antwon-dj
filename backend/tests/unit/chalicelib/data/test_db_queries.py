@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 
 import pytest
 
-from chalicelib.data.read_scalar_queries import get_room_guid_from_room_code
+from chalicelib.data.queries.read_scalar_queries import get_room_guid_from_room_code
 
 
 @pytest.mark.parametrize(

@@ -1,4 +1,4 @@
-from chalicelib.data.queue.delete_room_songs import delete_room_songs
+from chalicelib.data.queries.queue.delete_room_songs import delete_room_songs
 from chalicelib.services.utils.verify_room import verify_room_owner, verify_room_exists
 
 

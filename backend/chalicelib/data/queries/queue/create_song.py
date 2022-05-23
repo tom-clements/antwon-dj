@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from chalicelib.models import Song
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
-from chalicelib.services.auth.db import use_db_session
+from chalicelib.data.db import use_db_session
 
 
 @use_db_session(commit=True)

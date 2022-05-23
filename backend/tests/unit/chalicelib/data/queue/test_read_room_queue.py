@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 
 import pytest
 
-from chalicelib.data.queue.read_room_queue import (
+from chalicelib.data.queries.queue.read_room_queue import (
     read_room_queue_guest,
     read_room_queue_user,
     read_queue_column_query,
@@ -16,7 +16,7 @@ from tests.unit.fixtures.queue import QueueResult
 
 
 @patch("sqlalchemy.orm.session.Session")
-@patch("chalicelib.data.queue.read_room_queue.Query")
+@patch("chalicelib.data.queries.queue.read_room_queue.Query")
 def test_read_room_queue_query(mock_query: Mock, mock_db_session: Mock) -> None:
     room_guid = "room_guid"
     mock_db_session.query.return_value.join.return_value.join.return_value.filter.return_value.subquery.return_value = (
@@ -28,7 +28,7 @@ def test_read_room_queue_query(mock_query: Mock, mock_db_session: Mock) -> None:
 
 
 @patch("sqlalchemy.orm.session.Session")
-@patch("chalicelib.data.queue.read_room_queue.Query")
+@patch("chalicelib.data.queries.queue.read_room_queue.Query")
 def test_read_song_likes_query(mock_query: Mock, mock_db_session: Mock) -> None:
     room_guid = "room_guid"
     mock_db_session.query.return_value.group_by.return_value.subquery.return_value = mock_query()
@@ -38,7 +38,7 @@ def test_read_song_likes_query(mock_query: Mock, mock_db_session: Mock) -> None:
 
 
 @patch("sqlalchemy.orm.session.Session")
-@patch("chalicelib.data.queue.read_room_queue.Query")
+@patch("chalicelib.data.queries.queue.read_room_queue.Query")
 def test_read_is_user_liked_query(mock_query: Mock, mock_db_session: Mock) -> None:
     room_guid = "room_guid"
     user_id = 1
@@ -48,10 +48,10 @@ def test_read_is_user_liked_query(mock_query: Mock, mock_db_session: Mock) -> No
     assert actual == mock_query()
 
 
-@patch("chalicelib.data.queue.read_room_queue.read_room_queue_query")
-@patch("chalicelib.data.queue.read_room_queue.read_song_likes_query")
+@patch("chalicelib.data.queries.queue.read_room_queue.read_room_queue_query")
+@patch("chalicelib.data.queries.queue.read_room_queue.read_song_likes_query")
 @patch("sqlalchemy.orm.session.Session")
-@patch("chalicelib.data.queue.read_room_queue.Query")
+@patch("chalicelib.data.queries.queue.read_room_queue.Query")
 def test_read_queue_column_query(
     mock_query: Mock,
     mock_db_session: Mock,
@@ -76,7 +76,7 @@ def test_read_queue_column_query(
         (pytest.lazy_fixture("guest_queue")),  # type: ignore
     ],
 )
-@patch("chalicelib.data.queue.read_room_queue.read_queue_column_query")
+@patch("chalicelib.data.queries.queue.read_room_queue.read_queue_column_query")
 def test_read_room_queue_guest(
     mock_read_queue_column_query: Mock,
     queue: QueueResult,
@@ -97,9 +97,9 @@ def test_read_room_queue_guest(
         (pytest.lazy_fixture("user_queue")),  # type: ignore
     ],
 )
-@patch("chalicelib.data.queue.read_room_queue.read_is_user_liked_query")
-@patch("chalicelib.data.queue.read_room_queue.read_queue_column_query")
-@patch("chalicelib.data.queue.read_room_queue.Query")
+@patch("chalicelib.data.queries.queue.read_room_queue.read_is_user_liked_query")
+@patch("chalicelib.data.queries.queue.read_room_queue.read_queue_column_query")
+@patch("chalicelib.data.queries.queue.read_room_queue.Query")
 def test_read_room_queue_user(
     mock_sql_query: Mock,
     mock_read_queue_column_query: Mock,

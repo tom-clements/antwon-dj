@@ -2,8 +2,8 @@ from typing import Callable, Dict, Any, List
 
 from decorator import decorator
 
-from chalicelib.data.is_exists import is_room_exists
-from chalicelib.data.read_one_queries import get_room_owner
+from chalicelib.data.queries.is_exists import is_room_exists
+from chalicelib.data.queries.read_one_queries import get_room_owner
 from chalicelib.services.exceptions import RoomNotFoundServiceError, ForbiddenServiceError
 
 

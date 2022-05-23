@@ -1,7 +1,7 @@
 from typing import List
 
-from chalicelib.data.queue.read_room_queue import read_room_queue_guest, read_room_queue_user
-from chalicelib.data.read_scalar_queries import get_user_id_from_username
+from chalicelib.data.queries.queue.read_room_queue import read_room_queue_guest, read_room_queue_user
+from chalicelib.data.queries.read_scalar_queries import get_user_id_from_username
 from chalicelib.models.data_queries.queue_song import QueueSongGuest, QueueSongUser
 from chalicelib.services.utils.verify_room import verify_room_exists
 

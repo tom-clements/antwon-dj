@@ -1,6 +1,6 @@
 from unittest.mock import patch, Mock
 
-from chalicelib.data.create_spotify_user import create_spotify_user
+from chalicelib.data.queries.create_spotify_user import create_spotify_user
 
 
 @patch("sqlalchemy.orm.session.Session")

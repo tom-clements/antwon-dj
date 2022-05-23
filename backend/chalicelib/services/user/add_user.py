@@ -1,7 +1,11 @@
-from chalicelib.data.create_user import create_user
-from chalicelib.data.read_user import read_user
+from chalicelib.data.error_handling import UserNotFoundDbError
+from chalicelib.data.queries.create_user import create_user
+from chalicelib.data.queries.read_user import read_user
 
 
 def add_user_if_not_exists(user_username: str) -> None:
-    if not read_user(user_username):
+    try:
+        read_user(user_username)
         create_user(user_username)
+    except UserNotFoundDbError:
+        pass

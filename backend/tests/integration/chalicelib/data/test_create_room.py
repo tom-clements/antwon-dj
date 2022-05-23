@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
-from chalicelib.data.create_room import create_room
+from chalicelib.data.queries.create_room import create_room
 from chalicelib.models import Room
-from chalicelib.services.auth.db import use_db_session
+from chalicelib.data.db import use_db_session
 
 
 @use_db_session(database="antwontest", rollback=True)

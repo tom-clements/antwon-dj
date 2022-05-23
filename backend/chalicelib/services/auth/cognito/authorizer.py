@@ -1,10 +1,12 @@
 from chalice.app import CognitoUserPoolAuthorizer
 
+from chalicelib.utils.env import COGNITO_POOL_NAME, COGNITO_POOL_ARN
+
 
 def get_authorizer() -> CognitoUserPoolAuthorizer:
     return CognitoUserPoolAuthorizer(
-        name="antwon_user_pool",
-        provider_arns=["arn:aws:cognito-idp:eu-west-2:303078101535:userpool/eu-west-2_Y4hA2uEzU"],
+        name=COGNITO_POOL_NAME,
+        provider_arns=[COGNITO_POOL_ARN],
         scopes=["email", "openid", "profile"],
         header="Authorization",
     )

@@ -2,7 +2,7 @@ from typing import Optional, List
 
 import spotipy  # type: ignore
 
-from chalicelib.data.read_room_info import read_spotify_room_info
+from chalicelib.data.queries.read_room_info import read_spotify_room_info
 from chalicelib.models.spotify_api.playlist import SpotifyPlaylist
 from chalicelib.services.auth.spotify import use_spotify_session
 from chalicelib.services.spotify.get_playlists import retrieve_playlists_from_room_guid
