@@ -1,10 +1,10 @@
-import { createStore, RootState, Store } from 'model/Store';
+import { createStore, State, Store } from 'common/services/createStore';
 import { useMemo } from 'react';
 import createCache from '@emotion/cache';
 
 let store: Store | undefined;
 
-export const initializeStore = (preloadedState: RootState) => {
+export const initializeStore = (preloadedState: State) => {
     let _store = store ?? createStore(preloadedState);
 
     // After navigating to a page with an initial Redux state, merge that state
@@ -27,7 +27,7 @@ export const initializeStore = (preloadedState: RootState) => {
     return _store;
 };
 
-export function useAppStore(initialState: RootState) {
+export function useAppStore(initialState: State) {
     const store = useMemo(() => initializeStore(initialState), [initialState]);
     return store;
 }

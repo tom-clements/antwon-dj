@@ -6,7 +6,7 @@ import { CacheProvider, EmotionCache, Global } from '@emotion/react';
 import { ThemeProvider } from 'styles/components/ThemeProvider';
 import { getDefaultTheme } from 'styles/services/getTheme';
 import { useAppStore, createEmotionCache } from 'AppSetup';
-import { ErrorToast } from 'components/core/ErrorToast';
+import { ErrorToast } from 'common/components/ErrorToast';
 import { DependencyProvider } from 'common/components/DependencyProvider';
 
 const defaultTheme = getDefaultTheme();

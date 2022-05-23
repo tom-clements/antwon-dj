@@ -4,26 +4,23 @@ import { useRoomIdentityActions, UseRoomIdentityActions } from 'roomPortal/hooks
 import { useLoginActions, UseLoginActions } from 'user/hooks/useLoginActions';
 
 type LoginActions = HookReturn<UseLoginActions>;
-type RoomIdentityActions = Pick<HookReturn<UseRoomIdentityActions>, 'myRoom'>;
+type RoomIdentityActions = HookReturn<UseRoomIdentityActions>;
 type BaseReturn = LoginActions & RoomIdentityActions;
 
 interface Return extends BaseReturn {
-    roomSettings: () => void;
-    shareRoom: () => void;
+    linkAccounts: () => void;
 }
 
-export type UseUserMenuClickActions = HF<void, Return>;
+export type UseRoomPortalButtons = HF<void, Return>;
 
-export const useUserMenuClickActions: UseUserMenuClickActions = () => {
-    const { myRoom } = useRoomIdentityActions();
+export const useRoomPortalButtons: UseRoomPortalButtons = () => {
+    const { newRoom, myRoom } = useRoomIdentityActions();
     const { login, logout } = useLoginActions();
 
     return {
+        newRoom,
         myRoom,
-        roomSettings: useCallback(
-            () => undefined,
-            []),
-        shareRoom: useCallback(
+        linkAccounts: useCallback(
             () => undefined,
             []),
         login,

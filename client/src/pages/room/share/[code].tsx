@@ -1,13 +1,14 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { RootContainer } from 'common/components/RootContainer';
-import { QRCodeModuleVariant, SpinnerQRCode } from 'components/atoms/QRCode';
 import { Box, Link, styled, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import { getRelativeRoomUrl, getFullRoomUrl } from 'service/room/getRoomUrl';
-import { getSingleFromUrlQuery } from 'service/GetFromUrlQuery';
-import { ErrorCode } from 'model/enums/ErrorCode';
-import { ErrorRedirect } from 'components/error/ErrorRedirect';
+import { getRelativeRoomUrl, getFullRoomUrl } from 'room/services/getRoomUrl';
+import { getSingleFromUrlQuery } from 'common/services/getSingleFromUrlQuery';
+import { ErrorCode } from 'common/model/ErrorCode';
+import { ErrorRedirect } from 'common/components/ErrorRedirect';
+import { QRCodeModuleVariant } from 'qr-code/QRCodeModule';
+import { SpinnerQRCode } from 'qr-code/SpinnerQRCode';
 
 const RootBox = styled(Box)`
     width: 100%;
