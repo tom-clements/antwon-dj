@@ -87,7 +87,7 @@
                     }
                 },
                 "summary": "Retrieve User Tokens from refresh token",
-                "description": "Provide a refresh token stored as a cookie on the client and use to retrieve access tokens"
+                "description": "Provide a refresh token use to retrieve access tokens"
             }
         },
         "/user/info": {
@@ -677,6 +677,15 @@
                         "in": "path",
                         "required": true,
                         "type": "string"
+                    },
+                   {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Room Song to add like to",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RoomSong"
+                        }
                     }
                 ]
             }
