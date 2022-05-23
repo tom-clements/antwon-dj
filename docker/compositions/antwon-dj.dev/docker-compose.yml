@@ -18,6 +18,7 @@ services:
             - ../../../backend/app.py:/backend/app.py
             - ../../../backend/mypy.ini:/backend/mypy.ini
             - ../../../backend/chalicelib:/backend/chalicelib
+            - ../../../backend/tests:/backend/tests
 
     client:
         image: antwon-dj/dev.client
