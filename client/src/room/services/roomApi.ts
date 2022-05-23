@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getApiBaseUrl } from 'config/getApiBaseUrl';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { getApiBaseQuery } from 'common/services/getApiBaseQuery';
 import { SongDto } from 'providers/spotify/services/spotifySearchApi';
 
 export interface RoomSongDto extends SongDto {
@@ -21,7 +21,7 @@ function mapRoomSongPostDto(dto: SongDto) {
 
 export const roomApi = createApi({
     reducerPath: 'roomApi',
-    baseQuery: fetchBaseQuery({ baseUrl: getApiBaseUrl() }),
+    baseQuery: getApiBaseQuery(),
     tagTypes: ['Room', 'RoomQueue'],
     endpoints: (builder) => ({
         getRoomIdByCode: builder.query<string, string>({
