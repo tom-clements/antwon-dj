@@ -3,9 +3,8 @@
 # mypy: ignore-errors
 
 from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+from chalicelib.models.tables.base import Base
 
 
 class User(Base):
@@ -17,4 +16,4 @@ class User(Base):
 
     def __repr__(self):
         return f"<User(user_id='{self.user_id}', user_username='{self.user_username}', \
-        cognito_user_name='{self.cognito_user_name}', create_time='{self.create_time},"
+        user_username='{self.user_username}', create_time='{self.create_time},"

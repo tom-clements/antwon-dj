@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from chalicelib.models import RoomSong, Room
-from chalicelib.services.auth.db import use_db_session
+from chalicelib.data.db import use_db_session
 
 
 @use_db_session(commit=True)

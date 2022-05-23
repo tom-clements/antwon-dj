@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 
 from freezegun import freeze_time
 
-from chalicelib.data.update_song import update_song
+from chalicelib.data.queries.update_song import update_song
 
 
 @freeze_time("2022-01-01")

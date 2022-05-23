@@ -1,5 +1,5 @@
-from chalicelib.data.create_room import create_room
-from chalicelib.data.read_scalar_queries import (
+from chalicelib.data.queries.create_room import create_room
+from chalicelib.data.queries.read_scalar_queries import (
     get_user_id_from_username,
     get_room_guid_from_room_code,
     get_room_guid_from_username,

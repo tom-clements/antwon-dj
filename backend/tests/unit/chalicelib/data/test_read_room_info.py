@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from unittest.mock import patch, Mock
 
-from chalicelib.data.read_room_info import read_spotify_room_info
+from chalicelib.data.queries.read_room_info import read_spotify_room_info
 from chalicelib.models.data_queries.room_info import SpotifyRoomInfo
 
 

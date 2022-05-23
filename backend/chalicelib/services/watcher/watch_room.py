@@ -1,7 +1,7 @@
 from typing import Tuple, Optional
 
-from chalicelib.data.queue.read_next_song import read_next_song
-from chalicelib.data.update_room_song import update_added_to_playlist, update_played
+from chalicelib.data.queries.queue.read_next_song import read_next_song
+from chalicelib.data.queries.update_room_song import update_added_to_playlist, update_played
 from chalicelib.models.data_queries.next_song import NextSong
 from chalicelib.services.spotify.add_to_playlist import add_to_playlist
 from chalicelib.services.spotify.get_playing import get_playing

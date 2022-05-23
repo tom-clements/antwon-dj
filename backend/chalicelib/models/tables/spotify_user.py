@@ -3,11 +3,9 @@
 # mypy: ignore-errors
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 
 from chalicelib.models import User
-
-Base = declarative_base()
+from chalicelib.models.tables.base import Base
 
 
 class SpotifyUser(Base):

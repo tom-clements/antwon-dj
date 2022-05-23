@@ -4,7 +4,7 @@ from typing import List
 
 import aiohttp
 
-from chalicelib.data.read_room import read_active_rooms
+from chalicelib.data.queries.read_room import read_active_rooms
 from chalicelib.services.watcher.watch_room import watch_room
 from chalicelib.utils.env import API_URL, API_STAGE
 

@@ -6,7 +6,7 @@ from sqlalchemy.sql import Alias
 
 from chalicelib.models import RoomSong, Song, Room, RoomSongLike
 from chalicelib.models.data_queries.queue_song import QueueSongGuest, QueueSongUser
-from chalicelib.services.auth.db import use_db_session
+from chalicelib.data.db import use_db_session
 
 
 @use_db_session()

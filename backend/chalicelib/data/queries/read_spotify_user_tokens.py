@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from chalicelib.models import SpotifyUser, Room
 from chalicelib.models.data_queries.spotify_user_tokens import SpotifyUserTokens
-from chalicelib.services.auth.db import use_db_session
+from chalicelib.data.db import use_db_session
 
 
 @use_db_session()

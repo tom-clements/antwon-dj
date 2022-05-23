@@ -13,7 +13,9 @@
                 "API_STAGE": "dev",
                 "BASE_URL": "https://www.djantwon.com",
                 "API_URL": "https://api.djantwon.com",
-                "AUTH_URL": "https://auth.djantwon.com"
+                "AUTH_URL": "https://auth.djantwon.com",
+                "COGNITO_POOL_NAME": "antwon_user_pool",
+                "COGNITO_POOL_ARN": "arn:aws:cognito-idp:eu-west-2:303078101535:userpool/eu-west-2_Y4hA2uEzU"
             },
             "api_gateway_stage": "dev",
             "api_gateway_custom_domain": {
@@ -35,7 +37,9 @@
                 "API_STAGE": "",
                 "BASE_URL": "http://localhost:3000",
                 "API_URL": "http://localhost:8000",
-                "AUTH_URL": "https://auth.djantwon.com"
+                "AUTH_URL": "https://djantwon-local.auth.eu-west-2.amazoncognito.com",
+                "COGNITO_POOL_NAME": "djantwon-local",
+                "COGNITO_POOL_ARN": "arn:aws:cognito-idp:eu-west-2:303078101535:userpool/eu-west-2_2G0FZTRLs"
             }
         },
         "local_backend": {
@@ -44,7 +48,9 @@
                 "API_STAGE": "",
                 "BASE_URL": "https://www.djantwon.com",
                 "API_URL": "http://localhost:8000",
-                "AUTH_URL": "https://auth.djantwon.com"
+                "AUTH_URL": "https://djantwon-local.auth.eu-west-2.amazoncognito.com",
+                "COGNITO_POOL_NAME": "djantwon-local",
+                "COGNITO_POOL_ARN": "arn:aws:cognito-idp:eu-west-2:303078101535:userpool/eu-west-2_2G0FZTRLs"
             }
         }
     }

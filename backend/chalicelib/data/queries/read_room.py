@@ -4,7 +4,7 @@ from sqlalchemy import false
 from sqlalchemy.orm import Session
 
 from chalicelib.models import Room
-from chalicelib.services.auth.db import use_db_session
+from chalicelib.data.db import use_db_session
 
 
 @use_db_session()

@@ -3,11 +3,9 @@
 # mypy: ignore-errors
 
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 
+from chalicelib.models.tables.base import Base
 from chalicelib.models.tables.user import User
-
-Base = declarative_base()
 
 
 class Room(Base):

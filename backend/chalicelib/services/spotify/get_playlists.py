@@ -3,7 +3,7 @@ from typing import List
 import spotipy  # type: ignore
 from dacite import from_dict
 
-from chalicelib.data.read_scalar_queries import get_room_guid_from_username
+from chalicelib.data.queries.read_scalar_queries import get_room_guid_from_username
 from chalicelib.models.spotify_api.playlist import SpotifyPlaylist
 from chalicelib.services.auth.spotify import use_spotify_session
 

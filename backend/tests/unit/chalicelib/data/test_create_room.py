@@ -1,6 +1,6 @@
 from unittest.mock import patch, Mock
 
-from chalicelib.data.create_room import create_room
+from chalicelib.data.queries.create_room import create_room
 
 
 @patch("sqlalchemy.orm.session.Session")

@@ -10,8 +10,8 @@ import spotipy  # type: ignore
 from spotipy import oauth2
 from spotipy.oauth2 import SpotifyClientCredentials  # type: ignore
 
-from chalicelib.data.read_spotify_user_tokens import read_spotify_user_tokens
-from chalicelib.data.update_spotify_user import update_spotify_user
+from chalicelib.data.queries.read_spotify_user_tokens import read_spotify_user_tokens
+from chalicelib.data.queries.update_spotify_user import update_spotify_user
 from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
 from chalicelib.utils.env import API_URL, API_STAGE
 

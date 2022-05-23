@@ -2,10 +2,10 @@ from typing import Any, Dict
 
 from sqlalchemy.orm import Session
 
-from chalicelib.data.create_spotify_user import create_spotify_user
-from chalicelib.data.is_exists import is_spotify_user_exists
-from chalicelib.data.read_scalar_queries import get_user_id_from_username
-from chalicelib.services.auth import db
+from chalicelib.data.queries.create_spotify_user import create_spotify_user
+from chalicelib.data.queries.is_exists import is_spotify_user_exists
+from chalicelib.data.queries.read_scalar_queries import get_user_id_from_username
+from chalicelib.data import db
 from chalicelib.services.exceptions import SpotifyUserExistsServiceError
 
 

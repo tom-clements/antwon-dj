@@ -50,6 +50,7 @@ def room_delete(room_guid: str, username: str) -> None:
 @verify_post_input(room_routes, "room_code")
 @user_username(room_routes)
 def room_add(post_body: Dict[str, Any], username: str) -> None:
+    raise ValueError(username)
     owner_add_room(room_code=post_body["room_code"], username=username)
 
 

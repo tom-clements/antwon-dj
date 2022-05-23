@@ -3,8 +3,8 @@ from typing import Optional
 import pytest
 from sqlalchemy.orm import Session
 
-from chalicelib.data.read_scalar_queries import get_room_guid_from_room_code
-from chalicelib.services.auth import db
+from chalicelib.data.queries.read_scalar_queries import get_room_guid_from_room_code
+from chalicelib.data import db
 
 
 @db.use_db_session(database="antwontest")

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from chalicelib.data.queue.read_room_queue import read_queue_column_query
+from chalicelib.data.queries.queue.read_room_queue import read_queue_column_query
 from chalicelib.models.data_queries.next_song import NextSong
 
 

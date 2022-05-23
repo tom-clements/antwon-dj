@@ -2,9 +2,9 @@ import pytest
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
 
-from chalicelib.data.delete_room import db_delete_room
+from chalicelib.data.queries.delete_room import db_delete_room
 from chalicelib.models import Room
-from chalicelib.services.auth import db
+from chalicelib.data import db
 
 
 @db.use_db_session(database="antwontest", rollback=True)
