@@ -21,7 +21,7 @@ export const RoomProvider: FC<Props> = props => {
 
     const dispatch = useDispatch();
     const roomCodeFromState = useSelector(selectRoomPortalCode);
-    const result = roomApi.endpoints.getRoomIdByCode.useQuery(roomCodeFromState ?? skipToken);
+    const result = roomApi.endpoints.roomId.useQuery(roomCodeFromState ?? skipToken);
 
     useEffect(() => {
         if (roomCodeFromState !== roomCodeFromPage) dispatch(setRoomPortalCode(roomCodeFromPage));

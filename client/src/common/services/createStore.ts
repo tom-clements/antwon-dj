@@ -3,8 +3,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { errorSlice } from 'common/services/errorSlice';
 import { roomPortalSlice } from 'roomPortal/services/roomPortalSlice';
 import { userSlice } from 'user/services/userSlice';
-import { spotifyCurrentlyPlayingApi } from 'providers/spotify/services/spotifyCurrentlyPlaying';
-import { spotifySearchApi } from 'providers/spotify/services/spotifySearchApi';
 import { roomApi } from 'room/services/roomApi';
 import { themeSlice } from 'styles/services/themeSlice';
 
@@ -16,13 +14,9 @@ export function createStore(preloadedState: any) {
             theme: themeSlice.reducer,
             user: userSlice.reducer,
             [roomApi.reducerPath]: roomApi.reducer,
-            [spotifyCurrentlyPlayingApi.reducerPath]: spotifyCurrentlyPlayingApi.reducer,
-            [spotifySearchApi.reducerPath]: spotifySearchApi.reducer,
         },
         middleware: getDefaultMiddleware => getDefaultMiddleware().concat(...[
             roomApi.middleware,
-            spotifyCurrentlyPlayingApi.middleware,
-            spotifySearchApi.middleware,
         ]),
         preloadedState: preloadedState,
     });

@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
 import { styled, Box, ListItem } from '@mui/material';
-import { roomApi, RoomSongDto } from 'room/services/roomApi';
+import { roomApi } from 'room/services/roomApi';
 import { QueryResult, QueryResultStatus } from 'common/components/QueryResult';
 import { SongItem, SongItemSkeleton } from 'room/components/SongItem';
+
+// TODO use a model for this to de-couple frontend
+import type { RoomSongDto } from 'room/dtos/RoomSongDto';
 
 interface Props {
     roomId: string;
@@ -15,7 +18,9 @@ const EmptyQueueContainer = styled(Box)`
 `;
 
 export const NextSong: FC<Props> = props => {
-    const result = roomApi.endpoints.getRoomQueue.useQuery(props.roomId, {
+    // TODO Replace with useTask based hook
+    // Turns out we _need_ to do this for MVP - we cannot safely or easily differentiate user types
+    const result = roomApi.endpoints.guestQueue.useQuery(props.roomId, {
         pollingInterval: 5000,
     });
     return (

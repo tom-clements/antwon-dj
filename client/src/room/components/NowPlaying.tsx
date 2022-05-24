@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
-import { spotifyCurrentlyPlayingApi } from 'providers/spotify/services/spotifyCurrentlyPlaying';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import Box from '@mui/material/Box';
-import { SongDto } from 'providers/spotify/services/spotifySearchApi';
 import { Spinner } from 'common/components/Spinner';
 import { QueryResult, QueryResultStatus } from 'common/components/QueryResult';
 import { Typography } from '@mui/material';
 import { useSelector } from 'common/services/createStore';
 import { selectRoomPortalCode } from 'roomPortal/services/roomPortalSlice';
+import { roomApi } from 'room/services/roomApi';
+
+// TODO use a model for this to de-couple frontend
+import type { SongDto } from 'room/dtos/SongDto';
 
 interface Props {
     roomId: string;
@@ -69,9 +71,11 @@ const NowPlayingSideArt = styled('img')`
 `;
 
 export const NowPlaying: FC<Props> = props => {
-    const result = spotifyCurrentlyPlayingApi.endpoints.get.useQuery(props.roomId, {
+    // TODO Replace with useTask based hook
+    const result = roomApi.endpoints.playing.useQuery(props.roomId, {
         pollingInterval: 5000,
     });
+
     return (
         <QueryResult<SongDto> result={result}>
             {{

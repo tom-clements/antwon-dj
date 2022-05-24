@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
-import { SongDto } from 'providers/spotify/services/spotifySearchApi';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+
+// TODO use a model for this to de-couple frontend
+import type { SongDto } from 'room/dtos/SongDto';
 
 interface Props {
     songs: SongDto[];

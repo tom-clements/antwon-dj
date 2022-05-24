@@ -4,6 +4,25 @@ import { BaseQueryError } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { QueryStatus, QuerySubState } from '@reduxjs/toolkit/dist/query/core/apiState';
 import { Id, Override } from '@reduxjs/toolkit/dist/query/tsHelpers';
 
+// TODO move this to a simpler implementation; that de-couples reduxjs/toolkit from components
+// entirely. I propose a simple 'Suspense'-like component; but not related to code-splitting at all.
+// NOTE suspense _was_ going to relate to data-fetching but currently does not and let's not bank on it
+// - I like it being for code-splitting purposes only.
+//
+// So here... maybe making a <Deferred> or <Task /> component with Task states:
+// Created (uninitialized)
+// Running,
+// Completed
+// Faulted
+//
+// Wrap redux other async calls with useTask.
+
+// Map API call to this. Need to express subtypes in faulted - some are ok, some are not.
+// FaultType = GenericFault | ApiFault
+// GenericFault = { type: FaultType.Generic; message: string }
+// ApiFault = { type: FaultType.Api; statusCode: ...; message: string }
+// etc.
+
 export enum QueryResultStatus {
     Uninitialised = 0,
     NotFound,

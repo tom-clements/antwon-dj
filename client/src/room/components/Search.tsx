@@ -3,7 +3,6 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled, InputAdornment, InputLabel, OutlinedInput, FormControl, IconButton } from '@mui/material';
 import { Clear, Search } from '@mui/icons-material';
-import { spotifySearchApi } from 'providers/spotify/services/spotifySearchApi';
 import { roomApi } from 'room/services/roomApi';
 import { SongList } from 'room/components/SongList';
 import { SearchSong } from 'room/components/SearchSong';
@@ -43,9 +42,10 @@ const Relative = styled(Box)`
 `;
 
 export const SongSearch: FC<Props> = props => {
-    const [searchTerm, setSearchTerm] = useState<string | null>(null); // todo: Put this in redux
-    const [addSongToQueue] = roomApi.endpoints.addSongToQueue.useMutation();
-    const [triggerSearch, result] = spotifySearchApi.endpoints.getSongsForSearch.useLazyQuery();
+    // TODO WOOOOO, this is a good custom hook candidate no? Jeez
+    const [searchTerm, setSearchTerm] = useState<string | null>(null);
+    const [addSongToQueue] = roomApi.endpoints.queue.useMutation();
+    const [triggerSearch, result] = roomApi.endpoints.search.useLazyQuery();
     const debouncedSearch = useCallback((arg: { query: string; roomId: string; }) => {
         return _.debounce(() => triggerSearch(arg), 200, { leading: true })();
     }, [triggerSearch]);
