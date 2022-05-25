@@ -112,17 +112,6 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [
-                    {
-                        "in":  "body",
-                        "name":  "body",
-                        "description": "Refresh Token",
-                        "required":  true,
-                        "schema": {
-                            "$ref": "#/definitions/RefreshToken"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "200 response",
@@ -130,12 +119,12 @@
                             "$ref": "#/definitions/Tokens"
                         }
                     },
-                    "400": {
-                        "description": "Input Validation Error"
+                    "403": {
+                        "description": "Unauthorized"
                     }
                 },
                 "summary": "Retrieve User Tokens from refresh token",
-                "description": "Provide a refresh token use to retrieve access tokens"
+                "description": "Provide refresh-token in cookie and use to retrieve access tokens"
             }
         },
         "/user/info": {
@@ -164,9 +153,6 @@
                     },
                     "401": {
                         "description": "Unauthorized"
-                    },
-                    "400": {
-                        "description": "Input Validation Error"
                     }
                 },
                 "summary": "Retrieve User Information about current user",
@@ -752,18 +738,20 @@
         "UserInfo": {
             "type": "object",
             "properties": {
-                "room_code":  {"type":  "string", "example": "SOIREE"},
-                "room_guid":  {"type":  "string", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
-                "user_username":  {"type":  "string", "example": "google_115636318877645090402"},
-                "is_inactive":  {"type":  "boolean", "example": "false"},
-                "create_time":  {"type":  "string", "example":  "2022-04-11 08:59:49"}
+                "sub":  {"type":  "string", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
+                "email_verified":  {"type":  "boolean", "example": "true"},
+                "name":  {"type":  "string", "example": "Albert"},
+                "email":  {"type":  "boolean", "example": "ablert@antwon.dj"},
+                "username":  {"type":  "string", "example":  "google_115636318877645090402"},
+                "is_spotify_connected":  {"type":  "boolean", "example":  "true"},
+                "room_code":  {"type":  "string", "example":  "SOIREE"}
             }
         },
         "RoomInfo": {
             "type": "object",
             "properties": {
                 "room_code":  {"type":  "string", "example": "SOIREE"},
-                "room_guid":  {"type":  "boolean", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
+                "room_guid":  {"type":  "string", "example": "1deb5a59-435d-49b8-be68-daf5744587fa"},
                 "user_username":  {"type":  "string", "example":  "google_115636318877645090402"},
                 "is_inactive":  {"type":  "boolean", "example":  "false"},
                 "create_time":  {"type":  "string", "example":  "2022-04-11 08:59:49"}

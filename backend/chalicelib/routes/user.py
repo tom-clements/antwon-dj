@@ -13,7 +13,7 @@ from chalicelib.services.auth.endpoints import (
     cognito_login_url,
 )
 from chalicelib.services.user.get_login import user_signup_callback
-from chalicelib.services.user.get_user_info import get_room_code_from_username
+from chalicelib.services.user.get_user_info import get_room_code_from_username, get_is_spotify_connected
 from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs
 from chalicelib.utils.endpoint_parameter_injection import inject_cognito_user_info, inject_cookies
 from chalicelib.utils.env import BASE_URL, DOMAIN
@@ -73,5 +73,6 @@ def user_token_get(refresh_token: str) -> Dict[str, str]:
 @user_routes.route("/user/info", methods=["GET"], cors=get_cors_config(), authorizer=get_authorizer())
 @inject_cognito_user_info(user_routes)
 def user_info_get(user_info: CognitoUserInfoDto) -> Dict[str, str]:
+    is_spotify_connected = get_is_spotify_connected(user_info.username)
     room_code = get_room_code_from_username(user_info.username)
-    return asdict(UserInfoDto(room_code=room_code, **asdict(user_info)))
+    return asdict(UserInfoDto(is_spotify_connected=is_spotify_connected, room_code=room_code, **asdict(user_info)))
