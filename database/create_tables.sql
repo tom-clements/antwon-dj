@@ -7,13 +7,15 @@ CREATE TABLE antwon.SpotifyUsers (
     spotify_profile_image_url varchar(500) NOT NULL,
     spotify_access_token varchar(500) NOT NULL,
     spotify_refresh_token varchar(500) NOT NULL,
-    insert_time datetime NOT NULL
+    insert_time datetime NOT NULL,
+    CONSTRAINT constraint_user_id UNIQUE (user_id)
 );
 
 CREATE TABLE antwon.Users (
     user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_username varchar(36) NOT NULL,
-    create_time datetime NOT NULL
+    create_time datetime NOT NULL,
+    CONSTRAINT constraint_username UNIQUE (user_username)
 );
 
 
@@ -35,7 +37,8 @@ CREATE TABLE antwon.Songs (
     song_artist varchar(500),
     song_album_url varchar(500),
     insert_time datetime NOT NULL,
-    last_accessed datetime NOT NULL
+    last_accessed datetime NOT NULL,
+    CONSTRAINT constraint_song_uri UNIQUE (song_uri)
 );
 
 CREATE TABLE antwon.RoomSongs (
