@@ -6,6 +6,5 @@ from chalicelib.data.queries.read_user import read_user
 def add_user_if_not_exists(user_username: str) -> None:
     try:
         read_user(user_username)
-        create_user(user_username)
     except UserNotFoundDbError:
-        pass
+        create_user(user_username)
