@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # mypy: ignore-errors
 
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint
 
 from chalicelib.models import User
 from chalicelib.models.tables.base import Base
@@ -10,6 +10,7 @@ from chalicelib.models.tables.base import Base
 
 class SpotifyUser(Base):
     __tablename__ = "SpotifyUsers"
+    __table_args__ = (UniqueConstraint("user_id"),)
 
     spotify_user_id = Column(Integer, primary_key=True)
     spotify_user_guid = Column(String)

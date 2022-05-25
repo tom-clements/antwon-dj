@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # mypy: ignore-errors
 
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint
 
 from chalicelib.models import Room
 from chalicelib.models.tables.base import Base
@@ -10,6 +10,7 @@ from chalicelib.models.tables.base import Base
 
 class Song(Base):
     __tablename__ = "Songs"
+    __table_args__ = (UniqueConstraint("song_uri"),)
 
     song_id = Column(Integer, primary_key=True)
     song_guid = Column(String)
