@@ -8,7 +8,7 @@ from chalicelib.cors import get_cors_config
 from chalicelib.error_handling import error_handle
 from chalicelib.models.cognito.user_info import CognitoUserInfoDto
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
-from chalicelib.services.auth.cognito.authorizer import get_authorizer
+from chalicelib.authorizer import get_authorizer
 from chalicelib.services.room.add_like import add_like_to_song
 from chalicelib.services.room.add_room import owner_add_room
 from chalicelib.services.room.add_to_queue import add_song_to_room_queue

@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session
 
-from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
+from chalicelib.services.utils.aws_secrets import AwsSecretRetrieval
 from chalicelib.utils.env import ENVIRONMENT
 
 

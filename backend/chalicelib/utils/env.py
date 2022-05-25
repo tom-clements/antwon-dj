@@ -9,6 +9,7 @@ AUTH_URL: Final[str] = str(os.getenv("AUTH_URL"))
 COGNITO_POOL_NAME: Final[str] = str("COGNITO_POOL_NAME")
 COGNITO_POOL_ARN: Final[str] = str("login/COGNITO_POOL_ARN")
 LOGIN_REDIRECT_ENDPOINT: Final[str] = str("login/callback")
+LOGOUT_REDIRECT_ENDPOINT: Final[str] = str("logout/callback")
 
 
 assert ENVIRONMENT is not None, ENVIRONMENT
@@ -19,3 +20,4 @@ assert AUTH_URL is not None, AUTH_URL
 assert COGNITO_POOL_NAME is not None, COGNITO_POOL_NAME
 assert COGNITO_POOL_ARN is not None, COGNITO_POOL_ARN
 assert LOGIN_REDIRECT_ENDPOINT is not None, LOGIN_REDIRECT_ENDPOINT
+assert LOGOUT_REDIRECT_ENDPOINT is not None, LOGOUT_REDIRECT_ENDPOINT

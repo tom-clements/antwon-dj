@@ -5,7 +5,7 @@ from pytest import fixture
 
 from chalicelib.models.cognito.user_info import CognitoUserInfoDto
 from chalicelib.models.endpoints.user_info import UserInfoDto
-from chalicelib.services.auth.aws_secrets import AwsSecretRetrieval
+from chalicelib.services.utils.aws_secrets import AwsSecretRetrieval
 
 
 @AwsSecretRetrieval("cognito_client_credentials", client_secret="local_client_secret")

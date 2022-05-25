@@ -7,7 +7,7 @@ from dacite import from_dict
 from chalicelib.models.spotify_api.playing_result import SpotifyPlaying
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted
 from chalicelib.services.spotify.get_search_songs import format_songs
-from chalicelib.services.auth.spotify import use_spotify_session
+from chalicelib.services.spotify.auth import use_spotify_session
 from chalicelib.services.utils.verify_room import verify_room_exists
 from chalicelib.utils.get_ttl_hash import get_ttl_hash
 

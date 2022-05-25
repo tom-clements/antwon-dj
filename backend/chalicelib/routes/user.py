@@ -6,9 +6,13 @@ from chalice import Blueprint, Response
 from chalicelib.cors import get_cors_config
 from chalicelib.models.cognito.user_info import CognitoUserInfoDto
 from chalicelib.models.endpoints.user_info import UserInfoDto
-from chalicelib.services.auth.cognito.authorizer import get_authorizer
-from chalicelib.services.auth.cognito.endpoints import get_tokens_from_refresh
-from chalicelib.services.user.get_login import user_login, user_signup_callback
+from chalicelib.authorizer import get_authorizer
+from chalicelib.services.auth.endpoints import (
+    cognito_tokens_refresh_token_request,
+    cognito_logout_url,
+    cognito_login_url,
+)
+from chalicelib.services.user.get_login import user_signup_callback
 from chalicelib.services.user.get_user_info import get_room_code_from_username
 from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs, verify_post_input
 from chalicelib.utils.endpoint_parameter_injection import inject_cognito_user_info
@@ -19,8 +23,23 @@ user_routes = Blueprint(__name__)
 
 @user_routes.route("/login", methods=["GET"], cors=get_cors_config())
 def login_get() -> Response:
-    url = user_login()
+    url = cognito_login_url()
     return Response(body="", headers={"Location": url}, status_code=302)
+
+
+@user_routes.route("/logout", methods=["GET"], cors=get_cors_config())
+def logout_get() -> Response:
+    url = cognito_logout_url()
+    return Response(body="", headers={"Location": url}, status_code=302)
+
+
+@user_routes.route("/logout/callback", methods=["GET"], cors=get_cors_config())
+def login_callback_get() -> Response:
+    return Response(
+        body="",
+        headers={"Location": f"{BASE_URL}/logout", "Set-Cookie": "refresh-token='';expires=0;Path=/;HttpOnly"},
+        status_code=302,
+    )
 
 
 @user_routes.route("/login/callback", methods=["GET"], cors=get_cors_config())
@@ -37,7 +56,7 @@ def signup_callback_get(query_params: Dict[str, str]) -> Response:
 @user_routes.route("/user/token", methods=["POST"], cors=get_cors_config())
 @verify_post_input(user_routes, "refresh_token")
 def user_token_get(post_body: Dict[str, str]) -> Dict[str, str]:
-    tokens = get_tokens_from_refresh(refresh_token=post_body["refresh_token"])
+    tokens = cognito_tokens_refresh_token_request(refresh_token=post_body["refresh_token"])
     return asdict(tokens)
 
 

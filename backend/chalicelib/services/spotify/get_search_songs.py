@@ -5,7 +5,7 @@ from dacite import from_dict
 
 from chalicelib.models.spotify_api.search_result import SpotifySearchResult
 from chalicelib.models.spotify_api.track import SpotifyTrackFormatted, SpotifyTrack
-from chalicelib.services.auth.spotify import use_spotify_session
+from chalicelib.services.spotify.auth import use_spotify_session
 from chalicelib.services.utils.verify_room import verify_room_exists
 
 
