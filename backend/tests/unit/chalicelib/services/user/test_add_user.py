@@ -7,7 +7,7 @@ from chalicelib.models import User
 from chalicelib.services.user.add_user import add_user_if_not_exists
 
 
-@pytest.mark.parametrize("is_read_user_side_effect, expected_create_called", [(False, True), (True, False)])
+@pytest.mark.parametrize("is_read_user_side_effect, expected_create_called", [(True, True), (False, False)])
 @patch("chalicelib.services.user.add_user.read_user")
 @patch("chalicelib.services.user.add_user.create_user")
 def test_add_user_if_not_exists(

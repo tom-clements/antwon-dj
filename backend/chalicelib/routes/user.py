@@ -33,16 +33,6 @@ def logout_get() -> Response:
     return Response(body="", headers={"Location": url}, status_code=302)
 
 
-@user_routes.route("/logout/callback", methods=["GET"], cors=get_cors_config())
-def logout_callback_get() -> Response:
-    cookie_str = f"refresh-token='';Domain={DOMAIN};Expires=0;Path=/;HttpOnly;Secure;SameSite=Strict"
-    return Response(
-        body="",
-        headers={"Location": f"{BASE_URL}/logout", "Set-Cookie": cookie_str},
-        status_code=302,
-    )
-
-
 @user_routes.route("/login/callback", methods=["GET"], cors=get_cors_config())
 @verify_parameter_inputs(user_routes, "code")
 def login_callback_get(query_params: Dict[str, str]) -> Response:
@@ -59,6 +49,16 @@ def login_callback_get(query_params: Dict[str, str]) -> Response:
     return Response(
         body="",
         headers={"Location": f"{BASE_URL}/login", "Set-Cookie": cookie_str},
+        status_code=302,
+    )
+
+
+@user_routes.route("/logout/callback", methods=["GET"], cors=get_cors_config())
+def logout_callback_get() -> Response:
+    cookie_str = f"refresh-token='';Domain={DOMAIN};Expires=0;Path=/;HttpOnly;Secure;SameSite=Strict"
+    return Response(
+        body="",
+        headers={"Location": f"{BASE_URL}/logout", "Set-Cookie": cookie_str},
         status_code=302,
     )
 
