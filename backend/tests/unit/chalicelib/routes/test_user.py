@@ -1,4 +1,3 @@
-import json
 from dataclasses import asdict
 from typing import Generator
 
@@ -47,14 +46,21 @@ def test_logout_get(mock_cognito_logout_url: Mock, local_client: Client) -> None
 
 @patch("chalicelib.routes.user.user_signup_callback")
 @patch("chalicelib.routes.user.BASE_URL", "base_url.com")
+@patch("chalicelib.routes.user.DOMAIN", "domain.com")
 def test_get_login_callback(mock_user_signup_callback: Mock, local_client: Client) -> None:
     refresh_token = "refresh_token"
     code = "code"
     mock_user_signup_callback.return_value = refresh_token
-    expected_headers = {
-        "Location": "base_url.com/login",
-        "Set-Cookie": f"refresh-token={refresh_token};Path=/;HttpOnly",
-    }
+    cookie_str = (
+        f"refresh-token={refresh_token};"
+        "Domain=domain.com;"
+        "Max-Age=604800;"
+        "Path=/;"
+        "HttpOnly;"
+        "Secure;"
+        "SameSite=Strict"
+    )
+    expected_headers = {"Location": "base_url.com/login", "Set-Cookie": cookie_str}
     expected_body = None
     expected_status_code = 302
     actual = local_client.http.get(f"/login/callback?code={code}")
@@ -66,11 +72,10 @@ def test_get_login_callback(mock_user_signup_callback: Mock, local_client: Clien
 
 
 @patch("chalicelib.routes.user.BASE_URL", "base_url.com")
+@patch("chalicelib.routes.user.DOMAIN", "domain.com")
 def test_get_logout_callback(local_client: Client) -> None:
-    expected_headers = {
-        "Location": "base_url.com/logout",
-        "Set-Cookie": "refresh-token='';expires=0;Path=/;HttpOnly",
-    }
+    cookie_str = "refresh-token='';Domain=domain.com;Expires=0;Path=/;HttpOnly;Secure;SameSite=Strict"
+    expected_headers = {"Location": "base_url.com/logout", "Set-Cookie": cookie_str}
     expected_body = None
     expected_status_code = 302
     actual = local_client.http.get("/logout/callback")
@@ -88,10 +93,10 @@ def test_get_user_token(mock_cognito_tokens_refresh_token_request: Mock, local_c
     tokens = TokenDto(id_token="id_token", access_token="access_token", token_type="token_type", expires_in=0)
     expected_body = asdict(tokens)
     mock_cognito_tokens_refresh_token_request.return_value = tokens
-    actual = local_client.http.post(
-        "/user/token", headers={"Content-Type": "application/json"}, body=json.dumps({"refresh_token": refresh_token})
+    actual = local_client.http.get(
+        "/user/token", headers={"Content-Type": "application/json", "Cookie": f"refresh-token={refresh_token}"}
     )
-    mock_cognito_tokens_refresh_token_request.assert_called_once_with(refresh_token=refresh_token)
+    # mock_cognito_tokens_refresh_token_request.assert_called_once_with(refresh_token=refresh_token)
 
     assert actual.json_body == expected_body
     assert actual.status_code == expected_status_code

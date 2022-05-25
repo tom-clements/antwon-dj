@@ -11,6 +11,7 @@
             "environment_variables": {
                 "ENVIRONMENT": "dev",
                 "API_STAGE": "dev",
+                "DOMAIN": "djantwon.com",
                 "BASE_URL": "https://www.djantwon.com",
                 "API_URL": "https://api.djantwon.com",
                 "AUTH_URL": "https://auth.djantwon.com",
@@ -35,6 +36,7 @@
             "environment_variables": {
                 "ENVIRONMENT": "local",
                 "API_STAGE": "",
+                "DOMAIN": "localhost",
                 "BASE_URL": "http://localhost:3000",
                 "API_URL": "http://localhost:8000",
                 "AUTH_URL": "https://djantwon-local.auth.eu-west-2.amazoncognito.com",

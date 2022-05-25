@@ -14,9 +14,9 @@ from chalicelib.services.auth.endpoints import (
 )
 from chalicelib.services.user.get_login import user_signup_callback
 from chalicelib.services.user.get_user_info import get_room_code_from_username
-from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs, verify_post_input
-from chalicelib.utils.endpoint_parameter_injection import inject_cognito_user_info
-from chalicelib.utils.env import BASE_URL
+from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs
+from chalicelib.utils.endpoint_parameter_injection import inject_cognito_user_info, inject_cookies
+from chalicelib.utils.env import BASE_URL, DOMAIN
 
 user_routes = Blueprint(__name__)
 
@@ -34,29 +34,39 @@ def logout_get() -> Response:
 
 
 @user_routes.route("/logout/callback", methods=["GET"], cors=get_cors_config())
-def login_callback_get() -> Response:
+def logout_callback_get() -> Response:
+    cookie_str = f"refresh-token='';Domain={DOMAIN};Expires=0;Path=/;HttpOnly;Secure;SameSite=Strict"
     return Response(
         body="",
-        headers={"Location": f"{BASE_URL}/logout", "Set-Cookie": "refresh-token='';expires=0;Path=/;HttpOnly"},
+        headers={"Location": f"{BASE_URL}/logout", "Set-Cookie": cookie_str},
         status_code=302,
     )
 
 
 @user_routes.route("/login/callback", methods=["GET"], cors=get_cors_config())
 @verify_parameter_inputs(user_routes, "code")
-def signup_callback_get(query_params: Dict[str, str]) -> Response:
+def login_callback_get(query_params: Dict[str, str]) -> Response:
     refresh_token = user_signup_callback(code=query_params["code"])
+    cookie_str = (
+        f"refresh-token={refresh_token};"
+        f"Domain={DOMAIN};"
+        f"Max-Age=604800;"
+        f"Path=/;"
+        f"HttpOnly;"
+        f"Secure;"
+        f"SameSite=Strict"
+    )
     return Response(
         body="",
-        headers={"Location": f"{BASE_URL}/login", "Set-Cookie": f"refresh-token={refresh_token};Path=/;HttpOnly"},
+        headers={"Location": f"{BASE_URL}/login", "Set-Cookie": cookie_str},
         status_code=302,
     )
 
 
-@user_routes.route("/user/token", methods=["POST"], cors=get_cors_config())
-@verify_post_input(user_routes, "refresh_token")
-def user_token_get(post_body: Dict[str, str]) -> Dict[str, str]:
-    tokens = cognito_tokens_refresh_token_request(refresh_token=post_body["refresh_token"])
+@user_routes.route("/user/token", methods=["GET"], cors=get_cors_config())
+@inject_cookies(user_routes, "refresh_token")
+def user_token_get(refresh_token: str) -> Dict[str, str]:
+    tokens = cognito_tokens_refresh_token_request(refresh_token=refresh_token)
     return asdict(tokens)
 
 
