@@ -134,3 +134,17 @@ class UserLogoutServiceError(BadGatewayServiceError):
     def __init__(self, message: str = "Logout unsuccessful") -> None:
         self.message = message
         super().__init__(self.message)
+
+
+class SpotifyUserNotConnectedServiceError(ConflictServiceError):
+    """Exception raised for attempts to link an account to spotify that already is linked
+
+    Attributes:
+        username -- username of user trying to link
+        message -- explanation of the error
+    """
+
+    def __init__(self, username: str, message: str = "Spotify not conencted for user") -> None:
+        self.username = username
+        self.message = message + f": {username}"
+        super().__init__(self.message)
