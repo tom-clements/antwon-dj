@@ -5,7 +5,7 @@ from dacite import from_dict
 
 from chalicelib.data.queries.read_scalar_queries import read_room_guid_from_username
 from chalicelib.models.spotify_api.playlist import SpotifyPlaylist
-from chalicelib.services.auth.spotify import use_spotify_session
+from chalicelib.services.spotify.auth import use_spotify_session
 
 
 @use_spotify_session

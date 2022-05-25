@@ -5,8 +5,8 @@ from chalice import Blueprint, Response
 
 from chalicelib.cors import get_cors_config
 from chalicelib.models.cognito.user_info import CognitoUserInfoDto
-from chalicelib.services.auth.cognito.authorizer import get_authorizer
-from chalicelib.services.auth.spotify import app_authorization
+from chalicelib.authorizer import get_authorizer
+from chalicelib.services.spotify.auth import app_authorization
 from chalicelib.services.spotify.get_playlists import get_playlists_from_username
 from chalicelib.services.spotify.store_spotify_user import store_spotify_user
 from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs

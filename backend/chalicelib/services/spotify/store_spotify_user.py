@@ -1,4 +1,4 @@
-from chalicelib.services.auth.spotify import get_token, get_spotify
+from chalicelib.services.spotify.auth import get_token, get_spotify
 from chalicelib.services.spotify.add_spotify_user import add_spotify_user
 
 

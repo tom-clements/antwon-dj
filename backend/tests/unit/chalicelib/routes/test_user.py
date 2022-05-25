@@ -17,15 +17,29 @@ def local_client() -> Generator:
         yield client
 
 
-@patch("chalicelib.routes.user.user_login")
-def test_room_get(mock_user_login: Mock, local_client: Client) -> None:
+@patch("chalicelib.routes.user.cognito_login_url")
+def test_login_get(mock_user_login_url: Mock, local_client: Client) -> None:
     mock_auth_url = "auth.mock_url.com/login"
-    mock_user_login.return_value = mock_auth_url
+    mock_user_login_url.return_value = mock_auth_url
     expected_headers = {"Location": mock_auth_url}
     expected_body = None
     expected_status_code = 302
     actual = local_client.http.get("/login")
-    mock_user_login.assert_called_once()
+    mock_user_login_url.assert_called_once()
+    assert actual.json_body == expected_body
+    assert actual.headers["Location"] == expected_headers["Location"]
+    assert actual.status_code == expected_status_code
+
+
+@patch("chalicelib.routes.user.cognito_logout_url")
+def test_logout_get(mock_cognito_logout_url: Mock, local_client: Client) -> None:
+    mock_auth_url = "auth.mock_url.com/logout"
+    mock_cognito_logout_url.return_value = mock_auth_url
+    expected_headers = {"Location": mock_auth_url}
+    expected_body = None
+    expected_status_code = 302
+    actual = local_client.http.get("/logout")
+    mock_cognito_logout_url.assert_called_once()
     assert actual.json_body == expected_body
     assert actual.headers["Location"] == expected_headers["Location"]
     assert actual.status_code == expected_status_code
@@ -33,7 +47,7 @@ def test_room_get(mock_user_login: Mock, local_client: Client) -> None:
 
 @patch("chalicelib.routes.user.user_signup_callback")
 @patch("chalicelib.routes.user.BASE_URL", "base_url.com")
-def test_get_signup_callback(mock_user_signup_callback: Mock, local_client: Client) -> None:
+def test_get_login_callback(mock_user_signup_callback: Mock, local_client: Client) -> None:
     refresh_token = "refresh_token"
     code = "code"
     mock_user_signup_callback.return_value = refresh_token
@@ -51,18 +65,33 @@ def test_get_signup_callback(mock_user_signup_callback: Mock, local_client: Clie
     assert actual.status_code == expected_status_code
 
 
-@patch("chalicelib.routes.user.get_tokens_from_refresh")
-def test_get_user_token(mock_get_tokens_from_refresh: Mock, local_client: Client) -> None:
+@patch("chalicelib.routes.user.BASE_URL", "base_url.com")
+def test_get_logout_callback(local_client: Client) -> None:
+    expected_headers = {
+        "Location": "base_url.com/logout",
+        "Set-Cookie": "refresh-token='';expires=0;Path=/;HttpOnly",
+    }
+    expected_body = None
+    expected_status_code = 302
+    actual = local_client.http.get("/logout/callback")
+    assert actual.json_body == expected_body
+    assert actual.headers["Location"] == expected_headers["Location"]
+    assert actual.headers["Set-Cookie"] == expected_headers["Set-Cookie"]
+    assert actual.status_code == expected_status_code
+
+
+@patch("chalicelib.routes.user.cognito_tokens_refresh_token_request")
+def test_get_user_token(mock_cognito_tokens_refresh_token_request: Mock, local_client: Client) -> None:
     refresh_token = "refresh_token"
 
     expected_status_code = 200
     tokens = TokenDto(id_token="id_token", access_token="access_token", token_type="token_type", expires_in=0)
     expected_body = asdict(tokens)
-    mock_get_tokens_from_refresh.return_value = tokens
+    mock_cognito_tokens_refresh_token_request.return_value = tokens
     actual = local_client.http.post(
         "/user/token", headers={"Content-Type": "application/json"}, body=json.dumps({"refresh_token": refresh_token})
     )
-    mock_get_tokens_from_refresh.assert_called_once_with(refresh_token=refresh_token)
+    mock_cognito_tokens_refresh_token_request.assert_called_once_with(refresh_token=refresh_token)
 
     assert actual.json_body == expected_body
     assert actual.status_code == expected_status_code

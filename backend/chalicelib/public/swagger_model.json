@@ -45,11 +45,59 @@
                         "headers": {
                             "url": {
                                 "type": "string",
-                                "description": "Redirect to Antwon client home page"
+                                "description": "Redirect to Antwon client login page"
                             },
                             "Set-Cookie": {
                                 "type": "string",
                                 "description": "Sets the refresh token as a cookie with key: refresh-token"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "get": {
+                "summary": "Login Users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "302": {
+                        "description": "302 response",
+                        "headers": {
+                            "url": {
+                                "type": "string",
+                                "description": "Redirect to Antwon Cognito Auth logout page"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout/callback": {
+            "get": {
+                "summary": "Callback from unauthenticating with Cognito",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "302": {
+                        "description": "302 response",
+                        "headers": {
+                            "url": {
+                                "type": "string",
+                                "description": "Redirect to Antwon client logout page"
+                            },
+                            "Set-Cookie": {
+                                "type": "string",
+                                "description": "Sets a refresh token as a cookie with key: refresh-token and value as empty"
                             }
                         }
                     }

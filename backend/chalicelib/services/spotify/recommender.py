@@ -9,7 +9,7 @@ from chalicelib.models.data_queries.next_song import NextSong
 from chalicelib.models.spotify_api.recommender import SpotifyRecommenderResult
 from chalicelib.services.room.add_to_queue import add_song_to_room_queue
 from chalicelib.services.spotify.get_search_songs import format_songs
-from chalicelib.services.auth.spotify import use_spotify_session
+from chalicelib.services.spotify.auth import use_spotify_session
 
 
 @use_spotify_session

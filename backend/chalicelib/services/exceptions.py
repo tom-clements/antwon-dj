@@ -6,6 +6,10 @@ class NotFoundServiceError(ServiceError):
     pass
 
 
+class BadGatewayServiceError(ServiceError):
+    pass
+
+
 class RoomNotFoundServiceError(NotFoundServiceError):
     """Exception raised for errors in incorrect room guids
 
@@ -117,4 +121,16 @@ class UserRoomExistsServiceError(ConflictServiceError):
     def __init__(self, room_guid: str, message: str = "User room already exists") -> None:
         self.room_code = room_guid
         self.message = message + f": {room_guid}"
+        super().__init__(self.message)
+
+
+class UserLogoutServiceError(BadGatewayServiceError):
+    """Exception raised for errors logging out of cognito
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message: str = "Logout unsuccessful") -> None:
+        self.message = message
         super().__init__(self.message)

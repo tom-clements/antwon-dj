@@ -8,6 +8,7 @@ from chalicelib.services.exceptions import (
     ForbiddenServiceError,
     ConflictServiceError,
     ServiceError,
+    BadGatewayServiceError,
 )
 
 
@@ -30,5 +31,7 @@ def error_handle(f: Callable) -> Callable:
             return error_response(status_code=404, error=e)
         except ConflictServiceError as e:
             return error_response(status_code=409, error=e)
+        except BadGatewayServiceError as e:
+            return error_response(status_code=502, error=e)
 
     return decorated
