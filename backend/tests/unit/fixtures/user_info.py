@@ -26,7 +26,7 @@ def cognito_user_info() -> CognitoUserInfoDto:
 
 @fixture()
 def user_info(cognito_user_info: CognitoUserInfoDto) -> UserInfoDto:
-    return UserInfoDto(room_code="room_code", **asdict(cognito_user_info))
+    return UserInfoDto(is_spotify_connected=True, room_code="room_code", **asdict(cognito_user_info))
 
 
 @fixture()
