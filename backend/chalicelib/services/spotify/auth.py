@@ -1,7 +1,7 @@
 import base64
-import urllib
 import json
 from typing import Dict, Any, Callable
+from urllib.parse import quote, urlencode
 
 import requests
 from functools import wraps
@@ -13,7 +13,7 @@ from spotipy.oauth2 import SpotifyClientCredentials  # type: ignore
 from chalicelib.data.queries.read_spotify_user_tokens import read_spotify_user_tokens
 from chalicelib.data.queries.update_spotify_user import update_spotify_user
 from chalicelib.services.utils.aws_secrets import AwsSecretRetrieval
-from chalicelib.utils.env import API_URL, API_STAGE
+from chalicelib.utils.env import API_URL, API_STAGE, SPOTIFY_REDIRECT_ENDPOINT
 
 SCOPES = (
     "playlist-read-collaborative user-modify-playback-state user-read-playback-state "
@@ -23,13 +23,14 @@ SCOPES = (
 
 @AwsSecretRetrieval("spotify_client", spotify_id="SPOTIFY_CLIENT_ID")
 def app_authorization(spotify_id: str) -> str:
+    api_stage = f"/{API_STAGE}" if API_STAGE else ""
     f = {
         "response_type": "code",
         "client_id": spotify_id,
         "scope": SCOPES,
-        "redirect_uri": f"{API_URL}/{API_STAGE}/user/spotify/callback",
+        "redirect_uri": f"{API_URL}{api_stage}/{SPOTIFY_REDIRECT_ENDPOINT}",
     }
-    url = "https://accounts.spotify.com/authorize?{}".format(urllib.parse.urlencode(f))
+    url = "https://accounts.spotify.com/authorize?{}".format(urlencode(f, quote_via=quote)).replace("%2F", "/")
     return url
 
 
@@ -42,9 +43,10 @@ def get_spotify(auth: str, spotify_id: str, spotify_secret: str) -> spotipy.Spot
 
 @AwsSecretRetrieval("spotify_client", spotify_secret="SPOTIFY_CLIENT_SECRET", spotify_id="SPOTIFY_CLIENT_ID")
 def get_token(code: str, spotify_id: str, spotify_secret: str) -> Dict[str, str]:
+    api_stage = f"/{API_STAGE}" if API_STAGE else ""
     data = {
         "code": code,
-        "redirect_uri": f"{API_URL}/{API_STAGE}/user/spotify/callback",
+        "redirect_uri": f"{API_URL}{api_stage}/user/spotify/callback",
         "grant_type": "authorization_code",
     }
     url = "https://accounts.spotify.com/api/token"
