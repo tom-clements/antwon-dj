@@ -84,7 +84,7 @@ export const BottomSheet: FC<Props> = props => {
                     <PullBox
                         {...handlers}
                         onClick={() => setOpen(!open)}
-                        elevation={3}
+                        elevation={1}
                         square
                     >
                         <ArrowBox>
@@ -96,7 +96,7 @@ export const BottomSheet: FC<Props> = props => {
                         </ArrowBox>
                         {props.pullBoxContent && props.pullBoxContent(open)}
                     </PullBox>
-                    <ContentBox elevation={11} square>
+                    <ContentBox elevation={0} square>
                         {props.children}
                     </ContentBox>
                 </SheetBox>
