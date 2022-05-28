@@ -38,7 +38,9 @@ def async_poll_rooms_local(room_guids: List[str]) -> None:
     loop.run_until_complete(poll_rooms_local(room_guids))
 
 
-def poll_five_seconds(local_polling: bool = True) -> None:
+def poll_five_seconds(local_polling: bool = True) -> None
+    room_guid = "5fbc1ed4-8dd0-45a8-95a2-2f8d2ffb7faa"
+    return watch_room("5fbc1ed4-8dd0-45a8-95a2-2f8d2ffb7faa")
     for i in range(10):
         room_guids = read_active_rooms()
         if local_polling:
