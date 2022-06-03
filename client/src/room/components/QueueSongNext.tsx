@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { styled, Box, ListItem } from '@mui/material';
-import { roomApi } from 'room/services/roomApi';
-import { QueryResult, QueryResultStatus } from 'common/components/QueryResult';
+import { useDependencies } from 'common/hooks/useDependencies';
+import { TaskStatus } from 'common/model/Task';
+import { DeferredTask } from 'common/components/DeferredTask';
 import { SongItem, SongItemSkeleton } from 'room/components/SongItem';
 
 // TODO use a model for this to de-couple frontend
@@ -17,19 +18,16 @@ const EmptyQueueContainer = styled(Box)`
     padding: ${props => props.theme.spacing(2)};
 `;
 
-export const NextSong: FC<Props> = props => {
-    // TODO Replace with useTask based hook
-    // Turns out we _need_ to do this for MVP - we cannot safely or easily differentiate user types
-    const result = roomApi.endpoints.guestQueue.useQuery(props.roomId, {
-        pollingInterval: 5000,
-    });
+export const QueueSongNext: FC<Props> = props => {
+    const task = useDependencies(d => d.useSongQueue)(props);
     return (
-        <QueryResult<RoomSongDto[]> result={result}>
+        <DeferredTask task={task}>
             {{
-                [QueryResultStatus.OK]: data => <NextSongInternal songs={data} isOpen={props.isOpen} />,
-                [QueryResultStatus.Pending]: () => <SongItemSkeleton />,
+                [TaskStatus.Resulted]: songs => <NextSongInternal songs={songs} isOpen={props.isOpen} />,
+                [TaskStatus.Completed]: () => <NextSongInternal songs={[]} isOpen={props.isOpen} />,
+                [TaskStatus.Created]: () => <SongItemSkeleton />,
             }}
-        </QueryResult >
+        </DeferredTask >
     );
 };
 
@@ -39,7 +37,7 @@ interface InternalProps {
 }
 
 const NextSongInternal: FC<InternalProps> = props => {
-    // This should probably be done in the API/state layer.
+    // TODO This should probably be done in the API/state layer.
     // It can stay here for now.
     const nextSong = props.songs.filter(s => !s.is_played && !s.is_removed).shift();
 

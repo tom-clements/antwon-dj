@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { roomApi } from 'room/services/roomApi';
-import { QueryResult, QueryResultStatus } from 'common/components/QueryResult';
-import { Box, Skeleton } from '@mui/material';
 import { SongList } from 'room/components/SongList';
+import { Box, Skeleton } from '@mui/material';
 import { QueueSong } from 'room/components/QueueSong';
+import { useDependencies } from 'common/hooks/useDependencies';
+import { TaskStatus } from 'common/model/Task';
+import { DeferredTask } from 'common/components/DeferredTask';
 
 // TODO use a model for this to de-couple frontend
 import type { RoomSongDto } from 'room/dtos/RoomSongDto';
@@ -12,23 +13,21 @@ interface Props {
     roomId: string;
 }
 
-export const RoomQueue: FC<Props> = props => {
-    // TODO Replace with useTask based hook
-    // Turns out we _need_ to do this for MVP - we cannot safely or easily differentiate user types
-    const result = roomApi.endpoints.guestQueue.useQuery(props.roomId, {
-        pollingInterval: 5000,
-    });
+export const Queue: FC<Props> = props => {
+    const task = useDependencies(d => d.useSongQueue)(props);
+
     return (
-        <QueryResult<RoomSongDto[]> result={result}>
+        <DeferredTask task={task}>
             {{
-                [QueryResultStatus.OK]: data => <RoomQueueInternal songs={data} />,
-                [QueryResultStatus.Pending]: () => <RoomQueueSkeleton />,
+                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs} />,
+                [TaskStatus.Completed]: () => <QueueInternal songs={[]} />,
+                [TaskStatus.Created]: () => <QueueSkeleton />,
             }}
-        </QueryResult>
+        </DeferredTask>
     );
 };
 
-const RoomQueueSkeleton: FC = () => {
+const QueueSkeleton: FC = () => {
     return (
         <Box p={'16px'} position={'absolute'} width={'100%'} height={'100%'}>
             <Skeleton variant={'rectangular'} height={'100%'} />
@@ -36,8 +35,8 @@ const RoomQueueSkeleton: FC = () => {
     );
 };
 
-const RoomQueueInternal: FC<{ songs: RoomSongDto[] }> = props => {
-    // This should probably be done in the API/state layer.
+const QueueInternal: FC<{ songs: RoomSongDto[] }> = props => {
+    // TODO This should probably be done in the API/state layer.
     // It can stay here for now.
     const songs = props.songs.filter(s => !s.is_played && !s.is_removed).slice(1);
     return <SongList

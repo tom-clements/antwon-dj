@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { styled, Box } from '@mui/material';
-import { NextSong } from 'room/components/QueueSongNext';
+import { QueueSongNext } from 'room/components/QueueSongNext';
 import { SongSearch } from 'room/components/Search';
 import { Search } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
@@ -32,7 +32,7 @@ export const SongQueuePullBox: FC<Props> = props => {
     if (!props.isOpen) {
         return (
             <PullBoxContainer>
-                <NextSong roomId={props.roomId} isOpen={false} />
+                <QueueSongNext roomId={props.roomId} isOpen={false} />
                 <SearchHint>
                     <Search htmlColor={grey[500]} />
                 </SearchHint>
@@ -44,7 +44,7 @@ export const SongQueuePullBox: FC<Props> = props => {
             <SearchContainer onClick={event => event.stopPropagation()}>
                 <SongSearch roomId={props.roomId} />
             </SearchContainer>
-            <NextSong roomId={props.roomId} isOpen={true} />
+            <QueueSongNext roomId={props.roomId} isOpen={true} />
         </PullBoxContainer>
     );
 };
