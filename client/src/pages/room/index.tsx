@@ -18,7 +18,7 @@ export default function RoomPage() {
     return (
         <RootContainer>
             <RoomProvider
-                roomCodeFromPage={code}
+                initialRoomCode={code}
                 render={roomId => <Room roomId={roomId} />}
                 renderLoading={() => <FullPageSpinner />}
             />

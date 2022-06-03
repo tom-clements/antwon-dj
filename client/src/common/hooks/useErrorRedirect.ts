@@ -7,7 +7,7 @@ import { useDispatch } from 'common/services/createStore';
 export const useErrorRedirect = (
     condition: boolean,
     errorCode: ErrorCode,
-    redirectPath: string
+    redirectPath = '/'
 ) => {
     const router = useRouter();
     const dispatch = useDispatch();

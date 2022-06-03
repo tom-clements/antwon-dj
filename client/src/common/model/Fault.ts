@@ -24,6 +24,7 @@ export type GenericFault = FaultBase & {
 export type ApiFault = FaultBase & {
     type: FaultType.Api;
     statusCode: HttpStatusCode;
+    apiCode: string;
 };
 
 export type Fault =
@@ -38,8 +39,9 @@ export const fault = (name?: string, message?: string, cause?: Fault, stack?: st
     stack
 });
 
-export const apiFault = (statusCode: HttpStatusCode, message: string): ApiFault => ({
+export const apiFault = (statusCode: HttpStatusCode, apiCode: string, message: string): ApiFault => ({
     type: FaultType.Api,
     statusCode,
+    apiCode,
     message,
 });
