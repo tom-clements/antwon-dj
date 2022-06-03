@@ -3,11 +3,12 @@ import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import { Spinner } from 'common/components/Spinner';
-import { QueryResult, QueryResultStatus } from 'common/components/QueryResult';
+import { useDependencies } from 'common/hooks/useDependencies';
+import { TaskStatus } from 'common/model/Task';
+import { DeferredTask } from 'common/components/DeferredTask';
 import { Typography } from '@mui/material';
 import { useSelector } from 'common/services/createStore';
 import { selectRoomPortalCode } from 'roomPortal/services/roomPortalSlice';
-import { roomApi } from 'room/services/roomApi';
 
 // TODO use a model for this to de-couple frontend
 import type { SongDto } from 'room/dtos/SongDto';
@@ -71,18 +72,15 @@ const NowPlayingSideArt = styled('img')`
 `;
 
 export const NowPlaying: FC<Props> = props => {
-    // TODO Replace with useTask based hook
-    const result = roomApi.endpoints.playing.useQuery(props.roomId, {
-        pollingInterval: 5000,
-    });
-
+    const task = useDependencies(d => d.useNowPlaying)(props);
     return (
-        <QueryResult<SongDto> result={result}>
+        <DeferredTask task={task}>
             {{
-                [QueryResultStatus.OK]: data => <NowPlayingInternalLoaded song={data} />,
-                [QueryResultStatus.Pending]: () => <NowPlayingInternalPending />,
+                [TaskStatus.Resulted]: song => <NowPlayingInternalLoaded song={song} />,
+                [TaskStatus.Completed]: () => <NowPlayingInternalPending />,
+                [TaskStatus.Created]: () => <NowPlayingInternalPending />,
             }}
-        </QueryResult>
+        </DeferredTask>
     );
 };
 
