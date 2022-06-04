@@ -15,7 +15,7 @@ export const mapReduxQueryToTask = <D extends QueryDefinition<any, any, any, any
     result: Result<D>
 ): Task<ResultTypeFrom<D>> => {
     if (!result || result.isUninitialized) return task();
-    if (!result.data && result.isLoading) runningTask();
+    if (!result.data && (result.isLoading || result.isFetching)) return runningTask();
     if (result.error) return faultedTask(mapReduxErrorToFault(result.error));
     return result.data === undefined
         ? completedTask()
