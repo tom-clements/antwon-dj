@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { ErrorCode } from 'common/model/ErrorCode';
-import { setError } from 'common/services/errorSlice';
 import { useDispatch } from 'common/services/createStore';
+import { ToastErrorCode } from 'toastError/model/ToastErrorCode';
+import { toastErrorActions } from 'toastError/services/toastErrorSlice';
 
-export const useErrorRedirect = (
+export const useToastErrorRedirect = (
     condition: boolean,
-    errorCode: ErrorCode,
+    errorCode: ToastErrorCode,
     redirectPath = '/'
 ) => {
     const router = useRouter();
@@ -15,7 +15,7 @@ export const useErrorRedirect = (
     useEffect(() => {
         if (condition) {
             router.push({ pathname: redirectPath });
-            dispatch(setError(errorCode));
+            dispatch(toastErrorActions.set(errorCode));
         }
     }, [router, dispatch, condition, errorCode, redirectPath]);
 };

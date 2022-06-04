@@ -6,10 +6,9 @@ import { useSelector, useDispatch } from 'common/services/createStore';
 import { mapReduxQueryToTask } from 'common/mappers/mapReduxQueryToTask';
 import { roomApi } from 'room/services/roomApi';
 import { selectRoomPortalCode, setRoomPortalCode } from 'roomPortal/services/roomPortalSlice';
-import { useErrorRedirect } from 'common/hooks/useErrorRedirect';
-import { ErrorCode } from 'common/model/ErrorCode';
+import { useToastErrorRedirect } from 'toastError/hooks/useToastErrorRedirect';
 import { isFaultedTask } from 'common/predicates/isTask';
-import { mapRoomFaultToToastErrorCode } from 'room/mappers/mapRoomFaultToToastErrorCode';
+import { mapFaultToToastErrorCode } from 'toastError/mappers/mapFaultToToastErrorCode';
 
 interface Props {
     initialRoomCode: string;
@@ -31,9 +30,9 @@ export const useRoom: UseRoom = props => {
 
     const task = mapReduxQueryToTask(result);
 
-    useErrorRedirect(
+    useToastErrorRedirect(
         isFaultedTask(task),
-        mapRoomFaultToToastErrorCode(isFaultedTask(task) ? task.fault : undefined));
+        mapFaultToToastErrorCode(isFaultedTask(task) ? task.fault : undefined, 'room'));
 
     return task;
 };

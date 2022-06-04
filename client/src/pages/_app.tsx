@@ -6,7 +6,7 @@ import { CacheProvider, EmotionCache, Global } from '@emotion/react';
 import { ThemeProvider } from 'styles/components/ThemeProvider';
 import { getDefaultTheme } from 'styles/services/getTheme';
 import { useAppStore, createEmotionCache } from 'AppSetup';
-import { ErrorToast } from 'common/components/ErrorToast';
+import { ToastError } from 'common/components/ToastError';
 import { DependencyProvider } from 'common/components/DependencyProvider';
 
 const defaultTheme = getDefaultTheme();
@@ -35,7 +35,7 @@ export default function App(props: MyAppProps) {
                         <CssBaseline />
                         <Global styles={{ 'body': { overscrollBehavior: 'contain' } }} />
                         <Component {...pageProps} />
-                        <ErrorToast />
+                        <ToastError />
                     </ThemeProvider>
                 </CacheProvider>
             </Provider>
