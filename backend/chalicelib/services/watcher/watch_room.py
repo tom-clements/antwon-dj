@@ -38,5 +38,7 @@ def watch_room(room_guid: str) -> Tuple[Optional[NextSong], bool]:
     next_song = next_song if next_song else get_recommended_song(room_guid)
     # if recommended song is not None -> when no Songs have played before
     if next_song:
-        return process_next_song(next_song, room_guid)
-    return None, False
+        next_song, added_to_playlist = process_next_song(next_song, room_guid)
+    else:
+        next_song, added_to_playlist = None, False
+    return next_song, added_to_playlist
