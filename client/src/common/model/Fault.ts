@@ -1,6 +1,6 @@
 import { HttpStatusCode } from 'common/model/HttpStatusCode';
 
-export const enum FaultType {
+export enum FaultType {
     /**
      * A general or unknown error has occurred
      */

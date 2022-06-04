@@ -31,6 +31,7 @@ export const useRoom: UseRoom = props => {
     const task = mapReduxQueryToTask(result);
     const fault = isFaultedTask(task) ? task.fault : undefined;
 
+    useDependencies(d => d.useFaultLogging)(fault);
 
     useDependencies(d => d.useToastErrorRedirect)({
         condition: !!fault,
