@@ -6,24 +6,25 @@ import Typography from '@mui/material/Typography';
 import Slide from '@mui/material/Slide';
 import { useDispatch, useSelector } from 'common/services/createStore';
 import { selectToastErrorCode, toastErrorActions } from 'toastError/services/toastErrorSlice';
-import { getToastErrorContent } from 'common/services/getToastErrorContent';
-import { getToastErrorHideDuration } from 'common/services/getToastErrorHideDuration';
+import { getToastErrorContent } from 'toastError/services/getToastErrorContent';
+import { getToastErrorHideDuration } from 'toastError/services/getToastErrorHideDuration';
+import { isUiIgnoredToastErrorCode } from 'toastError/predicates/isUiIgnoredToastErrorCode';
 
 export const ToastError: FC = () => {
     const dispatch = useDispatch();
-    const errorCode = useSelector(selectToastErrorCode);
-    const errorContent = getToastErrorContent(errorCode);
+    const code = useSelector(selectToastErrorCode);
+    const content = getToastErrorContent(code);
     const onClose = useCallback(() => dispatch(toastErrorActions.clear()), [dispatch]);
     const autoHideDuration = getToastErrorHideDuration();
 
-    if (!errorCode || !errorContent) return null;
+    if (!code || !content || isUiIgnoredToastErrorCode(code)) return null;
 
     return (
-        <Snackbar open={!!errorCode} autoHideDuration={autoHideDuration} onClose={onClose} TransitionComponent={Slide}>
+        <Snackbar open={!!code} autoHideDuration={autoHideDuration} onClose={onClose} TransitionComponent={Slide}>
             <Alert onClose={onClose} severity="error" sx={{ width: '100%' }}>
-                <AlertTitle>{errorContent.title}</AlertTitle>
-                <Typography variant="body2">{errorContent.description}</Typography>
-                <Typography variant="caption">{errorContent.helpText}</Typography>
+                <AlertTitle>{content.title}</AlertTitle>
+                <Typography variant="body2">{content.description}</Typography>
+                <Typography variant="caption">{content.helpText}</Typography>
             </Alert>
         </Snackbar>
     );
