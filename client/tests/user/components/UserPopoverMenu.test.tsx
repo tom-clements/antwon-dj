@@ -95,7 +95,7 @@ describe('<UserPopoverMenu />', () => {
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
                 useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
-                useUser: () => ({ name: 'Name', roomId: '0' }),
+                useUser: () => ({ name: 'Name', roomCode: 'SOIREE' }),
                 useUserMenuClickActions,
                 useDarkMode,
             });

@@ -1,5 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { getApiBaseQuery } from 'common/services/getApiBaseQuery';
+import { TokenDto } from 'user/dtos/TokenDto';
+import { UserDto } from 'user/dtos/UserDto';
 
 const tagTypes = [
     'user',
@@ -9,10 +11,14 @@ export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: getApiBaseQuery(),
     tagTypes,
-    endpoints: (builder) => ({
-        tokens: builder.query<void, void>({
+    endpoints: builder => ({
+        token: builder.query<TokenDto, void>({
             query: () => ({ url: '/user/token', method: 'POST', credentials: 'include' }),
-            providesTags: ['login'],
+            providesTags: ['user'],
+        }),
+        user: builder.query<UserDto, void>({
+            query: () => ({ url: '/user/info' }),
+            providesTags: ['user'],
         }),
     }),
 });
