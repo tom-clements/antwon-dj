@@ -16,7 +16,7 @@ export type UseToastErrorRedirect = HF<Props, void>;
 export const useToastErrorRedirect: UseToastErrorRedirect = props => {
     const { condition, code, redirectPath = '/' } = props;
     const dispatch = useDispatch();
-    const { goTo } = useDependencies(d => d.useBreadcrumbs)();
+    const { goTo } = useDependencies(d => d.useRouter)();
 
     useEffect(() => {
         if (condition) {

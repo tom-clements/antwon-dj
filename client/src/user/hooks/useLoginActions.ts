@@ -10,7 +10,7 @@ interface Return {
 export type UseLoginActions = HF<void, Return>;
 
 export const useLoginActions: UseLoginActions = () => {
-    const { goTo } = useDependencies(d => d.useBreadcrumbs)();
+    const { goTo } = useDependencies(d => d.useRouter)();
 
     return {
         login: useCallback(

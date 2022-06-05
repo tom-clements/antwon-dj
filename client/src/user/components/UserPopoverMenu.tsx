@@ -59,10 +59,9 @@ const Spacer = styled('div')`
 `;
 
 const BackItem: FC = () => {
-    const useBreadcrumbs = useDependencies(d => d.useBreadcrumbs);
-    const { isRoot, goBack } = useBreadcrumbs();
+    const { isHome, goBack } = useDependencies(d => d.useRouter)();
 
-    if (isRoot) return null;
+    if (isHome) return null;
 
     return (
         <MenuItem icon={ArrowBack} text="Back" onClick={goBack} />

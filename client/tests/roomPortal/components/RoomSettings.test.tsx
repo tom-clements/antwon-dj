@@ -45,7 +45,7 @@ const goBackAction = jest.fn();
 describe('<RoomSettings />', () => {
     it('renders <SettingsView /> with <RoomSettingsMenu />', () => {
         const { getByText } = testRender({
-            useBreadcrumbs: () => ({ isRoot: false, goBack: goBackAction }),
+            useBreadcrumbs: () => ({ isHome: false, goBack: goBackAction }),
             useRoomSettingActions,
         });
 

@@ -1,29 +1,28 @@
 import type { HF } from 'common/model/HookFunction';
-import { useCallback } from 'react';
+import { breadcrumbActions, selectBreadcrumbStack } from 'common/services/breadcrumbSlice';
+import { useDispatch, useSelector } from 'common/services/createStore';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-interface Return {
-    isRoot: boolean;
-    goTo: (path: string) => void;
-    goBack: () => void;
-}
-
-export type UseBreadcrumbs = HF<void, Return>;
+export type UseBreadcrumbs = HF<void, void>;
 
 export const useBreadcrumbs: UseBreadcrumbs = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
+    const stack = useSelector(selectBreadcrumbStack);
 
-    // TODO fix naive approach to this. We need to track a
-    // loose stack of last pages too - the user can browse arbitrarily.
-    // We need to either go to the last page, or if there is none and
-    // we are not root index, go to the root index.
-    return {
-        isRoot: router.route === '/',
-        goTo: useCallback(
-            (path: string) => router.push({ pathname: path }),
-            [router]),
-        goBack: useCallback(
-            () => router.back(),
-            [router]),
-    };
+    useEffect(() => {
+        const nextRoute = (path: string) => {
+            if (path === '/') {
+                dispatch(breadcrumbActions.reset());
+            } else {
+                const indexOfPath = stack.indexOf(path);
+                dispatch(indexOfPath >= 0 ? breadcrumbActions.popTo(indexOfPath) : breadcrumbActions.push(path));
+            }
+        };
+
+        router.events.on('routeChangeComplete', nextRoute);
+
+        return () => router.events.off('routeChangeComplete', nextRoute);
+    }, [router, dispatch, stack]);
 };

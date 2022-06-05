@@ -15,7 +15,7 @@ export type UseRoomPortal = HF<void, Return>;
 
 export const useRoomPortal: UseRoomPortal = () => {
     const dispatch = useDispatch();
-    const { goTo } = useDependencies(d => d.useBreadcrumbs)();
+    const { goTo } = useDependencies(d => d.useRouter)();
     const roomCode = useSelector(selectRoomPortalCode);
 
     return {

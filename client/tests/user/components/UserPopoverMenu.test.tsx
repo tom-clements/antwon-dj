@@ -54,7 +54,7 @@ const useDarkMode: UseDarkMode = () => ({
 describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
-            useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
+            useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
@@ -67,7 +67,7 @@ describe('<UserPopoverMenu />', () => {
 
     it('renders menu when icon button receives onClick', () => {
         const { container } = testRender({
-            useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
+            useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
             useDarkMode,
@@ -94,7 +94,7 @@ describe('<UserPopoverMenu />', () => {
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
-                useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
+                useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
                 useUser: () => ({ name: 'Name', roomCode: 'SOIREE' }),
                 useUserMenuClickActions,
                 useDarkMode,
@@ -123,7 +123,7 @@ describe('<UserPopoverMenu />', () => {
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
-                useBreadcrumbs: () => ({ isRoot: false, goBack: onMenuClicks.goBack }),
+                useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
                 useUser: () => null,
                 useUserMenuClickActions,
                 useDarkMode,

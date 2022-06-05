@@ -1,5 +1,6 @@
 import { TypedUseSelectorHook, useDispatch as _useDispatch, useSelector as _useSelector} from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { breadcrumbSlice } from 'common/services/breadcrumbSlice';
 import { roomPortalSlice } from 'roomPortal/services/roomPortalSlice';
 import { themeSlice } from 'styles/services/themeSlice';
 import { toastErrorSlice } from 'toastError/services/toastErrorSlice';
@@ -9,6 +10,7 @@ import { roomApi } from 'room/services/roomApi';
 export function createStore(preloadedState: any) {
     return configureStore({
         reducer: {
+            breadcrumb: breadcrumbSlice.reducer,
             roomPortal: roomPortalSlice.reducer,
             theme: themeSlice.reducer,
             toastError: toastErrorSlice.reducer,

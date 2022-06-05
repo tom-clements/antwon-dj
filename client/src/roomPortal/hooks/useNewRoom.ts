@@ -13,7 +13,7 @@ export type UseNewRoom = HF<void, Return>;
 
 export const useNewRoom: UseNewRoom = () => {
     const dispatch = useDispatch();
-    const { goTo } = useDependencies(d => d.useBreadcrumbs)();
+    const { goTo } = useDependencies(d => d.useRouter)();
 
     return {
         createAndGoToNewRoom: useCallback(
