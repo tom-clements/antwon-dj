@@ -1,5 +1,6 @@
 import type { HF } from 'common/model/HookFunction';
 import { useCallback } from 'react';
+import { useDependencies } from 'common/hooks/useDependencies';
 
 interface Return {
     login: () => void;
@@ -9,12 +10,14 @@ interface Return {
 export type UseLoginActions = HF<void, Return>;
 
 export const useLoginActions: UseLoginActions = () => {
+    const { goTo } = useDependencies(d => d.useBreadcrumbs)();
+
     return {
         login: useCallback(
-            () => undefined,
-            []),
+            () => goTo('/login'),
+            [goTo]),
         logout: useCallback(
-            () => undefined,
-            []),
+            () => goTo('/logout'),
+            [goTo]),
     };
 };
