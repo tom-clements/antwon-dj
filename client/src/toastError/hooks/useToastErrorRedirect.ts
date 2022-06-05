@@ -1,7 +1,7 @@
 import type { HF } from 'common/model/HookFunction';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { useDispatch } from 'common/services/createStore';
+import { useDependencies } from 'common/hooks/useDependencies';
 import { ToastErrorCode } from 'toastError/model/ToastErrorCode';
 import { toastErrorActions } from 'toastError/services/toastErrorSlice';
 
@@ -15,13 +15,13 @@ export type UseToastErrorRedirect = HF<Props, void>;
 
 export const useToastErrorRedirect: UseToastErrorRedirect = props => {
     const { condition, code, redirectPath = '/' } = props;
-    const router = useRouter();
     const dispatch = useDispatch();
+    const { goTo } = useDependencies(d => d.useBreadcrumbs)();
 
     useEffect(() => {
         if (condition) {
-            router.push({ pathname: redirectPath });
+            goTo(redirectPath);
             dispatch(toastErrorActions.set(code));
         }
-    }, [router, dispatch, condition, code, redirectPath]);
+    }, [goTo, dispatch, condition, code, redirectPath]);
 };

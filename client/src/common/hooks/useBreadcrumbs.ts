@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 interface Return {
     isRoot: boolean;
+    goTo: (path: string) => void;
     goBack: () => void;
 }
 
@@ -18,6 +19,9 @@ export const useBreadcrumbs: UseBreadcrumbs = () => {
     // we are not root index, go to the root index.
     return {
         isRoot: router.route === '/',
+        goTo: useCallback(
+            (path: string) => router.push({ pathname: path }),
+            [router]),
         goBack: useCallback(
             () => router.back(),
             [router]),
