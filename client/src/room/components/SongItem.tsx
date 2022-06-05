@@ -1,10 +1,13 @@
 import React, { CSSProperties, FC } from 'react';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Skeleton, styled } from '@mui/material';
+import { FavoriteBorder, Delete } from '@mui/icons-material';
 
 interface Props {
     title: string;
     artist: string;
     albumUrl: string;
+    isLoggedIn: boolean;
+    isRoomOwner: boolean;
     style?: CSSProperties;
     onClick?: () => void;
 }
@@ -18,15 +21,25 @@ const SongItemText = styled(ListItemText)`
 `;
 
 export const SongItem: FC<Props> = props => {
+    const {
+        style,
+        albumUrl,
+        title,
+        artist,
+        isLoggedIn,
+        isRoomOwner
+    } = props;
     return (
-        <ListItem style={props.style} onClick={props.onClick}>
+        <ListItem style={style} onClick={props.onClick}>
             <ListItemAvatar>
-                <Avatar variant="square" src={props.albumUrl} />
+                <Avatar variant="square" src={albumUrl} />
             </ListItemAvatar>
             <SongItemText
-                primary={props.title}
-                secondary={props.artist}
+                primary={title}
+                secondary={artist}
             />
+            {isLoggedIn ? <FavoriteBorder /> : null}
+            {isRoomOwner ? <Delete /> : null}
         </ListItem>
     );
 };
