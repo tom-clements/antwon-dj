@@ -6,6 +6,7 @@ import { themeSlice } from 'styles/services/themeSlice';
 import { toastErrorSlice } from 'toastError/services/toastErrorSlice';
 import { userSlice } from 'user/services/userSlice';
 import { roomApi } from 'room/services/roomApi';
+import { userApi } from 'user/services/userApi';
 
 export function createStore(preloadedState: any) {
     return configureStore({
@@ -16,9 +17,11 @@ export function createStore(preloadedState: any) {
             toastError: toastErrorSlice.reducer,
             user: userSlice.reducer,
             [roomApi.reducerPath]: roomApi.reducer,
+            [userApi.reducerPath]: userApi.reducer,
         },
         middleware: getDefaultMiddleware => getDefaultMiddleware().concat(...[
             roomApi.middleware,
+            userApi.middleware,
         ]),
         preloadedState: preloadedState,
     });

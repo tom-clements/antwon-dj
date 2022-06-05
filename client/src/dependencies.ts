@@ -2,6 +2,7 @@ import { useAccountLinks } from 'user/hooks/useAccountLinks';
 import { useBreadcrumbs } from 'common/hooks/useBreadcrumbs';
 import { useDarkMode } from 'styles/hooks/useDarkMode';
 import { useFaultLogging } from 'common/hooks/useFaultLogging';
+import { useLoginLoop } from 'user/hooks/useLoginLoop';
 import { useParameterFromRouter } from 'common/hooks/useParameterFromRouter';
 import { useRoom } from 'room/hooks/useRoom';
 import { useRoomPortal } from 'roomPortal/hooks/useRoomPortal';
@@ -20,6 +21,7 @@ export const dependencies = {
     useBreadcrumbs,
     useDarkMode,
     useFaultLogging,
+    useLoginLoop,
     useParameterFromRouter,
     useRoom,
     useRoomPortal,

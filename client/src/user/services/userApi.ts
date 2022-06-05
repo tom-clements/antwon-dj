@@ -13,7 +13,7 @@ export const userApi = createApi({
     tagTypes,
     endpoints: builder => ({
         token: builder.query<TokenDto, void>({
-            query: () => ({ url: '/user/token', method: 'POST', credentials: 'include' }),
+            query: () => ({ url: '/user/token', credentials: 'include' }),
             providesTags: ['user'],
         }),
         user: builder.query<UserDto, void>({
