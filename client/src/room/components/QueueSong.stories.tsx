@@ -1,26 +1,25 @@
 import React from 'react';
 import { ComponentStory } from '@storybook/react';
-import { SongItem } from './SongItem';
+import { QueueSong } from 'room/components/QueueSong';
 
 export default {
-    title: 'room/SongItem',
-    component: SongItem
+    title: 'room/QueueSong',
+    component: QueueSong
 };
 
-export const SongItemStory: ComponentStory<typeof SongItem> = args => (
+export const QueueSongStory: ComponentStory<typeof QueueSong> = args => (
     <div>
-        <SongItem {...args} />
+        <QueueSong {...args} />
     </div>
 );
-SongItemStory.argTypes = {
-    style: { control: { type: '' } },
+QueueSongStory.argTypes = {
     albumUrl: { control: { type: 'text' } },
     title: { control: { type: 'text' } },
     artist: { control: { type: 'text' } },
     isLoggedIn: { control: { type: 'boolean' } },
     isRoomOwner: { control: { type: 'boolean' } }
 };
-SongItemStory.args = {
+QueueSongStory.args = {
     title: 'The Bop',
     artist: 'Taylor',
     albumUrl: 'https://www.pngkey.com/png/detail/15-159637_black-box-with-question-mark-png.png',

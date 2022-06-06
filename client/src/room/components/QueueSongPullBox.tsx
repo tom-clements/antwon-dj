@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { styled, Box } from '@mui/material';
-import { NextSong } from 'room/components/NextSong';
-import { SongSearch } from 'room/components/SongSearch';
+import { NextSong } from 'room/components/QueueSongNext';
+import { SongSearch } from 'room/components/Search';
 import { Search } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
 

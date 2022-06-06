@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
 import { SongDto } from 'providers/spotify/services/spotifySearchApi';
-import { SongItem } from 'room/components/SongItem';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 
 interface Props {
     songs: SongDto[];
-    onSelectSong?: (song: SongDto) => void;
+    row: (rowProps: ListChildComponentProps<SongDto[]>) => JSX.Element;
 }
 
 export const SongList: FC<Props> = props => {
@@ -21,28 +20,9 @@ export const SongList: FC<Props> = props => {
                     itemSize={56}
                     overscanCount={5}
                 >
-                    {({ index, style, data }) => (
-                        <SongRow index={index} style={style} data={data} onSelectSong={props.onSelectSong} />
-                    )}
+                    {rowProps => props.row(rowProps)}
                 </FixedSizeList>
             )}
         </AutoSizer>
-    );
-};
-
-interface SongRowProps extends ListChildComponentProps<SongDto[]> {
-    onSelectSong?: (song: SongDto) => void;
-}
-
-const SongRow: FC<SongRowProps> = props => {
-    return (
-        <SongItem
-            style={props.style}
-            key={`${props.data[props.index].song_uri}_${props.index}`}
-            title={props.data[props.index].song_name}
-            artist={props.data[props.index].song_artist}
-            albumUrl={props.data[props.index].song_album_url}
-            onClick={() => props.onSelectSong && props.onSelectSong(props.data[props.index])}
-        />
     );
 };

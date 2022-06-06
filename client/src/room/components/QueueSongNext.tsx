@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { styled, Box } from '@mui/material';
+import { styled, Box, ListItem } from '@mui/material';
 import { roomApi, RoomSongDto } from 'room/services/roomApi';
 import { QueryResult, QueryResultStatus } from 'common/components/QueryResult';
 import { SongItem, SongItemSkeleton } from 'room/components/SongItem';
@@ -48,10 +48,12 @@ const NextSongInternal: FC<InternalProps> = props => {
     }
 
     return (
-        <SongItem
-            title={nextSong.song_name}
-            artist={nextSong.song_artist}
-            albumUrl={nextSong.song_album_url}
-        />
+        <ListItem>
+            <SongItem
+                title={nextSong.song_name}
+                artist={nextSong.song_artist}
+                albumUrl={nextSong.song_album_url}
+            />
+        </ListItem>
     );
 };

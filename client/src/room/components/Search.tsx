@@ -5,7 +5,8 @@ import { styled, InputAdornment, InputLabel, OutlinedInput, FormControl, IconBut
 import { Clear, Search } from '@mui/icons-material';
 import { spotifySearchApi } from 'providers/spotify/services/spotifySearchApi';
 import { roomApi } from 'room/services/roomApi';
-import { SongSearchList } from 'room/components/SongSearchList';
+import { SongList } from 'room/components/SongList';
+import { SearchSong } from 'room/components/SearchSong';
 
 interface Props {
     roomId: string;
@@ -59,6 +60,11 @@ export const SongSearch: FC<Props> = props => {
         }
     }, [debouncedSearch, searchTerm, props.roomId]);
 
+    const onSelectSong = useCallback(s => {
+        addSongToQueue({ roomId: props.roomId, song: s });
+        setSearchTerm(''); // todo: compose this
+    }, [addSongToQueue, setSearchTerm, props.roomId]);
+
     return (
         <>
             {showDrawer && <BackgroundMask />}
@@ -86,10 +92,19 @@ export const SongSearch: FC<Props> = props => {
                 </FormControl>
                 {showDrawer && (
                     <SearchDrawer>
-                        <SongSearchList songs={result.data ?? []} onSelectSong={s => {
-                            addSongToQueue({roomId: props.roomId, song: s});
-                            setSearchTerm(''); // todo: compose this
-                        }} />
+                        <SongList
+                            songs={result.data ?? []}
+                            row={rowProps => (
+                                <SearchSong
+                                    style={rowProps.style}
+                                    key={`${rowProps.data[rowProps.index].song_uri}_${rowProps.index}`}
+                                    title={rowProps.data[rowProps.index].song_name}
+                                    artist={rowProps.data[rowProps.index].song_artist}
+                                    albumUrl={rowProps.data[rowProps.index].song_album_url}
+                                    onClick={() => onSelectSong(rowProps.data[rowProps.index])}
+                                />
+                            )}
+                        />
                     </SearchDrawer>
                 )}
             </Relative>
