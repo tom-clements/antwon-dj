@@ -13,9 +13,6 @@ applications:
             - yarn install
         build:
           commands:
-            - echo "API_BASE_HOST=api.djantwon.com" >> .env
-            - echo "API_BASE_SCHEME=https" >> .env
-            - echo "API_BASE_STACK=dev" >> amplify/backend/.env
             - echo "API_BASE_URL=https://api.djantwon.com/dev/" >> .env
             - echo "CLIENT_BASE_URL=https://www.djantwon.com/" >> .env
             - yarn run build
