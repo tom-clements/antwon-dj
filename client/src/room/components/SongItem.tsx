@@ -1,12 +1,10 @@
-import React, { CSSProperties, FC } from 'react';
-import { Avatar, ListItem, ListItemAvatar, ListItemText, Skeleton, styled } from '@mui/material';
+import React, { FC } from 'react';
+import { Avatar, ListItemAvatar, ListItemText, Skeleton, styled } from '@mui/material';
 
 interface Props {
     title: string;
     artist: string;
     albumUrl: string;
-    style?: CSSProperties;
-    onClick?: () => void;
 }
 
 const SongItemText = styled(ListItemText)`
@@ -19,7 +17,7 @@ const SongItemText = styled(ListItemText)`
 
 export const SongItem: FC<Props> = props => {
     return (
-        <ListItem style={props.style} onClick={props.onClick}>
+        <>
             <ListItemAvatar>
                 <Avatar variant="square" src={props.albumUrl} />
             </ListItemAvatar>
@@ -27,13 +25,14 @@ export const SongItem: FC<Props> = props => {
                 primary={props.title}
                 secondary={props.artist}
             />
-        </ListItem>
+        </>
+        
     );
 };
 
 export const SongItemSkeleton: FC = () => {
     return (
-        <ListItem>
+        <>
             <ListItemAvatar>
                 <Skeleton variant="rectangular">
                     <Avatar variant="square" />
@@ -43,6 +42,7 @@ export const SongItemSkeleton: FC = () => {
                 primary={<Skeleton />}
                 secondary={<Skeleton />}
             />
-        </ListItem>
+        </>
     );
 };
+

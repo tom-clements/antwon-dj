@@ -1,0 +1,43 @@
+name: clientCI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    
+jobs:
+  ci:
+    name: client_ci
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+    - name: Get specific changed files
+      id: changed-files-specific
+      uses: tj-actions/changed-files@v22.2
+      with:
+        files: |
+          client/**/*
+    - name: Setup Node.js environment
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      uses: actions/setup-node@v3.2.0
+      with:
+        node-version: 15.6.0
+    - name: Install packages
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: client
+      run: yarn install
+    - name: Lint
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: client
+      run: yarn lint --max-warnings 0
+    - name: Test
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: client
+      run: yarn test
+    - name: Build
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: client
+      run: yarn build

@@ -12,37 +12,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+    - name: Get specific changed files
+      id: changed-files-specific
+      uses: tj-actions/changed-files@v22.2
+      with:
+        files: |
+          backend/**/*
     - name: Set up Python 3.9
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
     - name: Install dependencies
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: backend
       run: |
-        cd backend
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Lint with black
-      run: |
-        cd backend
-        black --check -l 120 .
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: backend
+      run: black --check -l 120 .
     - name: Lint with flake8
-      run: |
-        cd backend
-        flake8 --max-line-length 120
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: backend
+      run: flake8 --max-line-length 120
     - name: Type check with mypy
-      run: |
-        cd backend
-        mypy app.py
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: backend
+      run: mypy app.py
     - name: Configure AWS Credentials
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-2
     - name: Test with pytest and collect coverage
+      if: steps.changed-files-specific.outputs.any_changed == 'true'
       run: |
         pytest --mypy --cov backend/
     - name: Upload coverage reports to Codecov with GitHub Action
+      if: steps.changed-files-specific.outputs.any_changed
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_UPLOAD_TOKEN }}
