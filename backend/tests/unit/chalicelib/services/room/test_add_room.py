@@ -27,9 +27,9 @@ def test_owner_add_room(
     mock_read_spotify_user_from_username: Mock,
     mock_read_active_room_guid_from_room_code: Mock,
     mock_read_room_guid_from_username: Mock,
-    room_guid_of_owner,
-    room_guid_of_code,
-    spotify_user,
+    room_guid_of_owner: str,
+    room_guid_of_code: str,
+    spotify_user: Mock,
 ) -> None:
     room_code = "room_code"
     username = "username"

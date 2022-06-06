@@ -21,8 +21,8 @@ def test_delete_like_from_song(
     mock_is_like_exists: Mock,
     mock_read_user_id_from_username: Mock,
     mock_read_room_song_id_from_room_song_guid: Mock,
-    room_song_id,
-    is_like_exists,
+    room_song_id: str,
+    is_like_exists: bool,
 ) -> None:
     room_song_guid = "room_song_guid"
     username = "username"
