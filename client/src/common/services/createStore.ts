@@ -1,28 +1,29 @@
 import { TypedUseSelectorHook, useDispatch as _useDispatch, useSelector as _useSelector} from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { errorSlice } from 'common/services/errorSlice';
+import { authSlice } from 'user/services/authSlice';
+import { breadcrumbSlice } from 'common/services/breadcrumbSlice';
 import { roomPortalSlice } from 'roomPortal/services/roomPortalSlice';
-import { userSlice } from 'user/services/userSlice';
-import { spotifyCurrentlyPlayingApi } from 'providers/spotify/services/spotifyCurrentlyPlaying';
-import { spotifySearchApi } from 'providers/spotify/services/spotifySearchApi';
-import { roomApi } from 'room/services/roomApi';
 import { themeSlice } from 'styles/services/themeSlice';
+import { toastErrorSlice } from 'toastError/services/toastErrorSlice';
+import { userSlice } from 'user/services/userSlice';
+import { roomApi } from 'room/services/roomApi';
+import { userApi } from 'user/services/userApi';
 
 export function createStore(preloadedState: any) {
     return configureStore({
         reducer: {
-            error: errorSlice.reducer,
+            auth: authSlice.reducer,
+            breadcrumb: breadcrumbSlice.reducer,
             roomPortal: roomPortalSlice.reducer,
             theme: themeSlice.reducer,
+            toastError: toastErrorSlice.reducer,
             user: userSlice.reducer,
             [roomApi.reducerPath]: roomApi.reducer,
-            [spotifyCurrentlyPlayingApi.reducerPath]: spotifyCurrentlyPlayingApi.reducer,
-            [spotifySearchApi.reducerPath]: spotifySearchApi.reducer,
+            [userApi.reducerPath]: userApi.reducer,
         },
         middleware: getDefaultMiddleware => getDefaultMiddleware().concat(...[
             roomApi.middleware,
-            spotifyCurrentlyPlayingApi.middleware,
-            spotifySearchApi.middleware,
+            userApi.middleware,
         ]),
         preloadedState: preloadedState,
     });

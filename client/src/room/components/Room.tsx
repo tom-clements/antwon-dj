@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { BottomSheet } from 'common/components/BottomSheet';
 import { NowPlaying } from 'room/components/NowPlaying';
-import { RoomQueue } from 'room/components/Queue';
+import { Queue } from 'room/components/Queue';
 import { SongQueuePullBox } from 'room/components/QueueSongPullBox';
 
 interface Props {
@@ -13,7 +13,7 @@ export const Room: FC<Props> = props => {
         <>
             <NowPlaying roomId={props.roomId} />
             <BottomSheet pullBoxContent={isOpen => <SongQueuePullBox isOpen={isOpen} roomId={props.roomId} />}>
-                <RoomQueue roomId={props.roomId} />
+                <Queue roomId={props.roomId} />
             </BottomSheet>
         </>
     );

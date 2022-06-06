@@ -107,9 +107,9 @@ def room_songs_like_delete(room_guid: str, post_body: Dict[str, Any], user_info:
 @room_routes.route("/room/{room_guid}/search", methods=["GET"], cors=get_cors_config())
 @error_handle
 @verify_parameter_inputs(room_routes, "query")
-def room_search_get(room_guid: str, query_params: Dict[str, str]) -> Dict[str, List[Dict[str, str]]]:
+def room_search_get(room_guid: str, query_params: Dict[str, str]) -> List[Dict[str, str]]:
     songs = search_songs(song_query=query_params["query"], room_guid=room_guid)
-    return {"songs": [asdict(song) for song in songs]}
+    return [asdict(song) for song in songs]
 
 
 @room_routes.route("/room/{room_guid}/playing", methods=["GET"], cors=get_cors_config())

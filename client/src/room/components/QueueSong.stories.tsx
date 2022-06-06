@@ -1,4 +1,3 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 import { QueueSong } from 'room/components/QueueSong';
 
@@ -12,6 +11,7 @@ export const QueueSongStory: ComponentStory<typeof QueueSong> = args => (
         <QueueSong {...args} />
     </div>
 );
+
 QueueSongStory.argTypes = {
     albumUrl: { control: { type: 'text' } },
     title: { control: { type: 'text' } },

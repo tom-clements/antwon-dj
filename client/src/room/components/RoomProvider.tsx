@@ -1,40 +1,23 @@
-import { FC, useEffect } from 'react';
-import { skipToken } from '@reduxjs/toolkit/query/react';
-import { useSelector, useDispatch } from 'common/services/createStore';
-import { ErrorCode } from 'common/model/ErrorCode';
-import { selectRoomPortalCode, setRoomPortalCode } from 'roomPortal/services/roomPortalSlice';
-import { roomApi } from 'room/services/roomApi';
-import { QueryResultStatus, QueryResult, isNotFound } from 'common/components/QueryResult';
-import { ErrorRedirect } from 'common/components/ErrorRedirect';
+import type { FC } from 'react';
+import { useDependencies } from 'common/hooks/useDependencies';
+import { TaskStatus } from 'common/model/Task';
+import { DeferredTask } from 'common/components/DeferredTask';
 
 interface Props {
-    roomCodeFromPage: string;
+    initialRoomCode: string;
     render: (roomId: string) => JSX.Element;
     renderLoading: () => JSX.Element;
 }
 
-/* TODO refactor this entire component. It's too imperative; and likely hard to test.
- * Refactor out to hooks! Do as part of functional org refactoring.
- */
 export const RoomProvider: FC<Props> = props => {
-    const { roomCodeFromPage } = props;
-
-    const dispatch = useDispatch();
-    const roomCodeFromState = useSelector(selectRoomPortalCode);
-    const result = roomApi.endpoints.getRoomIdByCode.useQuery(roomCodeFromState ?? skipToken);
-
-    useEffect(() => {
-        if (roomCodeFromState !== roomCodeFromPage) dispatch(setRoomPortalCode(roomCodeFromPage));
-    }, [dispatch, roomCodeFromState, roomCodeFromPage]);
-
-    if (isNotFound(result)) return <ErrorRedirect errorCode={ErrorCode.RoomNotFound} />;
-
+    const task = useDependencies(d => d.useRoom)(props);
     return (
-        <QueryResult<string> result={result}>
+        <DeferredTask task={task}>
             {{
-                [QueryResultStatus.OK]: data => props.render(data),
-                [QueryResultStatus.Pending]: () => props.renderLoading(),
+                [TaskStatus.Resulted]: data => props.render(data),
+                [TaskStatus.Completed]: () => props.renderLoading(),
+                [TaskStatus.Created]: () => props.renderLoading(),
             }}
-        </QueryResult>
+        </DeferredTask>
     );
 };

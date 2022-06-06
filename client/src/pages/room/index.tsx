@@ -1,27 +1,18 @@
-import { useRouter } from 'next/router';
 import { RootContainer } from 'common/components/RootContainer';
-import { Room } from 'room/components/Room';
-import { RoomProvider } from 'room/components/RoomProvider';
 import { FullPageSpinner } from 'common/components/FullPageSpinner';
-import { getSingleFromUrlQuery } from 'common/services/getSingleFromUrlQuery';
-import { ErrorCode } from 'common/model/ErrorCode';
-import { ErrorRedirect } from 'common/components/ErrorRedirect';
+import { useDependencies } from 'common/hooks/useDependencies';
+import { ToastErrorCode } from 'toastError/model/ToastErrorCode';
 
 export default function RoomPage() {
-    const router = useRouter();
-    if (!router.isReady) return null;
-
-    const code = getSingleFromUrlQuery(router.query, 'code');
-
-    if (!code) return <ErrorRedirect errorCode={ErrorCode.Unknown} />; 
-    
+    // There is currently no content expected at /room, so redirect.
+    // TODO, probably redirect as a general case at a custom 404 page? Yes.
+    useDependencies(d => d.useToastErrorRedirect)({
+        condition: true,
+        code: ToastErrorCode.NotFound,
+    });
     return (
         <RootContainer>
-            <RoomProvider
-                roomCodeFromPage={code}
-                render={roomId => <Room roomId={roomId} />}
-                renderLoading={() => <FullPageSpinner />}
-            />
+            <FullPageSpinner />
         </RootContainer>
     );
 }

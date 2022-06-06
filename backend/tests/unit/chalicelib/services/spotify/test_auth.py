@@ -3,7 +3,7 @@ from unittest.mock import patch
 from chalicelib.services.spotify.auth import app_authorization, SCOPES
 
 
-def test_scopes():
+def test_scopes() -> None:
     scopes = (
         "playlist-read-collaborative user-modify-playback-state user-read-playback-state "
         "user-read-private playlist-modify-private playlist-modify-public"

@@ -5,12 +5,8 @@ import { RoomCodeForm } from 'roomPortal/components/RoomCodeForm';
 import { useDependencies } from 'common/hooks/useDependencies';
 
 export const NewRoom: FC = () => {
-    const useBreadcrumbs = useDependencies(d => d.useBreadcrumbs);
-    const { goBack } = useBreadcrumbs();
-
-    const {
-        createAndGoToNewRoom,
-    } = useDependencies(d => d.useNewRoom)();
+    const { goBack } = useDependencies(d => d.useRouter)();
+    const { createAndGoToNewRoom } = useDependencies(d => d.useNewRoom)();
 
     return (
         <SettingsView title="New Room" onGoBack={goBack}>

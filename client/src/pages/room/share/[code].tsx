@@ -1,12 +1,10 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { RootContainer } from 'common/components/RootContainer';
 import { Box, Link, styled, Typography } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { getRelativeRoomUrl, getFullRoomUrl } from 'room/services/getRoomUrl';
-import { getSingleFromUrlQuery } from 'common/services/getSingleFromUrlQuery';
-import { ErrorCode } from 'common/model/ErrorCode';
-import { ErrorRedirect } from 'common/components/ErrorRedirect';
+import { useDependencies } from 'common/hooks/useDependencies';
+import { ToastErrorCode } from 'toastError/model/ToastErrorCode';
 import { QRCodeModuleVariant } from 'qr-code/QRCodeModule';
 import { SpinnerQRCode } from 'qr-code/SpinnerQRCode';
 
@@ -34,13 +32,13 @@ const TextBox = styled(Box)`
 `;
 
 export default function RoomSharePage() {
-    const router = useRouter();
-    if (!router.isReady) return null;
+    const code = useDependencies(d => d.useParameterFromRouter)('code');
+    useDependencies(d => d.useToastErrorRedirect)({
+        condition: code === null,
+        code: ToastErrorCode.RoomNotFound,
+    });
 
-    const code = getSingleFromUrlQuery(router.query, 'code');
-
-    if (!code) return <ErrorRedirect errorCode={ErrorCode.Unknown} />; 
-
+    if (!code) return null;
     const relativeRoomUrl = getRelativeRoomUrl(code);
     const fullRoomUrl = getFullRoomUrl(code);
 

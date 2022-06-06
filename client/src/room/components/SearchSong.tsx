@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC } from 'react';
+import { CSSProperties, FC } from 'react';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Skeleton } from '@mui/material';
 import { SongItem } from 'room/components/SongItem';
 
@@ -9,7 +9,6 @@ interface Props {
     style?: CSSProperties;
     onClick?: () => void;
 }
-
 
 export const SearchSong: FC<Props> = props => {
     return (
@@ -34,4 +33,3 @@ export const SearchSongItemSkeleton: FC = () => {
         </ListItem>
     );
 };
-

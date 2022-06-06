@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import type { HF } from 'common/model/HookFunction';
-import { useRouter } from 'next/router';
+import { useDependencies } from 'common/hooks/useDependencies';
 import { useDispatch } from 'common/services/createStore';
 import { setRoomPortalCode } from 'roomPortal/services/roomPortalSlice';
 import { getRelativeRoomUrl } from 'room/services/getRoomUrl';
@@ -12,15 +12,15 @@ interface Return {
 export type UseNewRoom = HF<void, Return>;
 
 export const useNewRoom: UseNewRoom = () => {
-    const router = useRouter();
     const dispatch = useDispatch();
+    const { goTo } = useDependencies(d => d.useRouter)();
 
     return {
         createAndGoToNewRoom: useCallback(
             (roomCode: string) => {
                 dispatch(setRoomPortalCode(roomCode));
-                router.push({ pathname: getRelativeRoomUrl(roomCode) });
+                goTo(getRelativeRoomUrl(roomCode));
             },
-            [router, dispatch]),
+            [goTo, dispatch]),
     };
 };
