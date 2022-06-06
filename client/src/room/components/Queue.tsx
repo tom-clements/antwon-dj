@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
 import { SongList } from 'room/components/SongList';
 import { Box, Skeleton } from '@mui/material';
 import { QueueSong } from 'room/components/QueueSong';

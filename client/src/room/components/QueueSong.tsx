@@ -1,7 +1,7 @@
-import React, { CSSProperties, FC, useCallback, MouseEvent } from 'react';
+import { CSSProperties, FC, useCallback, MouseEvent } from 'react';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, Skeleton } from '@mui/material';
-import { LikeIcon } from 'room/components/QueueSongLike';
-import { DeleteIcon } from 'room/components/QueueSongDelete';
+import { QueueSongLikeButton } from 'room/components/QueueSongLikeButton';
+import { QueueSongDeleteButton } from 'room/components/QueueSongDeleteButton';
 import { SongItem } from 'room/components/SongItem';
 
 interface Props {
@@ -16,7 +16,6 @@ interface Props {
     onDeleteClick?: () => void;
     onLikeClick?: () => void;
 }
-
 
 export const QueueSong: FC<Props> = props => {
     const { onLikeClick, onDeleteClick } = props;
@@ -34,8 +33,8 @@ export const QueueSong: FC<Props> = props => {
     return (
         <ListItem style={props.style} onClick={props.onClick}>
             <SongItem title={props.title} artist={props.artist} albumUrl={props.albumUrl}/>
-            { props.isLoggedIn ?  <LikeIcon isLiked={props.isLiked} onClick={likeClickHandler} /> : null }
-            { props.isRoomOwner ? <DeleteIcon onClick={deleteClickHandler}/> : null }
+            {props.isLoggedIn ? <QueueSongLikeButton isLiked={props.isLiked} onClick={likeClickHandler} /> : null}
+            {props.isRoomOwner ? <QueueSongDeleteButton onClick={deleteClickHandler}/> : null}
         </ListItem>
     );
 };
@@ -55,4 +54,3 @@ export const QueueSongItemSkeleton: FC = () => {
         </ListItem>
     );
 };
-

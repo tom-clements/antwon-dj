@@ -7,13 +7,10 @@ interface Props {
     onClick: (event?: MouseEvent<HTMLButtonElement>) => void;
 }    
 
-export const LikeIcon: FC<Props> = props => {
-    const {
-        isLiked,
-    } = props;
+export const QueueSongLikeButton: FC<Props> = props => {
     return (
         <IconButton onClick={props.onClick}>
-            { isLiked ? <Favorite/> : <FavoriteBorder/> }
+            {props.isLiked ? <Favorite/> : <FavoriteBorder/>}
         </IconButton>
     );
 };

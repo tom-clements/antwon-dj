@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled, InputAdornment, InputLabel, OutlinedInput, FormControl, IconButton } from '@mui/material';
-import { Clear, Search } from '@mui/icons-material';
+import { Clear, Search as SearchIcon } from '@mui/icons-material';
 import { roomApi } from 'room/services/roomApi';
 import { SongList } from 'room/components/SongList';
 import { SearchSong } from 'room/components/SearchSong';
@@ -41,7 +41,7 @@ const Relative = styled(Box)`
     z-index: 2;
 `;
 
-export const SongSearch: FC<Props> = props => {
+export const Search: FC<Props> = props => {
     // TODO WOOOOO, this is a good custom hook candidate no? Jeez
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
     const [addSongToQueue] = roomApi.endpoints.queue.useMutation();
@@ -81,7 +81,7 @@ export const SongSearch: FC<Props> = props => {
                                     onClick={() => setSearchTerm('')}
                                     edge="end"
                                 >
-                                    {searchTerm ? <Clear /> : <Search />}
+                                    {searchTerm ? <Clear /> : <SearchIcon />}
                                 </IconButton>
                             </InputAdornment>
                         }

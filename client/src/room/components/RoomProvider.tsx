@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useDependencies } from 'common/hooks/useDependencies';
 import { TaskStatus } from 'common/model/Task';
 import { DeferredTask } from 'common/components/DeferredTask';

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
 import { styled, Box, ListItem } from '@mui/material';
 import { useDependencies } from 'common/hooks/useDependencies';
 import { TaskStatus } from 'common/model/Task';
