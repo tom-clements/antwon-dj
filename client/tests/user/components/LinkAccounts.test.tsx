@@ -44,7 +44,7 @@ describe('<LinkAccounts />', () => {
     it('renders <SettingsView /> with <LinkAccountsMenu />', () => {
         const { container } = testRender({
             useAccountLinks,
-            useBreadcrumbs: () => ({ isHome: false, goBack: goBackAction }),
+            useRouter: () => ({ isHome: false, goBack: goBackAction, goTo: () => undefined, goToExternal: () => undefined }),
         });
 
         const settingsView = container.querySelector('#settingsView');

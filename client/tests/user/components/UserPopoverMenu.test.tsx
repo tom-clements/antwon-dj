@@ -54,10 +54,10 @@ const useDarkMode: UseDarkMode = () => ({
 describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
-            useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
+            useDarkMode,
+            useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
-            useDarkMode,
         });
 
         const button = container.querySelector('button.MuiIconButton-root');
@@ -67,10 +67,10 @@ describe('<UserPopoverMenu />', () => {
 
     it('renders menu when icon button receives onClick', () => {
         const { container } = testRender({
-            useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
-            useUser: () => ({ name: 'Name' }),
-            useUserMenuClickActions,
             useDarkMode,
+            useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
+            useUserMenuClickActions,
+            useUser: () => ({ name: 'Name' }),
         });
 
         const button = container.querySelector('button.MuiIconButton-root');
@@ -94,10 +94,10 @@ describe('<UserPopoverMenu />', () => {
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
-                useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
+                useDarkMode,
+                useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
                 useUser: () => ({ name: 'Name', roomCode: 'SOIREE' }),
                 useUserMenuClickActions,
-                useDarkMode,
             });
             const button = container.querySelector('button.MuiIconButton-root');
             fireEvent.click(button!);
@@ -123,10 +123,10 @@ describe('<UserPopoverMenu />', () => {
 
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
-                useBreadcrumbs: () => ({ isHome: false, goBack: onMenuClicks.goBack }),
+                useDarkMode,
+                useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
                 useUser: () => null,
                 useUserMenuClickActions,
-                useDarkMode,
             });
             const button = container.querySelector('button.MuiIconButton-root');
             fireEvent.click(button!);

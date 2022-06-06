@@ -4,11 +4,8 @@ import { RoomSettingsMenu } from 'roomPortal/components/RoomSettingsMenu';
 import { useDependencies } from 'common/hooks/useDependencies';
 
 export const RoomSettings: FC = () => {
-    const useBreadcrumbs = useDependencies(d => d.useBreadcrumbs);
-    const { goBack } = useBreadcrumbs();
-
-    const useRoomSettingActions = useDependencies(d => d.useRoomSettingActions);
-    const actions = useRoomSettingActions();
+    const { goBack } = useDependencies(d => d.useRouter)();
+    const actions = useDependencies(d => d.useRoomSettingActions)();
 
     return (
         <SettingsView title="Room Settings" onGoBack={goBack}>

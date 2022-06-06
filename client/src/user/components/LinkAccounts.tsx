@@ -4,11 +4,8 @@ import { LinkAccountsMenu } from 'user/components/LinkAccountsMenu';
 import { useDependencies } from 'common/hooks/useDependencies';
 
 export const LinkAccounts: FC = () => {
-    const useBreadcrumbs = useDependencies(d => d.useBreadcrumbs);
-    const { goBack } = useBreadcrumbs();
-
-    const useAccountLinks = useDependencies(d => d.useAccountLinks);
-    const accountLinks = useAccountLinks();
+    const { goBack } = useDependencies(d => d.useRouter)();
+    const accountLinks = useDependencies(d => d.useAccountLinks)();
 
     return (
         <SettingsView title="Link Accounts" onGoBack={goBack}>
