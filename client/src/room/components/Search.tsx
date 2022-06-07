@@ -41,6 +41,15 @@ const Relative = styled(Box)`
     z-index: 2;
 `;
 
+const SongListContainer = styled(Box)`
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: ${props => props.theme.spacing(1, 1, 1, 0.25)};
+    border-radius: ${props => props.theme.spacing(1)};
+    border: 2px solid ${props => props.theme.palette.primary.main};
+`;
+
 export const Search: FC<Props> = props => {
     // TODO WOOOOO, this is a good custom hook candidate no? Jeez
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
@@ -92,19 +101,21 @@ export const Search: FC<Props> = props => {
                 </FormControl>
                 {showDrawer && (
                     <SearchDrawer>
-                        <SongList
-                            songs={result.data ?? []}
-                            row={rowProps => (
-                                <SearchSong
-                                    style={rowProps.style}
-                                    key={`${rowProps.data[rowProps.index].song_uri}_${rowProps.index}`}
-                                    title={rowProps.data[rowProps.index].song_name}
-                                    artist={rowProps.data[rowProps.index].song_artist}
-                                    albumUrl={rowProps.data[rowProps.index].song_album_url}
-                                    onClick={() => onSelectSong(rowProps.data[rowProps.index])}
-                                />
-                            )}
-                        />
+                        <SongListContainer>
+                            <SongList
+                                songs={result.data ?? []}
+                                row={rowProps => (
+                                    <SearchSong
+                                        style={rowProps.style}
+                                        key={`${rowProps.data[rowProps.index].song_uri}_${rowProps.index}`}
+                                        title={rowProps.data[rowProps.index].song_name}
+                                        artist={rowProps.data[rowProps.index].song_artist}
+                                        albumUrl={rowProps.data[rowProps.index].song_album_url}
+                                        onClick={() => onSelectSong(rowProps.data[rowProps.index])}
+                                    />
+                                )}
+                            />
+                        </SongListContainer>
                     </SearchDrawer>
                 )}
             </Relative>
