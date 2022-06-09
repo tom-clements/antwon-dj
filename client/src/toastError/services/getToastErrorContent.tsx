@@ -59,7 +59,7 @@ export const getToastErrorContent = (code?: ToastErrorCode | null) => {
         case ToastErrorCode.RefreshFailed:
             return {
                 title:
-                    <>We're not sure, you, are you...</>,
+                    <>We&apos;re not sure, you, are you...</>,
                 description:
                     <>There was an issue refreshing your credentials.</>,
                 helpText:
