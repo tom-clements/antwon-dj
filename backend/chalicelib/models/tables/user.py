@@ -13,11 +13,13 @@ class User(Base):
 
     user_id = Column(Integer, primary_key=True)
     user_username = Column(String)
+    id_token = Column(String)
     create_time = Column(DateTime)
 
     def __repr__(self):
         return (
             f"<User(user_id='{self.user_id}',"
             f"user_username='{self.user_username}',"
+            f"id_token='{self.id_token}'"
             f"create_time='{self.create_time},"
         )

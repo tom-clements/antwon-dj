@@ -4,7 +4,7 @@ from typing import Dict
 from chalice import Blueprint, Response
 
 from chalicelib.cors import get_cors_config
-from chalicelib.models.cognito.user_info import CognitoUserInfoDto
+from chalicelib.data.queries.read_user import read_user_id_token
 from chalicelib.models.endpoints.user_info import UserInfoDto
 from chalicelib.authorizer import get_authorizer
 from chalicelib.services.auth.endpoints import (
@@ -13,9 +13,13 @@ from chalicelib.services.auth.endpoints import (
     cognito_login_url,
 )
 from chalicelib.services.user.get_login import user_signup_callback
-from chalicelib.services.user.get_user_info import get_room_code_from_username, get_is_spotify_connected
+from chalicelib.services.user.get_user_info import (
+    get_room_code_from_username,
+    get_is_spotify_connected,
+    decode_user_info_from_id_token,
+)
 from chalicelib.utils.endpoint_input_validation import verify_parameter_inputs
-from chalicelib.utils.endpoint_parameter_injection import inject_cognito_user_info, inject_cookies
+from chalicelib.utils.endpoint_parameter_injection import inject_cognito_username, inject_cookies
 from chalicelib.utils.env import BASE_URL, DOMAIN
 
 user_routes = Blueprint(__name__)
@@ -71,8 +75,12 @@ def user_token_get(refresh_token: str) -> Dict[str, str]:
 
 
 @user_routes.route("/user/info", methods=["GET"], cors=get_cors_config(), authorizer=get_authorizer())
-@inject_cognito_user_info(user_routes)
-def user_info_get(user_info: CognitoUserInfoDto) -> Dict[str, str]:
-    is_spotify_connected = get_is_spotify_connected(user_info.username)
-    room_code = get_room_code_from_username(user_info.username)
-    return asdict(UserInfoDto(is_spotify_connected=is_spotify_connected, room_code=room_code, **asdict(user_info)))
+@inject_cognito_username(user_routes)
+def user_info_get(username: str) -> Dict[str, str]:
+    id_token = read_user_id_token(username)
+    cognito_user_info = decode_user_info_from_id_token(id_token=id_token)
+    is_spotify_connected = get_is_spotify_connected(username)
+    room_code = get_room_code_from_username(username)
+    return asdict(
+        UserInfoDto(is_spotify_connected=is_spotify_connected, room_code=room_code, **asdict(cognito_user_info))
+    )

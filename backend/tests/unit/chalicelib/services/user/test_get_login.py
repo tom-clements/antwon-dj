@@ -26,5 +26,5 @@ def test_user_signup_callback(
     mock_cognito_user_info_request.assert_called_once_with(
         cognito_code_token.access_token, cognito_code_token.token_type
     )
-    mock_add_user_if_not_exists.assert_called_once_with(cognito_user_info.username)
+    mock_add_user_if_not_exists.assert_called_once_with(cognito_user_info.username, cognito_code_token.id_token)
     assert actual == expected

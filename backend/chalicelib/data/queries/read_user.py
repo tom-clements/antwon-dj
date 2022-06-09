@@ -12,3 +12,11 @@ def read_user(user_username: str, db_session: Session) -> User:
         return db_session.query(User).filter(User.user_username == user_username).one()
     except NoResultFound:
         raise UserNotFoundDbError(user_username)
+
+
+@use_db_session()
+def read_user_id_token(user_username: str, db_session: Session) -> str:
+    id_token = db_session.query(User.id_token).filter(User.user_username == user_username).scalar()
+    if not id_token:
+        raise UserNotFoundDbError(user_username)
+    return id_token
