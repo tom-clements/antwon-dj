@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styles/components/ThemeProvider';
 import { getDefaultTheme } from 'styles/services/getTheme';
 import { ToastError } from 'toastError/components/ToastError';
 import { DependencyProvider } from 'common/components/DependencyProvider';
-import { StateProvider } from 'common/components/StateProvider';
+import { StateProvider } from 'common/components/PersistedStateProvider';
 import { SafeHydrate } from 'common/components/SafeHydrate';
 import { Breadcrumb } from 'common/components/Breadcrumb';
 
@@ -17,7 +17,7 @@ export default function App(props: AppProps) {
     return (
         <SafeHydrate>
             <DependencyProvider>
-                <StateProvider persist>
+                <StateProvider>
                     <Breadcrumb>
                         <CacheProvider value={createEmotionCache()}>
                             <Head>

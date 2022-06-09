@@ -50,7 +50,15 @@ const persistConfig = {
     ],
 };
 
-export function createStore() {
+export const createStore = () => {
+    return configureStore({
+        reducer: rootReducer,
+        middleware: getDefaultMiddleware =>
+            getDefaultMiddleware({}).concat(...middleware)
+    });
+};
+
+export const createPersistedStore = () => {
     return configureStore({
         reducer: persistReducer(persistConfig, rootReducer),
         middleware: getDefaultMiddleware =>
@@ -60,7 +68,7 @@ export function createStore() {
                 },
             }).concat(...middleware)
     });
-}
+};
 
 export type Store = ReturnType<typeof createStore>;
 export type State = ReturnType<Store['getState']>;
