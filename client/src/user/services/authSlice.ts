@@ -5,18 +5,30 @@ import { userApi } from 'user/services/userApi';
 interface AuthState {
     accessToken: string | null;
     idToken: string | null;
+    attempts: number;
 }
 
 const initialState = (): AuthState => ({
     accessToken: null,
     idToken: null,
+    attempts: 0,
 });
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: initialState(),
-    reducers: {},
-    extraReducers: (builder) => {
+    reducers: {
+        addAttempt: state => ({
+            ...state,
+            attempts: state.attempts + 1,
+        }),
+        resetAttempts: state => ({
+            ...state,
+            attempts: 0,
+        }),
+        reset: () => initialState(),
+    },
+    extraReducers: builder => {
         builder.addMatcher(
             userApi.endpoints.token.matchFulfilled,
             (state, { payload }) => {

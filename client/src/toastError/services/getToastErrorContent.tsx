@@ -11,6 +11,15 @@ export const getToastErrorContent = (code?: ToastErrorCode | null) => {
                 helpText:
                     <>Please try again or contact support.</>,
             };
+        case ToastErrorCode.LoginFailed:
+            return {
+                title:
+                    <>Uh-oh, &apos;something&apos; happened...</>,
+                description:
+                    <>There was an issue logging in.</>,
+                helpText:
+                    <>Please try again or contact support.</>,
+            };
         case ToastErrorCode.BadRequest:
             return {
                 title:
