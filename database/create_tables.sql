@@ -14,6 +14,7 @@ CREATE TABLE antwon.SpotifyUsers (
 CREATE TABLE antwon.Users (
     user_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_username varchar(36) NOT NULL,
+    id_token varchar(2000) NOT NULL,
     create_time datetime NOT NULL,
     CONSTRAINT constraint_username UNIQUE (user_username)
 );

@@ -106,21 +106,32 @@ def test_get_user_token(mock_cognito_tokens_refresh_token_request: Mock, local_c
 
 @patch("chalicelib.routes.user.get_is_spotify_connected")
 @patch("chalicelib.routes.user.get_room_code_from_username")
+@patch("chalicelib.routes.user.read_user_id_token")
+@patch("chalicelib.routes.user.decode_user_info_from_id_token")
 def test_user_info_get(
+    mock_decode_user_info_from_id_token: Mock,
+    mock_read_user_id_token: Mock,
     mock_get_room_code_from_username: Mock,
     mock_get_is_spotify_connected: Mock,
     cognito_user_info: CognitoUserInfoDto,
     user_token: str,
     local_client: Client,
 ) -> None:
+    id_token = "id_token"
     room_code = "room_code"
     headers = {"authorization": f"Bearer {user_token}"}
+    mock_read_user_id_token.return_value = id_token
+    mock_decode_user_info_from_id_token.return_value = cognito_user_info
     mock_get_is_spotify_connected.return_value = True
     mock_get_room_code_from_username.return_value = room_code
 
     expected_body = asdict(UserInfoDto(is_spotify_connected=True, room_code=room_code, **asdict(cognito_user_info)))
     actual = local_client.http.get("/user/info", headers=headers)
-    # mock_cognito_tokens_refresh_token_request.assert_called_once_with(refresh_token=refresh_token)
+
+    mock_read_user_id_token.assert_called_once_with(cognito_user_info.username)
+    mock_decode_user_info_from_id_token.assert_called_once_with(id_token=id_token)
+    mock_get_is_spotify_connected.assert_called_once_with(cognito_user_info.username)
+    mock_get_room_code_from_username.assert_called_once_with(cognito_user_info.username)
 
     assert actual.json_body == expected_body
     assert actual.status_code == 200

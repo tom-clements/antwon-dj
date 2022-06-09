@@ -36,7 +36,7 @@ def test_cognito_logout_url() -> None:
     expected = (
         "mock_auth_url.com/logout?"
         "client_id=test_client_id&"
-        "logout_uri=mock_redirect_url.com/mock_stage/mock_redirect_endpoint"
+        "redirect_uri=mock_redirect_url.com/mock_stage/mock_redirect_endpoint"
     )
     actual = cognito_logout_url.__wrapped__("test_client_id")  # type: ignore
     assert actual == expected

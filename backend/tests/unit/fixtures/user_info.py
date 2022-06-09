@@ -6,9 +6,12 @@ from pytest import fixture
 from chalicelib.models.cognito.user_info import CognitoUserInfoDto
 from chalicelib.models.endpoints.user_info import UserInfoDto
 from chalicelib.services.utils.aws_secrets import AwsSecretRetrieval
+from chalicelib.utils.env import ENVIRONMENT
 
 
-@AwsSecretRetrieval("cognito_client_credentials", client_secret="local_client_secret")
+@AwsSecretRetrieval(
+    "cognito_client_credentials", client_secret="local_client_secret" if ENVIRONMENT == "local" else "client_secret"
+)
 def get_token(client_secret: str, cognito_user_info: CognitoUserInfoDto) -> str:
     user_info_dict = asdict(cognito_user_info)
     user_info_dict["cognito:username"] = user_info_dict["username"]
