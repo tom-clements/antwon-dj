@@ -6,12 +6,21 @@ from typing import Callable, Dict, Any
 from chalice import Blueprint, Response
 
 from chalicelib.models.cognito.user_info import CognitoUserInfoDto
+from chalicelib.utils.env import ENVIRONMENT
 
 
 def inject_cognito_user_info(route: Blueprint) -> Callable:
     def decorator(f: Callable) -> Callable:
         @wraps(f)
         def wrapper(*args: str, **kwargs: Dict[str, Any]) -> Any:
+            if (ENVIRONMENT == "local") and ("authorizer" not in route.current_request.context):
+                return Response(
+                    body={
+                        "message": "Unauthorized."
+                                   "Local environment detected, have you passed an access token instead of a ID token?"
+                    },
+                    status_code=403,
+                )
             claims = route.current_request.context["authorizer"]["claims"]
             claims["username"] = claims["cognito:username"] if "cognito:username" in claims else claims["username"]
             user_fields = {field.name: claims[field.name] for field in fields(CognitoUserInfoDto)}
