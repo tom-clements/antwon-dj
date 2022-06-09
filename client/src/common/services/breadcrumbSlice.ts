@@ -9,16 +9,25 @@ const initialState = (): BreadcrumbState => ({
     stack: [],
 });
 
+const ignorePaths = [
+    '/login',
+    '/logout'
+];
+
 export const breadcrumbSlice = createSlice({
     name: 'breadcrumb',
     initialState: initialState(),
     reducers: {
-        push: (state, action: PayloadAction<string>) => ({
-            stack: [...state.stack, action.payload],
-        }),
-        popTo: (state, action: PayloadAction<number>) => ({
+        push: (state, { payload }: PayloadAction<string>) => {
+            if (ignorePaths.includes(payload)) return state;
+            return {
+                ...state,
+                stack: [...state.stack, payload],
+            };
+        },
+        popTo: (state, { payload }: PayloadAction<number>) => ({
             ...state,
-            stack: state.stack.slice(0, action.payload + 1),
+            stack: state.stack.slice(0, payload + 1),
         }),
         reset: () => initialState(),
     },
