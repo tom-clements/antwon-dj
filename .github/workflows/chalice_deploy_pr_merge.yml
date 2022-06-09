@@ -6,7 +6,6 @@ on:
 name: Deploy merged PR to Chalice
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true
     name: dev-deploy
     runs-on: ubuntu-latest
     steps:
