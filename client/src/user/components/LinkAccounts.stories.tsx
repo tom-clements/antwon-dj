@@ -17,9 +17,11 @@ export default {
     component: LinkAccountsComponent,
     subcomponents: { LinkAccountsMenu, LinkAccountItem },
     args: {
-        useBreadcrumbs: () => ({
-            isRoot: false,
-            goBack: () => undefined
+        useRouter: () => ({
+            isHome: false,
+            goBack: () => undefined,
+            goTo: () => undefined,
+            goToExternal: () => undefined,
         }),
     },
     argTypes: {
@@ -31,7 +33,7 @@ export default {
                 labels: { ...Object.keys(optionMapping) }
             },
         },
-        useBreadcrumbs: { control: false },
+        useRouter: { control: false },
     },
     parameters: {
         layout: 'fullscreen',

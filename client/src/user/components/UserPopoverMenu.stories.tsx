@@ -13,9 +13,11 @@ export default {
     title: 'user/UserPopoverMenu',
     component: UserPopoverMenuComponent,
     args: {
-        useBreadcrumbs: () => ({
-            isRoot: false,
-            goBack: () => undefined
+        useRouter: () => ({
+            isHome: false,
+            goBack: () => undefined,
+            goTo: () => undefined,
+            goToExternal: () => undefined,
         }),
         useUser: Object.keys(useUserOptionMapping)[1],
         useUserMenuClickActions: () => ({

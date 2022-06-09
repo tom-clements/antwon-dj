@@ -8,16 +8,18 @@ export default {
     title: 'room/NewRoom',
     component: NewRoomComponent,
     args: {
-        useBreadcrumbs: () => ({
-            isRoot: false,
-            goBack: () => undefined
+        useRouter: () => ({
+            isHome: false,
+            goBack: () => undefined,
+            goTo: () => undefined,
+            goToExternal: () => undefined,
         }),
         useNewRoom: () => ({
             createAndGoToNewRoom: () => undefined,
         }),
     },
     argTypes: {
-        useBreadcrumbs: { control: false },
+        useRouter: { control: false },
         useNewRoom: { control: false },
     },
     parameters: {

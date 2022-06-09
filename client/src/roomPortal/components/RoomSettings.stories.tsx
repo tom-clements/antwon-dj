@@ -8,9 +8,11 @@ export default {
     title: 'room/RoomSettings',
     component: RoomSettingsComponent,
     args: {
-        useBreadcrumbs: () => ({
-            isRoot: false,
-            goBack: () => undefined
+        useRouter: () => ({
+            isHome: false,
+            goBack: () => undefined,
+            goTo: () => undefined,
+            goToExternal: () => undefined,
         }),
         useRoomSettingActions: () => ({
             clearQueue: () => undefined,
@@ -18,7 +20,7 @@ export default {
         }),
     },
     argTypes: {
-        useBreadcrumbs: { control: false },
+        useRouter: { control: false },
         useRoomSettingActions: { control: false },
     },
     parameters: {
