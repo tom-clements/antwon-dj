@@ -8,6 +8,7 @@ import { authActions, selectAuthState } from 'user/services/authSlice';
 import { useDispatch, useSelector } from 'common/services/createStore';
 import { toastErrorActions } from 'toastError/services/toastErrorSlice';
 import { ToastErrorCode } from 'toastError/model/ToastErrorCode';
+import { flush } from 'common/components/PersistedStateProvider';
 
 export type UseLoginLoop = HF<void, void>;
 
@@ -27,11 +28,12 @@ export const useLoginLoop: UseLoginLoop = () => {
             goBack();
         } catch (error) {
             if (loginAttempts.current <= 1) {
-                dispatch(authActions.addAttempt());
-                goToExternal(`${getApiBaseUrl()}/login`);
+                dispatch(authActions.addLoginAttempt());
+                await flush();
+                goToExternal(`${getApiBaseUrl()}login`);
             } else {
                 logError(error);
-                dispatch(authActions.resetAttempts());
+                dispatch(authActions.resetLoginAttempts());
                 dispatch(toastErrorActions.set(ToastErrorCode.LoginFailed));
                 goBack();
             }

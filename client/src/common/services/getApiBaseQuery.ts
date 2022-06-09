@@ -14,7 +14,7 @@ export const getApiBaseQuery = () => {
             if (accessToken && idToken) {
                 if (isLocal) {
                     headers.set('authorization', `Bearer ${idToken}`);
-                    headers.set('local_authorization', '${accessToken}');
+                    headers.set('local_authorization', accessToken);
                 } else {
                     headers.set('authorization', `Bearer ${accessToken}`);
                 }

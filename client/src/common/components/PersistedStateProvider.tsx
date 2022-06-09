@@ -7,7 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 const store = createPersistedStore();
 const persistor = persistStore(store);
 
-export const { purge } = persistor;
+export const { purge, flush } = persistor;
 
 export const StateProvider: FC = props => {
     return (

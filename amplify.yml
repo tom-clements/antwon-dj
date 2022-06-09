@@ -13,6 +13,7 @@ applications:
             - yarn install
         build:
           commands:
+            - echo "IS_LOCAL=false" >> .env
             - echo "API_BASE_URL=https://api.djantwon.com/dev/" >> .env
             - echo "CLIENT_BASE_URL=https://www.djantwon.com/" >> .env
             - yarn run build

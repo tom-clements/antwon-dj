@@ -22,13 +22,13 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: initialState(),
     reducers: {
-        addAttempt: state => ({
+        addLoginAttempt: state => ({
             ...state,
-            attempts: state.loginAttempts + 1,
+            loginAttempts: state.loginAttempts + 1,
         }),
-        resetAttempts: state => ({
+        resetLoginAttempts: state => ({
             ...state,
-            attempts: 0,
+            loginAttempts: 0,
         }),
         reset: () => initialState(),
     },
