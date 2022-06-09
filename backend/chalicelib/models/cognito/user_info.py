@@ -10,3 +10,4 @@ class CognitoUserInfoDto(CognitoDto):
     name: str
     email: str
     username: str
+    picture: str

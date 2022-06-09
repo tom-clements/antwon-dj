@@ -742,6 +742,7 @@
                 "email_verified":  {"type":  "boolean", "example": "true"},
                 "name":  {"type":  "string", "example": "Albert"},
                 "email":  {"type":  "boolean", "example": "ablert@antwon.dj"},
+                "picture": {"type":  "string", "example":  "https://lh3.googleusercontent.com/a-/AOh14GjYpTNL5fV0KjZdwHEwTn8ElscBg3CpDx2z4NdVnFg=s96-c"},
                 "username":  {"type":  "string", "example":  "google_115636318877645090402"},
                 "is_spotify_connected":  {"type":  "boolean", "example":  "true"},
                 "room_code":  {"type":  "string", "example":  "SOIREE"}
