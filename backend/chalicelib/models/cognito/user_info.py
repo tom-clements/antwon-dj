@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 from chalicelib.models.cognito.tokens import CognitoDto
 
@@ -10,4 +11,4 @@ class CognitoUserInfoDto(CognitoDto):
     name: str
     email: str
     username: str
-    picture: str
+    picture: Optional[str] = None
