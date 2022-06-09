@@ -9,9 +9,8 @@ import { DeferredTask } from 'common/components/DeferredTask';
 import { Typography } from '@mui/material';
 import { useSelector } from 'common/services/createStore';
 import { selectRoomPortalCode } from 'roomPortal/services/roomPortalSlice';
-
-// TODO use a model for this to de-couple frontend
-import type { SongDto } from 'room/dtos/SongDto';
+import { mapSongFromDto } from 'room/mappers/mapSongFromDto';
+import type { SongModel } from 'room/model/SongModel';
 
 interface Props {
     roomId: string;
@@ -76,7 +75,7 @@ export const NowPlaying: FC<Props> = props => {
     return (
         <DeferredTask task={task}>
             {{
-                [TaskStatus.Resulted]: song => <NowPlayingInternalLoaded song={song} />,
+                [TaskStatus.Resulted]: song => <NowPlayingInternalLoaded song={mapSongFromDto(song)} />,
                 [TaskStatus.Completed]: () => <NowPlayingInternalPending />,
                 [TaskStatus.Created]: () => <NowPlayingInternalPending />,
             }}
@@ -84,13 +83,13 @@ export const NowPlaying: FC<Props> = props => {
     );
 };
 
-const NowPlayingInternalLoaded: FC<{ song: SongDto }> = props => {
+const NowPlayingInternalLoaded: FC<{ song: SongModel }> = props => {
     return (
         <Root>
             <NowPlayingArtContainer>
-                <NowPlayingSideArt src={props.song.song_album_url} />
-                <NowPlayingArt src={props.song.song_album_url} />
-                <NowPlayingSideArt src={props.song.song_album_url} />
+                <NowPlayingSideArt src={props.song.albumUrl} />
+                <NowPlayingArt src={props.song.albumUrl} />
+                <NowPlayingSideArt src={props.song.albumUrl} />
             </NowPlayingArtContainer>
             <Mask />
             <Overlay>
@@ -129,14 +128,14 @@ const RoomDetails: FC = () => {
     );
 };
 
-const NowPlayingDetails: FC<{ song: SongDto }> = props => {
+const NowPlayingDetails: FC<{ song: SongModel }> = props => {
     return (
         <Box>
             <Typography variant="caption" sx={{ opacity: 0.75 }}>
-                {props.song.song_artist}
+                {props.song.artist}
             </Typography>
             <Typography variant="h5">
-                {props.song.song_name}
+                {props.song.name}
             </Typography>
         </Box>
     );

@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { getApiBaseQuery } from 'common/services/getApiBaseQuery';
 import type { SongDto } from 'room/dtos/SongDto';
-import type { RoomSongDto } from 'room/dtos/RoomSongDto';
+import type { GuestRoomSongDto, UserRoomSongDto } from 'room/dtos/RoomSongDto';
 
 const tagTypes = [
     'room',
@@ -30,11 +30,11 @@ export const roomApi = createApi({
             query: roomId => ({ url: `room/${roomId}`, method: 'DELETE' }),
             invalidatesTags: tagTypes,
         }),
-        guestQueue: builder.query<RoomSongDto[], string>({
+        guestQueue: builder.query<GuestRoomSongDto[], string>({
             query: roomId => ({ url: `room/${roomId}/queue/guest` }),
             providesTags: ['room:queue'],
         }),
-        userQueue: builder.query<RoomSongDto[], string>({
+        userQueue: builder.query<UserRoomSongDto[], string>({
             query: roomId => ({ url: `room/${roomId}/queue/user` }),
             providesTags: ['room:queue'],
         }),

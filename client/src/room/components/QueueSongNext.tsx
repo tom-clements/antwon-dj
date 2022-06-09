@@ -4,9 +4,8 @@ import { useDependencies } from 'common/hooks/useDependencies';
 import { TaskStatus } from 'common/model/Task';
 import { DeferredTask } from 'common/components/DeferredTask';
 import { SongItem, SongItemSkeleton } from 'room/components/SongItem';
-
-// TODO use a model for this to de-couple frontend
-import type { RoomSongDto } from 'room/dtos/RoomSongDto';
+import type { RoomSongModel } from 'room/model/RoomSongModel';
+import { mapSongFromGuestDto } from 'room/mappers/mapRoomSongFromDto';
 
 interface Props {
     roomId: string;
@@ -23,7 +22,7 @@ export const QueueSongNext: FC<Props> = props => {
     return (
         <DeferredTask task={task}>
             {{
-                [TaskStatus.Resulted]: songs => <NextSongInternal songs={songs} isOpen={props.isOpen} />,
+                [TaskStatus.Resulted]: songs => <NextSongInternal songs={songs.map(mapSongFromGuestDto)} isOpen={props.isOpen} />,
                 [TaskStatus.Completed]: () => <NextSongInternal songs={[]} isOpen={props.isOpen} />,
                 [TaskStatus.Created]: () => <SongItemSkeleton />,
             }}
@@ -32,14 +31,14 @@ export const QueueSongNext: FC<Props> = props => {
 };
 
 interface InternalProps {
-    songs: RoomSongDto[];
+    songs: RoomSongModel[];
     isOpen: boolean;
 }
 
 const NextSongInternal: FC<InternalProps> = props => {
     // TODO This should probably be done in the API/state layer.
     // It can stay here for now.
-    const nextSong = props.songs.filter(s => !s.is_played && !s.is_removed).shift();
+    const nextSong = props.songs.filter(s => !s.isPlayed && !s.isRemoved).shift();
 
     if (!nextSong) {
         if (props.isOpen) return null;
@@ -53,9 +52,9 @@ const NextSongInternal: FC<InternalProps> = props => {
     return (
         <ListItem>
             <SongItem
-                title={nextSong.song_name}
-                artist={nextSong.song_artist}
-                albumUrl={nextSong.song_album_url}
+                title={nextSong.song.name}
+                artist={nextSong.song.artist}
+                albumUrl={nextSong.song.albumUrl}
             />
         </ListItem>
     );

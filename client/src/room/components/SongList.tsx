@@ -1,16 +1,16 @@
-import type { FC } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import type { SongModel } from 'room/model/SongModel';
+import type { RoomSongModel } from 'room/model/RoomSongModel';
 
-// TODO use a model for this to de-couple frontend
-import type { SongDto } from 'room/dtos/SongDto';
+type SongItemModel = SongModel | RoomSongModel;
 
-interface Props {
-    songs: SongDto[];
-    row: (rowProps: ListChildComponentProps<SongDto[]>) => JSX.Element;
+interface Props<T extends SongItemModel> {
+    songs: T[];
+    row: (rowProps: ListChildComponentProps<T[]>) => JSX.Element;
 }
 
-export const SongList: FC<Props> = props => {
+export const SongList = <T extends SongItemModel>(props: Props<T>) => {
     return (
         <AutoSizer>
             {({ height, width }) => (

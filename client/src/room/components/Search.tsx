@@ -6,6 +6,8 @@ import { Clear, Search as SearchIcon } from '@mui/icons-material';
 import { roomApi } from 'room/services/roomApi';
 import { SongList } from 'room/components/SongList';
 import { SearchSong } from 'room/components/SearchSong';
+import type { SongModel } from 'room/model/SongModel';
+import { mapSongFromDto } from 'room/mappers/mapSongFromDto';
 
 interface Props {
     roomId: string;
@@ -104,15 +106,15 @@ export const Search: FC<Props> = props => {
                 {showDrawer && (
                     <SearchDrawer>
                         <SongListContainer>
-                            <SongList
-                                songs={result.data ?? []}
+                            <SongList<SongModel>
+                                songs={(result.data ?? []).map(mapSongFromDto)}
                                 row={rowProps => (
                                     <SearchSong
                                         style={rowProps.style}
-                                        key={`${rowProps.data[rowProps.index].song_uri}_${rowProps.index}`}
-                                        title={rowProps.data[rowProps.index].song_name}
-                                        artist={rowProps.data[rowProps.index].song_artist}
-                                        albumUrl={rowProps.data[rowProps.index].song_album_url}
+                                        key={`${rowProps.data[rowProps.index].uri}_${rowProps.index}`}
+                                        title={rowProps.data[rowProps.index].name}
+                                        artist={rowProps.data[rowProps.index].artist}
+                                        albumUrl={rowProps.data[rowProps.index].albumUrl}
                                         onClick={() => onSelectSong(rowProps.data[rowProps.index])}
                                     />
                                 )}
