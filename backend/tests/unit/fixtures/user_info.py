@@ -20,7 +20,12 @@ def get_token(client_secret: str, cognito_user_info: CognitoUserInfoDto) -> str:
 @fixture()
 def cognito_user_info() -> CognitoUserInfoDto:
     return CognitoUserInfoDto(
-        sub="sub", email_verified=True, name="Test User", email="test_user@example.com", username="test_user"
+        sub="sub",
+        email_verified=True,
+        name="Test User",
+        email="test_user@example.com",
+        username="test_user",
+        picture="picture",
     )
 
 
