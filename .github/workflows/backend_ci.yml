@@ -20,6 +20,7 @@ jobs:
       with:
         files: |
           backend/**/*
+          ./github/workflows/backend_ci.yml
     - name: Set up Python 3.9
       if: steps.changed-files-specific.outputs.any_changed == 'true'
       uses: actions/setup-python@v2
@@ -52,8 +53,9 @@ jobs:
         aws-region: eu-west-2
     - name: Test with pytest and collect coverage
       if: steps.changed-files-specific.outputs.any_changed == 'true'
+      working-directory: backend
       run: |
-        pytest --mypy --cov backend/
+        pytest --mypy --cov
     - name: Upload coverage reports to Codecov with GitHub Action
       if: steps.changed-files-specific.outputs.any_changed
       uses: codecov/codecov-action@v3
