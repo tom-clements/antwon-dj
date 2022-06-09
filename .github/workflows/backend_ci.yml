@@ -8,7 +8,7 @@ on:
     
 jobs:
   ci:
-    name: ci
+    name: backend_ci
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
