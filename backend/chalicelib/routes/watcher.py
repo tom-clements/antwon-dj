@@ -6,7 +6,7 @@ from chalice.app import Request
 
 from chalicelib.cors import get_cors_config
 from chalicelib.error_handling import error_handle
-from chalicelib.services.watcher.get_scheduled_poll import poll_five_seconds
+from chalicelib.services.watcher.get_scheduled_poll import poll_five_seconds, PollMode
 from chalicelib.services.watcher.watch_room import watch_room
 from chalicelib.utils.env import API_URL
 
@@ -23,4 +23,4 @@ def poll_room_get(room_guid: str) -> Dict[str, Union[bool, Any]]:
 
 @watcher_routes.schedule(Rate(1, unit=Rate.MINUTES))
 def poll_app(event: Request) -> None:
-    poll_five_seconds(local_polling=True)
+    poll_five_seconds(poll_mode=PollMode.LOCAL)
