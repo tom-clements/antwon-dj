@@ -8,14 +8,14 @@ interface AuthState {
     user: UserModel | null;
     accessToken: string | null;
     idToken: string | null;
-    attempts: number;
+    loginAttempts: number;
 }
 
 const initialState = (): AuthState => ({
     user: null,
     accessToken: null,
     idToken: null,
-    attempts: 0,
+    loginAttempts: 0,
 });
 
 export const authSlice = createSlice({
@@ -24,7 +24,7 @@ export const authSlice = createSlice({
     reducers: {
         addAttempt: state => ({
             ...state,
-            attempts: state.attempts + 1,
+            attempts: state.loginAttempts + 1,
         }),
         resetAttempts: state => ({
             ...state,

@@ -14,7 +14,7 @@ export type UseLoginLoop = HF<void, void>;
 export const useLoginLoop: UseLoginLoop = () => {
     const dispatch = useDispatch();
     const auth = useSelector(selectAuthState);
-    const attempts = useRef(auth.attempts);
+    const loginAttempts = useRef(auth.loginAttempts);
 
     const { goBack, goToExternal } = useDependencies(d => d.useRouter)();
     const [fetchToken] = userApi.endpoints.token.useLazyQuery();
@@ -26,7 +26,7 @@ export const useLoginLoop: UseLoginLoop = () => {
             await fetchUser().unwrap();
             goBack();
         } catch (error) {
-            if (attempts.current <= 1) {
+            if (loginAttempts.current <= 1) {
                 dispatch(authActions.addAttempt());
                 goToExternal(`${getApiBaseUrl()}/login`);
             } else {
@@ -37,7 +37,7 @@ export const useLoginLoop: UseLoginLoop = () => {
             }
         }
 
-    }, [dispatch, fetchToken, fetchUser, goBack, goToExternal, attempts]);
+    }, [dispatch, fetchToken, fetchUser, goBack, goToExternal, loginAttempts]);
 
     useEffect(() => { login(); }, [login]);
 };
