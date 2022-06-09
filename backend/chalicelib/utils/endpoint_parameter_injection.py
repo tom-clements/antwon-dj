@@ -17,13 +17,15 @@ def inject_cognito_user_info(route: Blueprint) -> Callable:
                 return Response(
                     body={
                         "message": "Unauthorized."
-                                   "Local environment detected, have you passed an access token instead of a ID token?"
+                        "Local environment detected, have you passed an access token instead of a ID token?"
                     },
                     status_code=403,
                 )
             claims = route.current_request.context["authorizer"]["claims"]
             claims["username"] = claims["cognito:username"] if "cognito:username" in claims else claims["username"]
-            user_fields = {field.name: claims[field.name] for field in fields(CognitoUserInfoDto)}
+            user_fields = {
+                field.name: claims[field.name] for field in fields(CognitoUserInfoDto) if field.name in claims
+            }
             kwargs["user_info"] = CognitoUserInfoDto(**user_fields)  # type: ignore
             res = f(*args, **kwargs)
             return res

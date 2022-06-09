@@ -18,9 +18,7 @@ def read_user_id_from_username(username: str, db_session: Session) -> Optional[i
 
 @use_db_session()
 def read_spotify_user_from_username(username: str, db_session: Session) -> Optional[int]:
-    return (
-        db_session.query(SpotifyUser.spotify_user_id).join(SpotifyUser).filter(User.user_username == username).scalar()
-    )
+    return db_session.query(SpotifyUser.spotify_user_id).join(User).filter(User.user_username == username).scalar()
 
 
 @use_db_session()
