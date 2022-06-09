@@ -15,7 +15,6 @@ import { breadcrumbSlice } from 'common/services/breadcrumbSlice';
 import { roomPortalSlice } from 'roomPortal/services/roomPortalSlice';
 import { themeSlice } from 'styles/services/themeSlice';
 import { toastErrorSlice } from 'toastError/services/toastErrorSlice';
-import { userSlice } from 'user/services/userSlice';
 import { roomApi } from 'room/services/roomApi';
 import { userApi } from 'user/services/userApi';
 
@@ -30,7 +29,6 @@ const rootReducer = combineReducers({
     roomPortal: roomPortalSlice.reducer,
     theme: themeSlice.reducer,
     toastError: toastErrorSlice.reducer,
-    user: userSlice.reducer,
     ...apiReducers,
 });
 
