@@ -50,6 +50,6 @@ const withReauth: BaseQueryFn<
     }
 
     return result;
-}
+};
 
 export const getApiBaseQuery = () => withReauth;
