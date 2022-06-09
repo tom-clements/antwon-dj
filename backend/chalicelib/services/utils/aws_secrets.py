@@ -1,7 +1,6 @@
 import json
-from collections.abc import Callable
 from functools import partial, wraps
-from typing import Any, Dict
+from typing import Any, Dict, Callable
 
 import boto3
 from aws_secretsmanager_caching import SecretCache, SecretCacheConfig, InjectKeywordedSecretString  # type: ignore
