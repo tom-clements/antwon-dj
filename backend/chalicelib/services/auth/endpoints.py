@@ -38,7 +38,7 @@ def cognito_logout_url(client_id: str) -> str:
     api_stage = f"/{API_STAGE}" if API_STAGE else ""
     params = {
         "client_id": client_id,
-        "redirect_uri": f"{API_URL}{api_stage}/{LOGOUT_REDIRECT_ENDPOINT}",
+        "logout_uri": f"{API_URL}{api_stage}/{LOGOUT_REDIRECT_ENDPOINT}",
     }
     query = "&".join([f"{k}={v}" for k, v in params.items()])
     return f"{AUTH_URL}/logout?" + query
