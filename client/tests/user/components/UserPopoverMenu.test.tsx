@@ -6,6 +6,7 @@ import { UseUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
 import { UseDarkMode } from 'styles/hooks/useDarkMode';
 import { DarkModeMenuItem } from 'styles/components/DarkModeMenuItem';
 import { DependencyProvider } from 'common/components/DependencyProvider';
+import { mockUseRouter } from 'tests/common/hooks/useRouter.mock';
 
 jest.mock('user/components/UserAvatar', () => ({
     __esModule: true,
@@ -55,7 +56,7 @@ describe('<UserPopoverMenu />', () => {
     it('renders icon button', () => {
         const { container } = testRender({
             useDarkMode,
-            useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
+            useRouter: mockUseRouter({ goBack: onMenuClicks.goBack }),
             useUser: () => ({ name: 'Name' }),
             useUserMenuClickActions,
         });
@@ -68,7 +69,7 @@ describe('<UserPopoverMenu />', () => {
     it('renders menu when icon button receives onClick', () => {
         const { container } = testRender({
             useDarkMode,
-            useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
+            useRouter: mockUseRouter({ goBack: onMenuClicks.goBack }),
             useUserMenuClickActions,
             useUser: () => ({ name: 'Name' }),
         });
@@ -95,7 +96,7 @@ describe('<UserPopoverMenu />', () => {
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
                 useDarkMode,
-                useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
+                useRouter: mockUseRouter({ goBack: onMenuClicks.goBack }),
                 useUser: () => ({ name: 'Name', roomCode: 'SOIREE' }),
                 useUserMenuClickActions,
             });
@@ -124,7 +125,7 @@ describe('<UserPopoverMenu />', () => {
         test.each(cases)('has "%s" menu item with appropriate "%s" callback', (menuText, expectedMockCallbackKey) => {
             const { container, getByText } = testRender({
                 useDarkMode,
-                useRouter: () => ({ isHome: false, goBack: onMenuClicks.goBack, goTo: () => undefined, goToExternal: () => undefined }),
+                useRouter: mockUseRouter({ goBack: onMenuClicks.goBack }),
                 useUser: () => null,
                 useUserMenuClickActions,
             });

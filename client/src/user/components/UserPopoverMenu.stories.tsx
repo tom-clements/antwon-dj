@@ -5,6 +5,7 @@ import { DependencyProvider } from 'common/components/DependencyProvider';
 import { UserPopoverMenu as UserPopoverMenuComponent } from 'user/components/UserPopoverMenu';
 import { createMockUserModels } from 'tests/user/helpers/createMockUserModels';
 import { mapMockUsersToUseUsers } from 'tests/user/helpers/mapMockUsersToUseUsers';
+import { mockUseRouter } from 'tests/common/hooks/useRouter.mock';
 
 const users = createMockUserModels();
 const useUserOptionMapping = mapMockUsersToUseUsers(users);
@@ -13,10 +14,7 @@ export default {
     title: 'user/UserPopoverMenu',
     component: UserPopoverMenuComponent,
     args: {
-        useBreadcrumbs: () => ({
-            isRoot: false,
-            goBack: () => undefined
-        }),
+        useRouter: mockUseRouter(),
         useUser: Object.keys(useUserOptionMapping)[1],
         useUserMenuClickActions: () => ({
             myRoom: () => undefined,

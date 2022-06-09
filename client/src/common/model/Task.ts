@@ -52,7 +52,7 @@ export type CompletedTask = {
     status: TaskStatus.Completed
 };
 
-export type ResultedTask<T>= {
+export type ResultedTask<T> = {
     status: TaskStatus.Completed | TaskStatus.Resulted;
     result: T;
 };

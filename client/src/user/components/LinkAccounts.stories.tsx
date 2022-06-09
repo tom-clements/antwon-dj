@@ -6,6 +6,7 @@ import { LinkAccounts as LinkAccountsComponent } from 'user/components/LinkAccou
 import { LinkAccountsMenu } from 'user/components/LinkAccountsMenu';
 import { LinkAccountItem } from 'user/components/LinkAccountItem';
 import { mockAccountLinksFactory } from 'tests/user/helpers/mockAccountLinksFactory';
+import { mockUseRouter } from 'tests/common/hooks/useRouter.mock';
 
 const optionMapping = {
     linked: mockAccountLinksFactory(true),
@@ -17,10 +18,7 @@ export default {
     component: LinkAccountsComponent,
     subcomponents: { LinkAccountsMenu, LinkAccountItem },
     args: {
-        useBreadcrumbs: () => ({
-            isRoot: false,
-            goBack: () => undefined
-        }),
+        useRouter: mockUseRouter(),
     },
     argTypes: {
         useAccountLinks: {
@@ -31,7 +29,7 @@ export default {
                 labels: { ...Object.keys(optionMapping) }
             },
         },
-        useBreadcrumbs: { control: false },
+        useRouter: { control: false },
     },
     parameters: {
         layout: 'fullscreen',

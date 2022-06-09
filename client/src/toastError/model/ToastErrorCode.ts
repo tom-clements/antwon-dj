@@ -12,6 +12,7 @@
  */
 export enum ToastErrorCode {
     Unknown = 0,
+    LoginFailed = 1,
     BadRequest = 400,
     RoomValidation = 4001,
     Unauthorized = 401,

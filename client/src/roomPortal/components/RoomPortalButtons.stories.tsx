@@ -1,4 +1,7 @@
-import { ComponentStory } from '@storybook/react';
+import type { ComponentProps } from 'react';
+import type { Story } from '@storybook/react';
+import type { Dependencies } from 'common/services/DependencyContext';
+import { DependencyProvider } from 'common/components/DependencyProvider';
 import { RoomPortalButtons as RoomPortalButtonsComponent } from 'roomPortal/components/RoomPortalButtons';
 import { createMockUserModels } from 'tests/user/helpers/createMockUserModels';
 import { mapMockUsersToUseUsers } from 'tests/user/helpers/mapMockUsersToUseUsers';
@@ -32,10 +35,10 @@ export default {
     },
 };
 
-const Template: ComponentStory<typeof RoomPortalButtonsComponent> = args => (
-    <RoomPortalButtonsComponent {...args} />
+const Template: Story<ComponentProps<typeof RoomPortalButtonsComponent> & Partial<Dependencies>> = args => (
+    <DependencyProvider {...args}>
+        <RoomPortalButtonsComponent {...args} />
+    </DependencyProvider>
 );
 
-export const Default = {
-    ...Template.bind({}),
-};
+export const Default = Template.bind({});

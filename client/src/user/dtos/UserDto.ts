@@ -4,6 +4,7 @@ export interface UserDto {
     name: string;
     email: string;
     username: string;
+    picture: string | null;
     is_spotify_connected: boolean;
-    room_code?: string;
+    room_code: string | null;
 }

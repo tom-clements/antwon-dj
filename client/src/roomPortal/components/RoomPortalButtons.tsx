@@ -7,13 +7,8 @@ import { useDependencies } from 'common/hooks/useDependencies';
 import Stack from '@mui/material/Stack';
 
 const RoomButton: FC = () => {
-    const deps = useDependencies(d => ({
-        useUser: d.useUser,
-        useRoomPortalButtons: d.useRoomPortalButtons,
-    }));
-
-    const user = deps.useUser();
-    const actions = deps.useRoomPortalButtons();
+    const user = useDependencies(d => d.useUser)();
+    const actions = useDependencies(d => d.useRoomPortalButtons)();
 
     if (!isLoggedIn(user)) return null;
 
@@ -29,13 +24,8 @@ const RoomButton: FC = () => {
 };
 
 const LinkButton: FC = () => {
-    const deps = useDependencies(d => ({
-        useUser: d.useUser,
-        useRoomPortalButtons: d.useRoomPortalButtons,
-    }));
-
-    const user = deps.useUser();
-    const actions = deps.useRoomPortalButtons();
+    const user = useDependencies(d => d.useUser)();
+    const actions = useDependencies(d => d.useRoomPortalButtons)();
 
     if (!isLoggedIn(user)) return null;
 
@@ -45,13 +35,8 @@ const LinkButton: FC = () => {
 };
 
 const LoginButton: FC = () => {
-    const deps = useDependencies(d => ({
-        useUser: d.useUser,
-        useRoomPortalButtons: d.useRoomPortalButtons,
-    }));
-
-    const user = deps.useUser();
-    const actions = deps.useRoomPortalButtons();
+    const user = useDependencies(d => d.useUser)();
+    const actions = useDependencies(d => d.useRoomPortalButtons)();
 
     return (
         <>
