@@ -54,7 +54,16 @@ export const getToastErrorContent = (code?: ToastErrorCode | null) => {
                 description:
                     <>You need to be logged in and authenticated to do that.</>,
                 helpText:
-                    <>Please try again or contact support.</>,
+                    <>Please try logging in.</>,
+            };
+        case ToastErrorCode.RefreshFailed:
+            return {
+                title:
+                    <>We're not sure, you, are you...</>,
+                description:
+                    <>There was an issue refreshing your credentials.</>,
+                helpText:
+                    <>Please try logging in again or contact support.</>,
             };
         case ToastErrorCode.Forbidden:
             return {

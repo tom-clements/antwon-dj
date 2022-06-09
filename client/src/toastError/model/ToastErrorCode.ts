@@ -16,6 +16,7 @@ export enum ToastErrorCode {
     BadRequest = 400,
     RoomValidation = 4001,
     Unauthorized = 401,
+    RefreshFailed = 4011,
     Forbidden = 403,
     NotFound = 404,
     RoomNotFound = 4041,
