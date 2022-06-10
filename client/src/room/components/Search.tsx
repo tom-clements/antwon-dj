@@ -62,8 +62,6 @@ export const Search: FC<Props> = props => {
     }, [triggerSearch]);
     const showDrawer = searchTerm && result.data;
 
-    console.log('SEARCH', JSON.stringify(result.data));
-
     useEffect(() => {
         if (searchTerm) {
             debouncedSearch({
