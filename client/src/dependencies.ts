@@ -12,7 +12,8 @@ import { useRoomSettingActions } from 'roomPortal/hooks/useRoomSettingActions';
 import { useRouter } from 'common/hooks/useRouter';
 import { useNewRoom } from 'roomPortal/hooks/useNewRoom';
 import { useNowPlaying } from 'room/hooks/useNowPlaying';
-import { useSongQueue } from 'room/hooks/useSongQueue';
+import { useSongActions } from 'room/hooks/useSongActions';
+import { useSongGuestQueue, useSongUserQueue } from 'room/hooks/useSongQueue';
 import { useToastErrorRedirect } from 'toastError/hooks/useToastErrorRedirect';
 import { useUser } from 'user/hooks/useUser';
 import { useUserMenuClickActions } from 'user/hooks/useUserMenuClickActions';
@@ -32,7 +33,9 @@ export const dependencies = {
     useRouter,
     useNewRoom,
     useNowPlaying,
-    useSongQueue,
+    useSongActions,
+    useSongGuestQueue,
+    useSongUserQueue,
     useToastErrorRedirect,
     useUser,
     useUserMenuClickActions,

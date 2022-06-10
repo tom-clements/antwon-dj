@@ -1,11 +1,13 @@
 import type { FC } from 'react';
 import { styled, Box, ListItem } from '@mui/material';
 import { useDependencies } from 'common/hooks/useDependencies';
+import { useSelector } from 'common/services/createStore';
 import { TaskStatus } from 'common/model/Task';
 import { DeferredTask } from 'common/components/DeferredTask';
 import { SongItem, SongItemSkeleton } from 'room/components/SongItem';
 import type { RoomSongModel } from 'room/model/RoomSongModel';
-import { mapSongFromGuestDto } from 'room/mappers/mapRoomSongFromDto';
+import { mapSongFromGuestDto, mapSongFromUserDto } from 'room/mappers/mapRoomSongFromDto';
+import { selectIsLoggedIn } from 'user/services/authSlice';
 
 interface Props {
     roomId: string;
@@ -18,11 +20,30 @@ const EmptyQueueContainer = styled(Box)`
 `;
 
 export const QueueSongNext: FC<Props> = props => {
-    const task = useDependencies(d => d.useSongQueue)(props);
+    const isLoggedIn = useSelector(selectIsLoggedIn);
+    if (isLoggedIn) return <UserQueueSongNext {...props} />;
+    return <GuestQueueSongNext {...props} />;
+};
+
+const GuestQueueSongNext: FC<Props> = props => {
+    const task = useDependencies(d => d.useSongGuestQueue)(props);
     return (
         <DeferredTask task={task}>
             {{
                 [TaskStatus.Resulted]: songs => <NextSongInternal songs={songs.map(mapSongFromGuestDto)} isOpen={props.isOpen} />,
+                [TaskStatus.Completed]: () => <NextSongInternal songs={[]} isOpen={props.isOpen} />,
+                [TaskStatus.Created]: () => <SongItemSkeleton />,
+            }}
+        </DeferredTask >
+    );
+};
+
+const UserQueueSongNext: FC<Props> = props => {
+    const task = useDependencies(d => d.useSongUserQueue)(props);
+    return (
+        <DeferredTask task={task}>
+            {{
+                [TaskStatus.Resulted]: songs => <NextSongInternal songs={songs.map(mapSongFromUserDto)} isOpen={props.isOpen} />,
                 [TaskStatus.Completed]: () => <NextSongInternal songs={[]} isOpen={props.isOpen} />,
                 [TaskStatus.Created]: () => <SongItemSkeleton />,
             }}

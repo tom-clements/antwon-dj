@@ -3,6 +3,7 @@ import type { RoomSongModel } from 'room/model/RoomSongModel';
 import { mapSongFromDto } from 'room/mappers/mapSongFromDto';
 
 export const mapSongFromGuestDto = (dto: GuestRoomSongDto): RoomSongModel => ({
+    id: dto.room_song_guid,
     song: mapSongFromDto(dto),
     isPlayed: dto.is_played,
     isRemoved: dto.is_removed,

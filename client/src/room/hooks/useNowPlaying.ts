@@ -9,7 +9,6 @@ interface Props {
     roomId: string;
 }
 
-// TODO use a model and map from dto
 export type UseNowPlaying = HF<Props, Task<SongDto>>;
 
 export const useNowPlaying: UseNowPlaying = props => {

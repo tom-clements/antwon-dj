@@ -1,16 +1,23 @@
 import type { ComponentProps } from 'react';
 import type { Story } from '@storybook/react';
 import { QueueSong } from 'room/components/QueueSong';
+import { DependencyProvider } from 'common/components/DependencyProvider';
+import { mockUseSongActions } from 'tests/room/hooks/useSongActions.mock';
 
 export default {
     title: 'room/QueueSong',
-    component: QueueSong
+    component: QueueSong,
+    args: {
+        useSongActions: mockUseSongActions(),
+    },
 };
 
 const Template: Story<ComponentProps<typeof QueueSong>> = args => (
-    <div style={{ minWidth: '300px' }}>
-        <QueueSong {...args} />
-    </div>
+    <DependencyProvider {...args}>
+        <div style={{ minWidth: '300px' }}>
+            <QueueSong {...args} />
+        </div>
+    </DependencyProvider>
 );
 
 export const Default = Template.bind({});

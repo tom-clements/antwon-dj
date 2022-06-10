@@ -4,6 +4,7 @@ import { userApi } from 'user/services/userApi';
 import { UserModel } from 'user/model/UserModel';
 import { mapUserFromDto } from 'user/mappers/mapUserFromDto';
 import { TokenDto } from 'user/dtos/TokenDto';
+import { isLoggedIn } from 'user/predicates/isLoggedIn';
 
 interface AuthState {
     user: UserModel | null;
@@ -60,3 +61,4 @@ export const authActions = authSlice.actions;
 
 export const selectAuthState = (state: State) => state.auth;
 export const selectUser = (state: State) => state.auth.user;
+export const selectIsLoggedIn = (state: State) => isLoggedIn(state.auth.user);
