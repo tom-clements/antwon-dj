@@ -5,8 +5,8 @@ import type { RoomPollingIntervalConfiguration } from 'room/model/RoomPollingInt
  */
 export const getRoomPollingInterval = (): RoomPollingIntervalConfiguration => {
     return {
-        playing: 0,
-        queue: 0,
-        likes: 0,
+        playing: 1000,
+        queue: 5000,
+        likes: 3000,
     };
 };
