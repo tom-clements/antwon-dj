@@ -7,7 +7,7 @@ services:
         build:
             context: ../../../backend
             dockerfile: dev.Dockerfile
-        command: chalice local --stage local --host=0.0.0.0 --port=8000
+        command: chalice local --stage local --host=0.0.0.0 --port=8000 --no-autoreload
         networks:
             - internal-network
         ports:
