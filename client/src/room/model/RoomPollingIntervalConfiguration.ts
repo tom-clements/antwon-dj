@@ -8,4 +8,9 @@ export interface RoomPollingIntervalConfiguration {
      * ms
      */
     queue: number;
+
+    /**
+     * ms
+     */
+    likes: number;
 }

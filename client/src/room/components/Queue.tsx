@@ -3,44 +3,22 @@ import { SongList } from 'room/components/SongList';
 import { Box, Skeleton } from '@mui/material';
 import { QueueSong } from 'room/components/QueueSong';
 import { useDependencies } from 'common/hooks/useDependencies';
-import { useSelector } from 'common/services/createStore';
 import { TaskStatus } from 'common/model/Task';
 import { DeferredTask } from 'common/components/DeferredTask';
 import type { RoomSongModel } from 'room/model/RoomSongModel';
-import { mapSongFromGuestDto, mapSongFromUserDto } from 'room/mappers/mapRoomSongFromDto';
-import { selectIsLoggedIn } from 'user/services/authSlice';
+import { mapRoomSongFromDto } from 'room/mappers/mapRoomSongFromDto';
 
 interface Props {
     roomId: string;
 }
 
 export const Queue: FC<Props> = props => {
-    const isLoggedIn = useSelector(selectIsLoggedIn);
-    if (isLoggedIn) return <UserQueue {...props} />;
-    return <GuestQueue {...props} />;
-};
-
-export const GuestQueue: FC<Props> = props => {
-    const task = useDependencies(d => d.useSongGuestQueue)(props);
+    const task = useDependencies(d => d.useSongQueue)(props);
 
     return (
         <DeferredTask task={task}>
             {{
-                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs.map(mapSongFromGuestDto)} roomId={props.roomId} />,
-                [TaskStatus.Completed]: () => <QueueInternal songs={[]} roomId={props.roomId} />,
-                [TaskStatus.Created]: () => <QueueSkeleton />,
-            }}
-        </DeferredTask>
-    );
-};
-
-export const UserQueue: FC<Props> = props => {
-    const task = useDependencies(d => d.useSongUserQueue)(props);
-
-    return (
-        <DeferredTask task={task}>
-            {{
-                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs.map(mapSongFromUserDto)} roomId={props.roomId} isLoggedIn />,
+                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs.map(mapRoomSongFromDto)} roomId={props.roomId} isLoggedIn />,
                 [TaskStatus.Completed]: () => <QueueInternal songs={[]} roomId={props.roomId} isLoggedIn />,
                 [TaskStatus.Created]: () => <QueueSkeleton />,
             }}
@@ -80,7 +58,6 @@ const QueueInternal: FC<QueueInternalProps> = props => {
                 albumUrl={rowProps.data[rowProps.index].song.albumUrl}
                 isLoggedIn={!!props.isLoggedIn}
                 isRoomOwner={false} // TODO: update value
-                isLiked={rowProps.data[rowProps.index].isUserLiked ?? false}
             />
         )}
     />;

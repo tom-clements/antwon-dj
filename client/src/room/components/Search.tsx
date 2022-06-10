@@ -55,7 +55,7 @@ const SongListContainer = styled(Box)`
 export const Search: FC<Props> = props => {
     // TODO WOOOOO, this is a good custom hook candidate no? Jeez
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
-    const [addSongToQueue] = roomApi.endpoints.queue.useMutation();
+    const [addSongToQueue] = roomApi.endpoints.queueSong.useMutation();
     const [triggerSearch, result] = roomApi.endpoints.search.useLazyQuery();
     const debouncedSearch = useCallback((arg: { query: string; roomId: string; }) => {
         return _.debounce(() => triggerSearch(arg), 200, { leading: true })();

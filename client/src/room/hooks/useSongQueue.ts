@@ -1,7 +1,7 @@
 import { mapReduxQueryToTask } from 'common/mappers/mapReduxQueryToTask';
 import type { HF } from 'common/model/HookFunction';
 import type { Task } from 'common/model/Task';
-import type { GuestRoomSongDto, UserRoomSongDto } from 'room/dtos/RoomSongDto';
+import type { RoomSongDto } from 'room/dtos/RoomSongDto';
 import { getRoomPollingInterval } from 'room/services/getRoomPollingInterval';
 import { roomApi } from 'room/services/roomApi';
 
@@ -9,18 +9,10 @@ interface Props {
     roomId: string;
 }
 
-export type UseSongGuestQueue = HF<Props, Task<GuestRoomSongDto[]>>;
+export type UseSongQueue = HF<Props, Task<RoomSongDto[]>>;
 
-export const useSongGuestQueue: UseSongGuestQueue = props => {
+export const useSongQueue: UseSongQueue = props => {
     const pollingInterval = getRoomPollingInterval().queue;
-    const result = roomApi.endpoints.guestQueue.useQuery(props.roomId, { pollingInterval });
-    return mapReduxQueryToTask(result);
-};
-
-export type UseSongUserQueue = HF<Props, Task<UserRoomSongDto[]>>;
-
-export const useSongUserQueue: UseSongUserQueue = props => {
-    const pollingInterval = getRoomPollingInterval().queue;
-    const result = roomApi.endpoints.userQueue.useQuery(props.roomId, { pollingInterval });
+    const result = roomApi.endpoints.songQueue.useQuery(props.roomId, { pollingInterval });
     return mapReduxQueryToTask(result);
 };

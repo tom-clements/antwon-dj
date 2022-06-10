@@ -13,13 +13,14 @@ interface Props {
     albumUrl: string;
     isLoggedIn: boolean;
     isRoomOwner: boolean;
-    isLiked: boolean;
     style?: CSSProperties;
     onClick?: () => void;
 }
 
 export const QueueSong: FC<Props> = props => {
-    const { likeToggle, deleteSong } = useDependencies(d => d.useSongActions)(props);
+    const { songLikes, likeToggle, deleteSong } = useDependencies(d => d.useSong)(props);
+    const isLiked = songLikes?.isLiked ?? false;
+    // const likeCount = songLikes?.likeCount ?? 0;
 
     const likeClickHandler = useCallback((event?: MouseEvent<HTMLButtonElement>) => {
         event?.stopPropagation();
@@ -34,7 +35,7 @@ export const QueueSong: FC<Props> = props => {
     return (
         <ListItem style={props.style} onClick={props.onClick}>
             <SongItem title={props.title} artist={props.artist} albumUrl={props.albumUrl}/>
-            {props.isLoggedIn ? <QueueSongLikeButton isLiked={props.isLiked} onClick={likeClickHandler} /> : null}
+            {props.isLoggedIn ? <QueueSongLikeButton isLiked={isLiked} onClick={likeClickHandler} /> : null}
             {props.isRoomOwner ? <QueueSongDeleteButton onClick={deleteClickHandler}/> : null}
         </ListItem>
     );

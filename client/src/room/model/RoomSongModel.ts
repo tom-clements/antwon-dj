@@ -7,7 +7,4 @@ export interface RoomSongModel {
     isPlayed: boolean;
     isRemoved: boolean;
     isInactive: boolean;
-
-    likeCount: number;
-    isUserLiked?: boolean;
 }

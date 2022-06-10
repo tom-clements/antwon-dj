@@ -2,13 +2,13 @@ import type { ComponentProps } from 'react';
 import type { Story } from '@storybook/react';
 import { QueueSong } from 'room/components/QueueSong';
 import { DependencyProvider } from 'common/components/DependencyProvider';
-import { mockUseSongActions } from 'tests/room/hooks/useSongActions.mock';
+import { mockUseSong } from 'tests/room/hooks/useSong.mock';
 
 export default {
     title: 'room/QueueSong',
     component: QueueSong,
     args: {
-        useSongActions: mockUseSongActions(),
+        useSongActions: mockUseSong(),
     },
 };
 

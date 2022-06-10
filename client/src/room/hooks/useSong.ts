@@ -2,32 +2,40 @@ import { debounce } from 'lodash';
 import type { HF } from 'common/model/HookFunction';
 import { useMemo } from 'react';
 import { roomApi } from 'room/services/roomApi';
+import { useSongLikes } from 'room/hooks/useSongLikes';
+import { SongLikesModel } from 'room/model/SongLikesModel';
+import { isResultedTask } from 'common/predicates/isTask';
 
 interface Props {
     roomId: string;
     songId: string;
 
     isLoggedIn: boolean;
-    isLiked: boolean;
     isRoomOwner: boolean;
 }
 
 interface Return {
+    songLikes: SongLikesModel | null;
     likeToggle: () => void;
     deleteSong: () => void;
 }
 
-export type UseSongActions = HF<Props, Return>;
+export type UseSong = HF<Props, Return>;
 
-export const useSongActions: UseSongActions = props => {
-    const { roomId, songId, isLiked, isLoggedIn, isRoomOwner } = props;
+export const useSong: UseSong = props => {
+    const { roomId, songId, isLoggedIn, isRoomOwner } = props;
     const [like] = roomApi.endpoints.like.useMutation();
     const [unlike] = roomApi.endpoints.unlike.useMutation();
+
+    const songLikesTask = useSongLikes(props);
+    const songLikes = isResultedTask(songLikesTask) ? songLikesTask.result : null;
+
+    const isLiked = songLikes?.isLiked ?? null;
 
     const likeToggle = useMemo(
         () => debounce(
             () => {
-                if (!isLoggedIn) return;
+                if (!isLoggedIn || isLiked === null) return;
                 isLiked ? unlike({ roomId, songId }) : like({ roomId, songId });
             },
             400,
@@ -46,6 +54,7 @@ export const useSongActions: UseSongActions = props => {
         [isRoomOwner, isLoggedIn]);
 
     return {
+        songLikes,
         likeToggle,
         deleteSong,
     };
