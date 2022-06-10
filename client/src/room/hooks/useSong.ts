@@ -1,6 +1,6 @@
-import { debounce } from 'lodash';
 import type { HF } from 'common/model/HookFunction';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { roomApi } from 'room/services/roomApi';
 import { useSongLikes } from 'room/hooks/useSongLikes';
 import { SongLikesModel } from 'room/model/SongLikesModel';
@@ -32,26 +32,26 @@ export const useSong: UseSong = props => {
 
     const isLiked = songLikes?.isLiked ?? null;
 
-    const likeToggle = useMemo(
-        () => debounce(
+    const likeToggle = useDebouncedCallback(
+        useCallback(
             () => {
                 if (!isLoggedIn || isLiked === null) return;
                 isLiked ? unlike({ roomId, songId }) : like({ roomId, songId });
             },
-            400,
-            { leading: true }),
-        [like, unlike, isLiked, isLoggedIn, roomId, songId]);
+            [like, unlike, isLiked, isLoggedIn, roomId, songId]),
+        300,
+        { leading: true });
 
-    const deleteSong = useMemo(
-        () => debounce(
+    const deleteSong = useDebouncedCallback(
+        useCallback(
             () => {
                 if (!isLoggedIn) return;
                 if (!isRoomOwner) return;
                 // TODO add delete song endpoint
             },
-            400,
-            { leading: true }),
-        [isRoomOwner, isLoggedIn]);
+            [isRoomOwner, isLoggedIn]),
+        300,
+        { leading: true });
 
     return {
         songLikes,

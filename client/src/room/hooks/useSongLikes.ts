@@ -18,5 +18,5 @@ export const useSongLikes: UseSongLikes = props => {
     const pollingInterval = getRoomPollingInterval().likes;
     const result = roomApi.endpoints.queueSongLikes.useQuery(props.roomId, { pollingInterval });
     const task = mapReduxQueryToTask(result);
-    return mapTaskResult(task, v => mapQueueSongLikesFromDto(v)[props.songId] ?? null);
+    return mapTaskResult(task, t => mapQueueSongLikesFromDto(t)[props.songId] ?? null);
 };

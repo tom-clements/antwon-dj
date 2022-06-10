@@ -8,6 +8,7 @@ import { SongList } from 'room/components/SongList';
 import { SearchSong } from 'room/components/SearchSong';
 import type { SongModel } from 'room/model/SongModel';
 import { mapSongFromDto } from 'room/mappers/mapSongFromDto';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
     roomId: string;
@@ -57,19 +58,22 @@ export const Search: FC<Props> = props => {
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
     const [addSongToQueue] = roomApi.endpoints.queueSong.useMutation();
     const [triggerSearch, result] = roomApi.endpoints.search.useLazyQuery();
-    const debouncedSearch = useCallback((arg: { query: string; roomId: string; }) => {
-        return _.debounce(() => triggerSearch(arg), 200, { leading: true })();
-    }, [triggerSearch]);
+
+    const search = useDebouncedCallback(
+        useCallback(triggerSearch, [triggerSearch]),
+        300,
+        { leading: true });
+
     const showDrawer = searchTerm && result.data;
 
     useEffect(() => {
         if (searchTerm) {
-            debouncedSearch({
+            search({
                 query: searchTerm,
                 roomId: props.roomId,
             });
         }
-    }, [debouncedSearch, searchTerm, props.roomId]);
+    }, [search, searchTerm, props.roomId]);
 
     const onSelectSong = useCallback(s => {
         addSongToQueue({ roomId: props.roomId, song: s });
