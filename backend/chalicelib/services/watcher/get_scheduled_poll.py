@@ -1,6 +1,6 @@
 import time
 from enum import Enum
-from typing import Callable
+from typing import Callable, Any
 
 from chalicelib.data.queries.read_room import read_active_rooms
 from chalicelib.services.watcher.poll.local import local_poll
@@ -14,8 +14,8 @@ class PollMode(Enum):
     ASYNC_API: Callable = async_poll_rooms_api
 
 
-def poll_five_seconds(poll_mode: PollMode) -> None:
+def poll_five_seconds(poll_mode: Any) -> None:
     for _ in range(10):
         room_guids = read_active_rooms()
-        poll_mode.value(room_guids)
+        poll_mode(room_guids)
         time.sleep(5)
