@@ -7,6 +7,7 @@ import { roomApi } from 'room/services/roomApi';
 import { SongList } from 'room/components/SongList';
 import { SearchSong } from 'room/components/SearchSong';
 import type { SongModel } from 'room/model/SongModel';
+import { mapSongToDto } from 'room/mappers/mapSongToDto';
 import { mapSongFromDto } from 'room/mappers/mapSongFromDto';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -76,7 +77,7 @@ export const Search: FC<Props> = props => {
     }, [search, searchTerm, props.roomId]);
 
     const onSelectSong = useCallback(s => {
-        addSongToQueue({ roomId: props.roomId, song: s });
+        addSongToQueue({ roomId: props.roomId, song: mapSongToDto(s) });
         setSearchTerm(''); // todo: compose this
     }, [addSongToQueue, setSearchTerm, props.roomId]);
 
