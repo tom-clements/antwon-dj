@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { getApiBaseQuery } from 'common/services/getApiBaseQuery';
+import type { RoomDto } from 'room/dtos/RoomDto';
 import type { SongDto } from 'room/dtos/SongDto';
 import type { RoomSongDto } from 'room/dtos/RoomSongDto';
 import type { QueueSongLikesDto } from 'room/dtos/QueueSongLikesDto';
@@ -24,7 +25,7 @@ export const roomApi = createApi({
         createRoom: builder.mutation<void, string>({
             query: roomCode => ({ url: 'room', method: 'POST', body: { 'room_code': roomCode } }),
         }),
-        room: builder.query<void, string>({
+        room: builder.query<RoomDto, string>({
             query: roomId => ({ url: `room/${roomId}` }),
             providesTags: ['room'],
         }),

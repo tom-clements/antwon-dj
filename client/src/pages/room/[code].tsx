@@ -1,6 +1,6 @@
 import { RootContainer } from 'common/components/RootContainer';
 import { Room } from 'room/components/Room';
-import { RoomProvider } from 'room/components/RoomProvider';
+import { RoomIdProvider } from 'room/components/RoomIdProvider';
 import { FullPageSpinner } from 'common/components/FullPageSpinner';
 import { useDependencies } from 'common/hooks/useDependencies';
 import { ToastErrorCode } from 'toastError/model/ToastErrorCode';
@@ -16,7 +16,7 @@ export default function RoomPage() {
 
     return (
         <RootContainer>
-            <RoomProvider
+            <RoomIdProvider
                 initialRoomCode={code}
                 render={roomId => <Room roomId={roomId} />}
                 renderLoading={() => <FullPageSpinner />}

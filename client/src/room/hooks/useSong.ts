@@ -9,9 +9,6 @@ import { isResultedTask } from 'common/predicates/isTask';
 interface Props {
     roomId: string;
     songId: string;
-
-    isLoggedIn: boolean;
-    isRoomOwner: boolean;
 }
 
 interface Return {
@@ -23,7 +20,7 @@ interface Return {
 export type UseSong = HF<Props, Return>;
 
 export const useSong: UseSong = props => {
-    const { roomId, songId, isLoggedIn, isRoomOwner } = props;
+    const { roomId, songId } = props;
     const [like] = roomApi.endpoints.like.useMutation();
     const [unlike] = roomApi.endpoints.unlike.useMutation();
 
@@ -35,21 +32,19 @@ export const useSong: UseSong = props => {
     const likeToggle = useDebouncedCallback(
         useCallback(
             () => {
-                if (!isLoggedIn || isLiked === null) return;
+                if (!isLiked === null) return;
                 isLiked ? unlike({ roomId, songId }) : like({ roomId, songId });
             },
-            [like, unlike, isLiked, isLoggedIn, roomId, songId]),
+            [like, unlike, isLiked, roomId, songId]),
         300,
         { leading: true });
 
     const deleteSong = useDebouncedCallback(
         useCallback(
             () => {
-                if (!isLoggedIn) return;
-                if (!isRoomOwner) return;
                 // TODO add delete song endpoint
             },
-            [isRoomOwner, isLoggedIn]),
+            []),
         300,
         { leading: true });
 

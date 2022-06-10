@@ -57,7 +57,7 @@ describe('<UserPopoverMenu />', () => {
         const { container } = testRender({
             useDarkMode,
             useRouter: mockUseRouter({ goBack: onMenuClicks.goBack }),
-            useUser: () => ({ name: 'Name' }),
+            useUser: () => ({ name: 'Name', username: 'username' }),
             useUserMenuClickActions,
         });
 
@@ -71,7 +71,7 @@ describe('<UserPopoverMenu />', () => {
             useDarkMode,
             useRouter: mockUseRouter({ goBack: onMenuClicks.goBack }),
             useUserMenuClickActions,
-            useUser: () => ({ name: 'Name' }),
+            useUser: () => ({ name: 'Name', username: 'username' }),
         });
 
         const button = container.querySelector('button.MuiIconButton-root');
@@ -97,7 +97,7 @@ describe('<UserPopoverMenu />', () => {
             const { container, getByText } = testRender({
                 useDarkMode,
                 useRouter: mockUseRouter({ goBack: onMenuClicks.goBack }),
-                useUser: () => ({ name: 'Name', roomCode: 'SOIREE' }),
+                useUser: () => ({ name: 'Name', username: 'username', roomCode: 'SOIREE' }),
                 useUserMenuClickActions,
             });
             const button = container.querySelector('button.MuiIconButton-root');

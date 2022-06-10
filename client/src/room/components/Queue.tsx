@@ -18,8 +18,8 @@ export const Queue: FC<Props> = props => {
     return (
         <DeferredTask task={task}>
             {{
-                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs.map(mapRoomSongFromDto)} roomId={props.roomId} isLoggedIn />,
-                [TaskStatus.Completed]: () => <QueueInternal songs={[]} roomId={props.roomId} isLoggedIn />,
+                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs.map(mapRoomSongFromDto)} roomId={props.roomId} />,
+                [TaskStatus.Completed]: () => <QueueInternal songs={[]} roomId={props.roomId} />,
                 [TaskStatus.Created]: () => <QueueSkeleton />,
             }}
         </DeferredTask>
@@ -37,7 +37,6 @@ const QueueSkeleton: FC = () => {
 interface QueueInternalProps {
     roomId: string;
     songs: RoomSongModel[];
-    isLoggedIn?: boolean;
 }
 
 const QueueInternal: FC<QueueInternalProps> = props => {
@@ -56,8 +55,6 @@ const QueueInternal: FC<QueueInternalProps> = props => {
                 title={rowProps.data[rowProps.index].song.name}
                 artist={rowProps.data[rowProps.index].song.artist}
                 albumUrl={rowProps.data[rowProps.index].song.albumUrl}
-                isLoggedIn={!!props.isLoggedIn}
-                isRoomOwner={false} // TODO: update value
             />
         )}
     />;
