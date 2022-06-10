@@ -1,7 +1,11 @@
+import type { RoomPollingIntervalConfiguration } from "room/model/RoomPollingIntervalConfiguration";
+
 /**
- * @returns room polling interval in ms
+ * @returns room polling intervals in ms
  */
-export const getRoomPollingInterval = () => {
-    // TODO get this from configuration or elsewhere
-    return 5000;
+export const getRoomPollingInterval = (): RoomPollingIntervalConfiguration => {
+    return {
+        playing: 1000,
+        queue: 5000,
+    };
 };

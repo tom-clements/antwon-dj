@@ -12,7 +12,7 @@ interface Props {
 export type UseSongGuestQueue = HF<Props, Task<GuestRoomSongDto[]>>;
 
 export const useSongGuestQueue: UseSongGuestQueue = props => {
-    const pollingInterval = getRoomPollingInterval();
+    const pollingInterval = getRoomPollingInterval().queue;
     const result = roomApi.endpoints.guestQueue.useQuery(props.roomId, { pollingInterval });
     return mapReduxQueryToTask(result);
 };
@@ -20,7 +20,7 @@ export const useSongGuestQueue: UseSongGuestQueue = props => {
 export type UseSongUserQueue = HF<Props, Task<UserRoomSongDto[]>>;
 
 export const useSongUserQueue: UseSongUserQueue = props => {
-    const pollingInterval = getRoomPollingInterval();
+    const pollingInterval = getRoomPollingInterval().queue;
     const result = roomApi.endpoints.userQueue.useQuery(props.roomId, { pollingInterval });
     return mapReduxQueryToTask(result);
 };

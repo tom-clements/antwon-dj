@@ -12,7 +12,7 @@ interface Props {
 export type UseNowPlaying = HF<Props, Task<SongDto>>;
 
 export const useNowPlaying: UseNowPlaying = props => {
-    const pollingInterval = getRoomPollingInterval();
+    const pollingInterval = getRoomPollingInterval().playing;
     const result = roomApi.endpoints.playing.useQuery(props.roomId, { pollingInterval });
     return mapReduxQueryToTask(result);
 };
