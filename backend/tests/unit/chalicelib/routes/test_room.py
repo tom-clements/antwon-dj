@@ -155,18 +155,18 @@ def test_room_add(
     assert response.status_code == status_code
 
 
-def test_room_queue_guest_get(
+def test_room_queue_songs_get(
     mock_get_room_queue_guest: Mock, local_client: Client, guest_queue_no_params: QueueResult
 ) -> None:
     room_guid = "test_room_guid"
     mock_get_room_queue_guest.return_value = [r.result for r in guest_queue_no_params.sorted_songs]
-    response = local_client.http.get(f"/room/{room_guid}/queue/guest")
+    response = local_client.http.get(f"/room/{room_guid}/queue/songs")
     mock_get_room_queue_guest.assert_called_with(room_guid)
     assert response.json_body == [r.db_result for r in guest_queue_no_params.sorted_songs]
     assert response.status_code == 200
 
     mock_get_room_queue_guest.side_effect = RoomNotFoundServiceError(room_guid)
-    response = local_client.http.get(f"/room/{room_guid}/queue/guest")
+    response = local_client.http.get(f"/room/{room_guid}/queue/songs")
     assert response.status_code == 404
 
 
