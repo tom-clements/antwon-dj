@@ -34,7 +34,7 @@ const UserQueueSong: FC<Props> = props => {
     const { isRoomOwner } = useDependencies(d => d.useUserClaims)();
     const { songLikes, likeToggle, deleteSong } = useDependencies(d => d.useSong)(props);
     const isLiked = songLikes?.isLiked ?? false;
-    // const likeCount = songLikes?.likeCount ?? 0;
+    const likeCount = songLikes?.likeCount ?? 0;
 
     const likeClickHandler = useCallback((event?: MouseEvent<HTMLButtonElement>) => {
         event?.stopPropagation();
@@ -49,7 +49,7 @@ const UserQueueSong: FC<Props> = props => {
     return (
         <ListItem style={props.style} onClick={props.onClick}>
             <SongItem title={props.title} artist={props.artist} albumUrl={props.albumUrl}/>
-            <QueueSongLikeButton isLiked={isLiked} onClick={likeClickHandler} />
+            <QueueSongLikeButton isLiked={isLiked} likeCount={likeCount} onClick={likeClickHandler} />
             {isRoomOwner && getIsLocal() ? <QueueSongDeleteButton onClick={deleteClickHandler}/> : null}
         </ListItem>
     );
