@@ -1,4 +1,4 @@
-import type { RoomPollingIntervalConfiguration } from "room/model/RoomPollingIntervalConfiguration";
+import type { RoomPollingIntervalConfiguration } from 'room/model/RoomPollingIntervalConfiguration';
 
 /**
  * @returns room polling intervals in ms
