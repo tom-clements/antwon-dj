@@ -448,7 +448,7 @@
                 ]
             }
         },
-        "/room/{room_guid}/queue/guest": {
+        "/room/{room_guid}/queue/songs": {
             "get": {
                 "summary": "Retrieve the room queue for an unauthenticated user",
                 "consumes": [
@@ -461,7 +461,7 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/RoomQueueGuest"
+                            "$ref": "#/definitions/RoomQueue"
                         }
                     },
                     "404": {
@@ -478,9 +478,9 @@
                 ]
             }
         },
-        "/room/{room_guid}/queue/user": {
+        "/room/{room_guid}/queue/likes": {
             "get": {
-                "summary": "Retrieve the room queue for an authenticated user",
+                "summary": "Retrieve the likes for a queue for an authenticated user",
                 "consumes": [
                     "application/json"
                 ],
@@ -500,7 +500,7 @@
                     "200": {
                         "description": "200 response",
                         "schema": {
-                            "$ref": "#/definitions/RoomQueueUser"
+                            "$ref": "#/definitions/Likes"
                         }
                     },
                     "404": {
@@ -774,7 +774,7 @@
             "type": "object",
             "properties": {"room_code":  {"type":  "string"}}
         },
-        "QueueSongGuest": {
+        "QueueSong": {
             "type": "object",
             "properties": {
                 "room_song_guid": {"type":  "string", "example":  "f409f9cb-547a-47d6-9b02-fdedc9e3d79a"},
@@ -789,32 +789,22 @@
                 "like_count": {"type":  "integer", "example":  1}
             }
         },
-        "QueueSongUser": {
+        "Likes": {
             "type": "object",
             "properties": {
-                "room_song_guid": {"type":  "string", "example":  "f409f9cb-547a-47d6-9b02-fdedc9e3d79a"},
-                "song_uri":  {"type":  "string", "example":  "spotify:track:3uUuGVFu1V7jTQL60S1r8z"},
-                "song_name":  {"type":  "string", "example":  "Where Are You Now"},
-                "song_artist":  {"type":  "string", "example":  "Lost Frequencies, Calum Scott"},
-                "song_album_url":  {"type":  "string", "example":  "https://i.scdn.co/image/ab67616d0000b2738d7a7f1855b04104ba59c18b"},
-                "is_inactive":  {"type":  "boolean", "example":  "false"},
-                "insert_time":  {"type":  "string", "example":  "2022-04-11 08:59:49"},
-                "is_played":  {"type":  "boolean", "example":  "false"},
-                "is_removed":  {"type":  "boolean", "example":  "false"},
-                "like_count": {"type":  "integer", "example":  1},
-                "is_user_liked":  {"type":  "boolean", "example":  "true"}
+                "room_song_guid": {
+                    "type":  "object",
+                    "properties": {
+                        "like_count": {"type":  "integer", "example":  1},
+                        "is_user_liked":  {"type":  "boolean", "example":  "true"}
+                    }
+                }
             }
         },
-        "RoomQueueGuest": {
+        "RoomQueue": {
             "type":  "array",
             "items": {
-                "$ref": "#/definitions/QueueSongGuest"
-            }
-        },
-        "RoomQueueUser": {
-            "type":  "array",
-            "items": {
-                "$ref": "#/definitions/QueueSongUser"
+                "$ref": "#/definitions/QueueSong"
             }
         },
         "Song": {

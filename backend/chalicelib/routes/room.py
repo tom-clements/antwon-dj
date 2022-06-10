@@ -53,19 +53,22 @@ def room_add(post_body: Dict[str, Any], username: str) -> None:
     owner_add_room(room_code=post_body["room_code"], username=username)
 
 
-@room_routes.route("/room/{room_guid}/queue/guest", methods=["GET"], cors=get_cors_config())
+@room_routes.route("/room/{room_guid}/queue/songs", methods=["GET"], cors=get_cors_config())
 @error_handle
-def room_queue_guest_get(room_guid: str) -> List[Dict[str, str]]:
+def room_queue_songs_get(room_guid: str) -> List[Dict[str, str]]:
     room_queue = get_room_queue_guest(room_guid)
     return [asdict(r) for r in room_queue]
 
 
-@room_routes.route("/room/{room_guid}/queue/user", methods=["GET"], cors=get_cors_config(), authorizer=get_authorizer())
+@room_routes.route(
+    "/room/{room_guid}/queue/likes", methods=["GET"], cors=get_cors_config(), authorizer=get_authorizer()
+)
 @error_handle
 @inject_cognito_username(room_routes)
-def room_queue_user_get(room_guid: str, username: str) -> List[Dict[str, str]]:
+def room_queue_likes_get(room_guid: str, username: str) -> Dict[str, Dict[str, str]]:
     room_queue = get_room_queue_user(username, room_guid)
-    return [asdict(r) for r in room_queue]
+    # TODO: remove this atrocious hack
+    return {song.room_song_guid: {"is_liked": song.is_user_liked, "like_count": song.like_count} for song in room_queue}
 
 
 @room_routes.route("/room/{room_guid}/queue", methods=["POST"], cors=get_cors_config())
