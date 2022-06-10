@@ -1,4 +1,3 @@
-import { Task } from '@mui/icons-material';
 import type { Fault } from 'common/model/Fault';
 
 /**
@@ -49,20 +48,20 @@ export type FaultedTask = {
 };
 
 export type CompletedTask = {
-    status: TaskStatus.Completed
+    status: TaskStatus.Created | TaskStatus.Completed
 };
 
 export type ResultedTask<T> = {
-    status: TaskStatus.Completed | TaskStatus.Resulted;
+    status: TaskStatus.Created | TaskStatus.Completed | TaskStatus.Resulted;
     result: T;
 };
 
-export type Task<T = unknown> =
+export type Task<T = unknown> = (
     CreatedTask |
     RunningTask |
     FaultedTask |
     CompletedTask |
-    ResultedTask<T>;
+    ResultedTask<T>);
 
 export const task = (): CreatedTask => ({ 
     status: TaskStatus.Created,
@@ -78,10 +77,10 @@ export const faultedTask = (fault: Fault): FaultedTask => ({
 });
 
 export const completedTask = (): CompletedTask => ({
-    status: TaskStatus.Completed,
+    status: TaskStatus.Created | TaskStatus.Completed,
 });
 
 export const resultedTask = <T>(result: T): ResultedTask<T> => ({
-    status: TaskStatus.Completed | TaskStatus.Resulted,
+    status: TaskStatus.Created | TaskStatus.Completed | TaskStatus.Resulted,
     result,
 });

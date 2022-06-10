@@ -9,7 +9,7 @@ export const twonDark = createTheme({
             main: purple['A700'],
         },
         secondary: {
-            main: grey['800'],
+            main: grey['400'],
         },
         spotifyGreen: createColour('#1ed760'),
     },

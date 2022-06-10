@@ -27,7 +27,7 @@ describe('<UserAvatar />', () => {
         jest.mocked(isValidHttpUrl).mockReturnValue(false);
 
         const { container } = testRender({
-            user: { name: 'Name', imageUrl: 'url' }
+            user: { name: 'Name', username: 'username', imageUrl: 'url' }
         });
 
         const iconContainer = container.querySelector('div.MuiAvatar-root');
@@ -41,7 +41,7 @@ describe('<UserAvatar />', () => {
         jest.mocked(isValidHttpUrl).mockReturnValue(true);
 
         const { container } = testRender({
-            user: { name: 'Name', imageUrl: 'url' }
+            user: { name: 'Name', username: 'username', imageUrl: 'url' }
         });
 
         const iconContainer = container.querySelector('div.MuiAvatar-root');

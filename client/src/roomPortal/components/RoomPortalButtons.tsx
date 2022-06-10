@@ -5,11 +5,13 @@ import { isLoggedIn } from 'user/predicates/isLoggedIn';
 import { hasRoom } from 'user/predicates/hasRoom';
 import { useDependencies } from 'common/hooks/useDependencies';
 import Stack from '@mui/material/Stack';
+import { getIsLocal } from 'config/getIsLocal';
 
 const RoomButton: FC = () => {
     const user = useDependencies(d => d.useUser)();
     const actions = useDependencies(d => d.useRoomPortalButtons)();
 
+    if (!getIsLocal()) return null;
     if (!isLoggedIn(user)) return null;
 
     return (
@@ -27,6 +29,7 @@ const LinkButton: FC = () => {
     const user = useDependencies(d => d.useUser)();
     const actions = useDependencies(d => d.useRoomPortalButtons)();
 
+    if (!getIsLocal()) return null;
     if (!isLoggedIn(user)) return null;
 
     return (

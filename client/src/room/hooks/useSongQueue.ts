@@ -9,11 +9,10 @@ interface Props {
     roomId: string;
 }
 
-// TODO use a model and map from dto
 export type UseSongQueue = HF<Props, Task<RoomSongDto[]>>;
 
 export const useSongQueue: UseSongQueue = props => {
-    const pollingInterval = getRoomPollingInterval();
-    const result = roomApi.endpoints.guestQueue.useQuery(props.roomId, { pollingInterval });
+    const pollingInterval = getRoomPollingInterval().queue;
+    const result = roomApi.endpoints.songQueue.useQuery(props.roomId, { pollingInterval });
     return mapReduxQueryToTask(result);
 };

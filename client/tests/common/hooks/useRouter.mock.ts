@@ -1,4 +1,4 @@
-import { UseRouter } from 'common/hooks/useRouter';
+import type { UseRouter } from 'common/hooks/useRouter';
 
 export const mockUseRouter = (props: Partial<ReturnType<UseRouter>> = {}): UseRouter => () => ({
     isHome: props.isHome ?? false,

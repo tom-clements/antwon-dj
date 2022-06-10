@@ -6,6 +6,9 @@ import { Clear, Search as SearchIcon } from '@mui/icons-material';
 import { roomApi } from 'room/services/roomApi';
 import { SongList } from 'room/components/SongList';
 import { SearchSong } from 'room/components/SearchSong';
+import type { SongModel } from 'room/model/SongModel';
+import { mapSongFromDto } from 'room/mappers/mapSongFromDto';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
     roomId: string;
@@ -53,23 +56,24 @@ const SongListContainer = styled(Box)`
 export const Search: FC<Props> = props => {
     // TODO WOOOOO, this is a good custom hook candidate no? Jeez
     const [searchTerm, setSearchTerm] = useState<string | null>(null);
-    const [addSongToQueue] = roomApi.endpoints.queue.useMutation();
+    const [addSongToQueue] = roomApi.endpoints.queueSong.useMutation();
     const [triggerSearch, result] = roomApi.endpoints.search.useLazyQuery();
-    const debouncedSearch = useCallback((arg: { query: string; roomId: string; }) => {
-        return _.debounce(() => triggerSearch(arg), 200, { leading: true })();
-    }, [triggerSearch]);
-    const showDrawer = searchTerm && result.data;
 
-    console.log('SEARCH', JSON.stringify(result.data));
+    const search = useDebouncedCallback(
+        useCallback(triggerSearch, [triggerSearch]),
+        300,
+        { leading: true });
+
+    const showDrawer = searchTerm && result.data;
 
     useEffect(() => {
         if (searchTerm) {
-            debouncedSearch({
+            search({
                 query: searchTerm,
                 roomId: props.roomId,
             });
         }
-    }, [debouncedSearch, searchTerm, props.roomId]);
+    }, [search, searchTerm, props.roomId]);
 
     const onSelectSong = useCallback(s => {
         addSongToQueue({ roomId: props.roomId, song: s });
@@ -104,15 +108,15 @@ export const Search: FC<Props> = props => {
                 {showDrawer && (
                     <SearchDrawer>
                         <SongListContainer>
-                            <SongList
-                                songs={result.data ?? []}
+                            <SongList<SongModel>
+                                songs={(result.data ?? []).map(mapSongFromDto)}
                                 row={rowProps => (
                                     <SearchSong
                                         style={rowProps.style}
-                                        key={`${rowProps.data[rowProps.index].song_uri}_${rowProps.index}`}
-                                        title={rowProps.data[rowProps.index].song_name}
-                                        artist={rowProps.data[rowProps.index].song_artist}
-                                        albumUrl={rowProps.data[rowProps.index].song_album_url}
+                                        key={`${rowProps.data[rowProps.index].uri}_${rowProps.index}`}
+                                        title={rowProps.data[rowProps.index].name}
+                                        artist={rowProps.data[rowProps.index].artist}
+                                        albumUrl={rowProps.data[rowProps.index].albumUrl}
                                         onClick={() => onSelectSong(rowProps.data[rowProps.index])}
                                     />
                                 )}

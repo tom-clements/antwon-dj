@@ -9,12 +9,12 @@ interface Props {
     renderLoading: () => JSX.Element;
 }
 
-export const RoomProvider: FC<Props> = props => {
-    const task = useDependencies(d => d.useRoom)(props);
+export const RoomIdProvider: FC<Props> = props => {
+    const task = useDependencies(d => d.useRoomId)(props);
     return (
         <DeferredTask task={task}>
             {{
-                [TaskStatus.Resulted]: data => props.render(data),
+                [TaskStatus.Resulted]: data => props.render(data.id),
                 [TaskStatus.Completed]: () => props.renderLoading(),
                 [TaskStatus.Created]: () => props.renderLoading(),
             }}

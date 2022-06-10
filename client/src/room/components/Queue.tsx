@@ -5,9 +5,8 @@ import { QueueSong } from 'room/components/QueueSong';
 import { useDependencies } from 'common/hooks/useDependencies';
 import { TaskStatus } from 'common/model/Task';
 import { DeferredTask } from 'common/components/DeferredTask';
-
-// TODO use a model for this to de-couple frontend
-import type { RoomSongDto } from 'room/dtos/RoomSongDto';
+import type { RoomSongModel } from 'room/model/RoomSongModel';
+import { mapRoomSongFromDto } from 'room/mappers/mapRoomSongFromDto';
 
 interface Props {
     roomId: string;
@@ -19,8 +18,8 @@ export const Queue: FC<Props> = props => {
     return (
         <DeferredTask task={task}>
             {{
-                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs} />,
-                [TaskStatus.Completed]: () => <QueueInternal songs={[]} />,
+                [TaskStatus.Resulted]: songs => <QueueInternal songs={songs.map(mapRoomSongFromDto)} roomId={props.roomId} />,
+                [TaskStatus.Completed]: () => <QueueInternal songs={[]} roomId={props.roomId} />,
                 [TaskStatus.Created]: () => <QueueSkeleton />,
             }}
         </DeferredTask>
@@ -35,22 +34,27 @@ const QueueSkeleton: FC = () => {
     );
 };
 
-const QueueInternal: FC<{ songs: RoomSongDto[] }> = props => {
+interface QueueInternalProps {
+    roomId: string;
+    songs: RoomSongModel[];
+}
+
+const QueueInternal: FC<QueueInternalProps> = props => {
     // TODO This should probably be done in the API/state layer.
     // It can stay here for now.
-    const songs = props.songs.filter(s => !s.is_played && !s.is_removed).slice(1);
-    return <SongList
+    const songs = props.songs.filter(s => !s.isPlayed && !s.isRemoved).slice(1);
+
+    return <SongList<RoomSongModel>
         songs={songs}
         row={rowProps => (
             <QueueSong
                 style={rowProps.style}
-                key={`${rowProps.data[rowProps.index].song_uri}_${rowProps.index}`}
-                title={rowProps.data[rowProps.index].song_name}
-                artist={rowProps.data[rowProps.index].song_artist}
-                albumUrl={rowProps.data[rowProps.index].song_album_url}
-                isLoggedIn={true} // TODO: update values 
-                isRoomOwner={false} // TODO: update values 
-                isLiked={false} // TODO: update values 
+                key={`${rowProps.data[rowProps.index].song.uri}_${rowProps.index}`}
+                roomId={props.roomId}
+                songId={rowProps.data[rowProps.index].id}
+                title={rowProps.data[rowProps.index].song.name}
+                artist={rowProps.data[rowProps.index].song.artist}
+                albumUrl={rowProps.data[rowProps.index].song.albumUrl}
             />
         )}
     />;

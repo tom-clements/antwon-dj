@@ -1,11 +1,14 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { getApiBaseQuery } from 'common/services/getApiBaseQuery';
+import type { RoomDto } from 'room/dtos/RoomDto';
 import type { SongDto } from 'room/dtos/SongDto';
 import type { RoomSongDto } from 'room/dtos/RoomSongDto';
+import type { QueueSongLikesDto } from 'room/dtos/QueueSongLikesDto';
 
 const tagTypes = [
     'room',
     'room:queue',
+    'room:queue:likes',
     'room:search',
     'room:playing',
 ];
@@ -19,10 +22,10 @@ export const roomApi = createApi({
             query: roomCode => ({ url: `code/${roomCode}` }),
             providesTags: ['room'],
         }),
-        createRoom: builder.query<void, string>({
+        createRoom: builder.mutation<void, string>({
             query: roomCode => ({ url: 'room', method: 'POST', body: { 'room_code': roomCode } }),
         }),
-        room: builder.query<void, string>({
+        room: builder.query<RoomDto, string>({
             query: roomId => ({ url: `room/${roomId}` }),
             providesTags: ['room'],
         }),
@@ -30,15 +33,15 @@ export const roomApi = createApi({
             query: roomId => ({ url: `room/${roomId}`, method: 'DELETE' }),
             invalidatesTags: tagTypes,
         }),
-        guestQueue: builder.query<RoomSongDto[], string>({
-            query: roomId => ({ url: `room/${roomId}/queue/guest` }),
+        songQueue: builder.query<RoomSongDto[], string>({
+            query: roomId => ({ url: `room/${roomId}/queue/songs` }),
             providesTags: ['room:queue'],
         }),
-        userQueue: builder.query<RoomSongDto[], string>({
-            query: roomId => ({ url: `room/${roomId}/queue/user` }),
-            providesTags: ['room:queue'],
+        queueSongLikes: builder.query<QueueSongLikesDto, string>({
+            query: roomId => ({ url: `room/${roomId}/queue/likes` }),
+            providesTags: ['room:queue:likes'],
         }),
-        queue: builder.mutation<void, { roomId: string, song: SongDto }>({
+        queueSong: builder.mutation<void, { roomId: string, song: SongDto }>({
             query: ({ roomId, song }) => ({ url: `room/${roomId}/queue`, method: 'POST', body: song }),
             invalidatesTags: ['room:queue'],
         }),
@@ -50,13 +53,13 @@ export const roomApi = createApi({
             query: roomId => ({ url: `room/${roomId}/playing` }),
             providesTags: ['room:playing'],
         }),
-        like: builder.query<SongDto, { roomId: string, songId: string }>({
+        like: builder.mutation<void, { roomId: string, songId: string }>({
             query: ({ roomId, songId }) => ({ url: `room/${roomId}/queue/like`, method: 'POST', body: { 'room_song_guid': songId } }),
-            providesTags: ['room:queue'],
+            invalidatesTags: ['room:queue:likes'],
         }),
-        unlike: builder.query<SongDto, { roomId: string, songId: string }>({
+        unlike: builder.mutation<void, { roomId: string, songId: string }>({
             query: ({ roomId, songId }) => ({ url: `room/${roomId}/queue/like`, method: 'DELETE', body: { 'room_song_guid': songId } }),
-            providesTags: ['room:queue'],
+            invalidatesTags: ['room:queue:likes'],
         }),
     }),
 });
